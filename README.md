@@ -6,7 +6,7 @@ Die App bietet Datensicherung, außergewöhnliches und benutzerfreundliches Desi
 # Funktionen:
 - Einnahmen und Ausgaben aufzeichnen, speichern, anzeigen, bearbeiten, filtern
 - Verschiedene Kategorien erstellen
-- Datum, Höhe, andere Details speichern
+- Datum, Betrag, andere Details speichern
 - Zwischen verschiedenen Währungen wählen
 
 
