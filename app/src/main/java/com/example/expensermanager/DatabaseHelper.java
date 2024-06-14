@@ -33,12 +33,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         COLUMN_ID + " PRIMARY KEY AUTOINCREMENT ," +
                         COLUMN_CATEGORY + "TEXT," + COLUMN_DESCRIPTION +
                         "TEXT" + COLUMN_AMOUNT + "INTEGER)";
-        db.execSQL(queryCreate);
+        db.execSQL(queryCreate); //executing the query - create database
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        db.execSQL(SQL_DELETE_ENTRIES);
+        //if it is required to upgrade the database --> rebuild the database
+        //updating: add column or row
     }
 }
