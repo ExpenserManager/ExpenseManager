@@ -20,8 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_CATEGORY = "category";
     private static final String COLUMN_DESCRIPTION = "description";
-    private static final double COLUMN_AMOUNT = 0.0;
-    DatabaseHelper dbHelper = new DatabaseHelper(context);
+    private static final String COLUMN_AMOUNT = "amount";
 
     //static queries for deleting database
     private static final String SQL_DELETE_ENTRIES =
@@ -40,11 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         String queryCreate =
-                "CREATE TABLE " + TABLE_NAME +
-                        " (" + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        COLUMN_CATEGORY + " TEXT NOT NULL, "
-                        + COLUMN_DESCRIPTION + " TEXT, " +
-                        COLUMN_AMOUNT + " REAL NOT NULL);";
+                String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT, %s REAL NOT NULL);", TABLE_NAME, COLUMN_ID, COLUMN_CATEGORY, COLUMN_DESCRIPTION, COLUMN_AMOUNT);
 
         db.execSQL(queryCreate); //executing the query - create database
 
@@ -80,9 +75,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Toast.makeText(context, "Successfully Added!", Toast.LENGTH_SHORT);
 
         }
-
-
-
     }
+
+    public void deleteData(DatabaseHelper dbHelper, String id) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "DELETE FROM" + " '" +TABLE_NAME+"' " + "WHERE _id=" + id; // SQL Query - deleting row via id
+        db.execSQL(query);
+    }
+
+
 
 }
