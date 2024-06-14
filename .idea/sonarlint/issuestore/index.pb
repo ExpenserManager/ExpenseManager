@@ -15,3 +15,13 @@ G.idea/sonarlint/issuestore/8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d,b\4\b4
 Q.idea/sonarlint/securityhotspotstore/8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d,1\0\10a03f31c4dce92cb371e761ce9429428bb6c176
 Å
 Q.idea/sonarlint/securityhotspotstore/0/a/0a95e62dfe6ba87957ac757a40e45032c458b050,d\5\d5ed4fdec4debf3db0aab16f2238d5e893ef84e2
+q
+Aapp/src/main/java/com/example/expensermanager/DatabaseHelper.java,a\b\ab6669a0aefbbc90125fce56597f583cb7673f13
+v
+Fapp/src/main/java/com/example/expensermanager/ExpenseViewActivity.java,a\0\a04c668ba7d90f1e2793bb81cbce77dd56798d49
+D
+app/build.gradle.kts,d\2\d2a4383452aad84a18429a5844d31330a012a9e6
+p
+@app/src/main/java/com/example/expensermanager/CustomAdapter.java,5\d\5d418b87c06d5ad0a8a9f2d29754dd52efdb01cf
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
