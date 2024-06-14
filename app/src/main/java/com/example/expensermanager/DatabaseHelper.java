@@ -4,6 +4,7 @@ import static java.security.AccessController.getContext;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
@@ -82,6 +83,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String query = "DELETE FROM" + " '" +TABLE_NAME+"' " + "WHERE _id=" + id; // SQL Query - deleting row via id
         db.execSQL(query);
     }
+
+
+    Cursor readAllData(){
+
+        String query = "SELECT * FROM " + TABLE_NAME;
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = null;
+        if(db != null){
+            cursor = db.rawQuery(query, null); //execute query
+        }
+
+        return cursor;
+    //cursor contains all database data
+
+
+    }
+
+
 
 
 
