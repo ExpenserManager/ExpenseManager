@@ -10,13 +10,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
    private static final int DB_VERSION = 1;
    private static final String TABLE_NAME = "expense_manager";
 
-   //Spalten
+   //columns
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_CATEGORY = "category";
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_AMOUNT = "amount";
 
-
+    //static queries for deleting database
+    private static final String SQL_DELETE_ENTRIES =
+            "DROP TABLE IF EXISTS" + TABLE_NAME;
 
 
     public DatabaseHelper(Context context){
@@ -25,6 +27,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        String queryCreate =
+                "CREATE TABLE " + TABLE_NAME + " (" +
+                        COLUMN_ID + " PRIMARY KEY AUTOINCREMENT ," +
+                        COLUMN_CATEGORY + "TEXT," + COLUMN_DESCRIPTION +
+                        "TEXT" + COLUMN_AMOUNT + "INTEGER)";
+        db.execSQL(queryCreate);
 
     }
 
