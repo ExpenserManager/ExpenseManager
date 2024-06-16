@@ -115,4 +115,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
         }
     }
+
+    public void setFilteredList(ArrayList<String> filteredListDescription, ArrayList<String> filteredListId, ArrayList<String> filteredListAmount) {
+        this.description = filteredListDescription;
+        this.id = filteredListId;
+        this.amount = filteredListAmount;
+        notifyDataSetChanged();
+    }
 }

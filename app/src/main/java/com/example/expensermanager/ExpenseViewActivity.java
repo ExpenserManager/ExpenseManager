@@ -3,10 +3,12 @@ package com.example.expensermanager;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
+import android.media.RouteListingPreference;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,7 +19,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensermanager.databinding.ActivityMainBinding;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ExpenseViewActivity extends AppCompatActivity {
 
@@ -39,6 +43,8 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
 
+
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,20 @@ public class ExpenseViewActivity extends AppCompatActivity {
         description = new ArrayList<>();
         amount = new ArrayList<>();
 
+        binding.searchView.clearFocus(); //cursor is in search view - only by clicking on it
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                filterList(newText);
+                return true;
+            }
+        });
+
         storeDataInArrayLists();
 
         recyclerView = findViewById(R.id.rv);
@@ -66,6 +86,24 @@ public class ExpenseViewActivity extends AppCompatActivity {
         adapter = new CustomAdapter(ExpenseViewActivity.this, id, category, description, amount,dbHelper);
         recyclerView.setAdapter(adapter);
 
+    }
+
+    private void filterList(String newText) {
+       ArrayList<String> filteredListDescription = new ArrayList<>();
+       ArrayList<String> filteredListId = new ArrayList<>();
+       ArrayList<String> filteredListAmount = new ArrayList<>();
+        for(int i = 0; i< description.size(); i++){
+            if(description.get(i).toLowerCase().contains(newText.toLowerCase())){
+                filteredListDescription.add(description.get(i));
+                filteredListId.add(id.get(i));
+                filteredListAmount.add(amount.get(i));
+            }
+        }
+        if(filteredListDescription.isEmpty()){
+            Toast.makeText(this, "No items found!", Toast.LENGTH_LONG).show();
+        }else{
+            adapter.setFilteredList(filteredListDescription, filteredListId,filteredListAmount );
+        }
     }
 
     //onActivityResult -> implementation from ChatGPT
