@@ -34,6 +34,8 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
     ActivityMainBinding binding;
 
+    RecyclerView recyclerView;
+
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +72,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
         });*/
 
-
+        recyclerView = findViewById(R.id.rv);
         dbHelper = new DatabaseHelper(ExpenseViewActivity.this);
         id = new ArrayList<>();
         category = new ArrayList<>();
@@ -78,10 +80,9 @@ public class ExpenseViewActivity extends AppCompatActivity {
         amount = new ArrayList<>();
 
         storeDataInArrayLists();
-
         adapter = new CustomAdapter(ExpenseViewActivity.this, id, category, description, amount);
-        binding.rv.setAdapter(adapter);
-        binding.rv.setLayoutManager(new LinearLayoutManager(ExpenseViewActivity.this));
+       recyclerView.setAdapter(adapter);
+       recyclerView.setLayoutManager(new LinearLayoutManager(ExpenseViewActivity.this));
 
 
 

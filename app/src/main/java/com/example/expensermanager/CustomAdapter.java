@@ -1,9 +1,12 @@
 package com.example.expensermanager;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,7 +20,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
 
     Context context;
-    ArrayList id, category, description, amount;
+    ArrayList<String> id, category, description, amount;
+    Activity activity;
 
     CustomAdapter(Context context,
                   ArrayList id,
@@ -44,9 +48,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.id.setText(String.valueOf(id.get(position)));
-        holder.description.setText(String.valueOf(description.get(position)));
-        holder.amount.setText(String.valueOf(amount.get(position)));
+        holder.id_holder.setText(String.valueOf(id.get(position)));
+        holder.description_holder.setText(String.valueOf(description.get(position)));
+        holder.amount_holder.setText(String.valueOf(amount.get(position)));
 
     }
 
@@ -57,15 +61,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-       TextView id, category, description, amount;
+       TextView id_holder, category, description_holder, amount_holder;
+       RelativeLayout listitem;
+       RecyclerView recyclerView;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-
-
-          id = itemView.findViewById(R.id.ID);
-            description = itemView.findViewById(R.id.description);
-            amount = itemView.findViewById(R.id.amount);
-
+            id_holder = itemView.findViewById(R.id.ID);
+            description_holder = itemView.findViewById(R.id.description);
+            amount_holder = itemView.findViewById(R.id.amount);
+            listitem = itemView.findViewById(R.id.relativeLayout);
+            recyclerView = itemView.findViewById(R.id.rv);
         }
     }
 }
