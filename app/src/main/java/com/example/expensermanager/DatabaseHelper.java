@@ -84,9 +84,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
+    public void updateData(String id, String description, String amount){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_DESCRIPTION, description);
+        values.put(COLUMN_AMOUNT, amount);
+        db.update(TABLE_NAME, values, "_id=?", new String[]{id});
+
+    }
+
 
     Cursor readAllData(){
-
         String query = "SELECT * FROM " + TABLE_NAME;
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -97,7 +106,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return cursor;
     //cursor contains all database data
-
 
     }
 
