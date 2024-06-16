@@ -2,6 +2,7 @@ package com.example.expensermanager;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,9 +55,30 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         holder.amount_holder.setText(String.valueOf(amount.get(position)));
 
 
+
         holder.deleteButton.setOnClickListener(v -> {
             removeItem(position);
         });
+
+        //enable clicking on the listitems
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, UpdateDataActivity.class);
+                intent.putExtra("id", String.valueOf(id.get(position)));
+                intent.putExtra("description", String.valueOf(description.get(position)));
+                intent.putExtra("amount", String.valueOf(amount.get(position)));
+
+                if (context instanceof Activity) {
+                    ((Activity) context).startActivityForResult(intent, 1);
+                } else {
+                    context.startActivity(intent);
+                }
+            }
+        });
+
+
+
     }
 
     private void removeItem(int position){
