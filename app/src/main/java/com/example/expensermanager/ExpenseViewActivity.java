@@ -86,6 +86,9 @@ public class ExpenseViewActivity extends AppCompatActivity {
         adapter = new CustomAdapter(ExpenseViewActivity.this, id, category, description, amount,dbHelper);
         recyclerView.setAdapter(adapter);
 
+        double total = calculateCurrentBalance();
+        binding.currentBalanceMoney.setText("" + total);
+
     }
 
     private void filterList(String newText) {
@@ -131,7 +134,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
         }
     }
 
-    void storeDataInArrayLists(){
+    protected void storeDataInArrayLists(){
         Cursor cursor = dbHelper.readAllData();
         if(cursor.getCount() == 0){
             Toast.makeText(this, "No data found!", Toast.LENGTH_SHORT).show();
@@ -144,6 +147,19 @@ public class ExpenseViewActivity extends AppCompatActivity {
             }
         }
     }
+
+    public double calculateCurrentBalance(){
+        double sum = 0;
+
+        if(!amount.isEmpty()){
+            for(int i = 0; i < amount.size(); i++){
+                sum+= Integer.parseInt(amount.get(i));
+            }
+        }
+        return sum;
+    }
+
+
 
 
 
