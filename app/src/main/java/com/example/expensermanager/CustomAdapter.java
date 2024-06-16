@@ -21,7 +21,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     Context context;
     ArrayList<String> id, category, description, amount;
-    Activity activity;
     DatabaseHelper dbHelper;
 
     CustomAdapter(Context context,
@@ -61,14 +60,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     }
 
     private void removeItem(int position){
-        dbHelper.deleteData(dbHelper, String.valueOf(position));
+        String deleteItemID = id.get(position);
+        dbHelper.deleteData(dbHelper, deleteItemID);
 
         //remove data from ArrayLists
         id.remove(position);
         category.remove(position);
         description.remove(position);
         amount.remove(position);
-        notifyItemRemoved(position);
+        notifyItemRemoved(position); //update RecyclerView
+        notifyItemRangeChanged(position, getItemCount()); //notify the adapter that the range has changed
     }
 
     @Override
@@ -77,12 +78,10 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-
        TextView id_holder, category, description_holder, amount_holder;
        RelativeLayout listitem;
        RecyclerView recyclerView;
-
-       ImageButton deleteButton;
+       ImageButton deleteButton; //accessing the deleteButton was done with help of chatCPT
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             id_holder = itemView.findViewById(R.id.ID);
@@ -90,7 +89,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             amount_holder = itemView.findViewById(R.id.amount);
             listitem = itemView.findViewById(R.id.relativeLayout);
             recyclerView = itemView.findViewById(R.id.rv);
-
             deleteButton = itemView.findViewById(R.id.deleteButton);
 
         }
