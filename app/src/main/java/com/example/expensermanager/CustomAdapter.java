@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,22 +19,23 @@ import java.util.ArrayList;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
-
     Context context;
     ArrayList<String> id, category, description, amount;
     Activity activity;
+    DatabaseHelper dbHelper;
 
     CustomAdapter(Context context,
                   ArrayList id,
                   ArrayList category,
                   ArrayList description,
-                  ArrayList amount){
+                  ArrayList amount, DatabaseHelper dbHelper){
 
         this.context = context;
         this.id = id;
         this.category = category;
         this.description = description;
         this.amount = amount;
+        this.dbHelper = dbHelper;
 
     }
 
@@ -52,6 +54,21 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         holder.description_holder.setText(String.valueOf(description.get(position)));
         holder.amount_holder.setText(String.valueOf(amount.get(position)));
 
+
+        holder.deleteButton.setOnClickListener(v -> {
+            removeItem(position);
+        });
+    }
+
+    private void removeItem(int position){
+        dbHelper.deleteData(dbHelper, String.valueOf(position));
+
+        //remove data from ArrayLists
+        id.remove(position);
+        category.remove(position);
+        description.remove(position);
+        amount.remove(position);
+        notifyItemRemoved(position);
     }
 
     @Override
@@ -64,6 +81,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
        TextView id_holder, category, description_holder, amount_holder;
        RelativeLayout listitem;
        RecyclerView recyclerView;
+
+       ImageButton deleteButton;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             id_holder = itemView.findViewById(R.id.ID);
@@ -71,6 +90,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             amount_holder = itemView.findViewById(R.id.amount);
             listitem = itemView.findViewById(R.id.relativeLayout);
             recyclerView = itemView.findViewById(R.id.rv);
+
+            deleteButton = itemView.findViewById(R.id.deleteButton);
+
         }
     }
 }
