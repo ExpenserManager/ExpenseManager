@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,17 +19,17 @@ import java.util.ArrayList;
 
 public class ExpenseViewActivity extends AppCompatActivity {
 
-    private EditText categoryEditText;
-    private EditText descriptionEditText;
-    private EditText amountEditText;
-    private TextView resultTextView;
-    private Button addButton;
+    public DatabaseHelper getDbHelper() {
+        return dbHelper;
+    }
+
+    public void setDbHelper(DatabaseHelper dbHelper) {
+        this.dbHelper = dbHelper;
+    }
+
     private DatabaseHelper dbHelper;
 
-    private Button deleteButton;
-
     //ArrayLists for displaying the data in the recyclerView
-
     ArrayList<String> id, category, description, amount;
     CustomAdapter adapter;
 
@@ -42,52 +43,23 @@ public class ExpenseViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(R.layout.activity_main);
-/*
-        categoryEditText = findViewById(R.id.categoryEditText);
-        descriptionEditText = findViewById(R.id.descriptionEditText);
-        amountEditText = findViewById(R.id.amountEditText);
-        resultTextView = findViewById(R.id.resultTextView);
-        addButton = findViewById(R.id.addButton);
-        deleteButton = findViewById(R.id.button);
-
         dbHelper = new DatabaseHelper(this);
-
-
-        addButton.setOnClickListener(view -> {
-            String category = categoryEditText.getText().toString();
-            String description = descriptionEditText.getText().toString();
-            double amount = Double.parseDouble(amountEditText.getText().toString());
-
-            dbHelper.insertData(dbHelper, category, description, amount);
-
-            // Display the inserted data
-            String result = "Category: " + category + "\nDescription: " + description + "\nAmount: " + amount;
-            resultTextView.setText(result);
-        });
-
-        deleteButton.setOnClickListener(view -> {
-
-
-            dbHelper.deleteData(dbHelper, "2");
-
-        });*/
-
-        recyclerView = findViewById(R.id.rv);
-        dbHelper = new DatabaseHelper(ExpenseViewActivity.this);
+        dbHelper.insertData(dbHelper, "categoryexample", "test1", 40.0);
         id = new ArrayList<>();
         category = new ArrayList<>();
         description = new ArrayList<>();
         amount = new ArrayList<>();
 
+
         storeDataInArrayLists();
-        adapter = new CustomAdapter(ExpenseViewActivity.this, id, category, description, amount);
-       recyclerView.setAdapter(adapter);
-       recyclerView.setLayoutManager(new LinearLayoutManager(ExpenseViewActivity.this));
 
+        recyclerView = findViewById(R.id.rv);
 
+        recyclerView.setLayoutManager(new LinearLayoutManager(ExpenseViewActivity.this));
+        adapter = new CustomAdapter(ExpenseViewActivity.this, id, category, description, amount,dbHelper);
+        recyclerView.setAdapter(adapter);
 
     }
-
 
     void storeDataInArrayLists(){
         Cursor cursor = dbHelper.readAllData();
