@@ -1,6 +1,7 @@
 package com.example.expensermanager;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -42,14 +44,19 @@ public class ExpenseViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
-        setContentView(R.layout.activity_main);
+        setContentView(binding.getRoot());
+
         dbHelper = new DatabaseHelper(this);
-        dbHelper.insertData(dbHelper, "categoryexample", "test1", 40.0);
+
+       /* //inserting data to test the recycler view
+        dbHelper.insertData(dbHelper, "categoryexample1", "test1", 40.0);
+        dbHelper.insertData(dbHelper, "categoryexample2", "test2", 40.0);
+        dbHelper.insertData(dbHelper, "categoryexample3", "test3", 40.0);*/
+
         id = new ArrayList<>();
         category = new ArrayList<>();
         description = new ArrayList<>();
         amount = new ArrayList<>();
-
 
         storeDataInArrayLists();
 
@@ -59,6 +66,31 @@ public class ExpenseViewActivity extends AppCompatActivity {
         adapter = new CustomAdapter(ExpenseViewActivity.this, id, category, description, amount,dbHelper);
         recyclerView.setAdapter(adapter);
 
+    }
+
+    //onActivityResult -> implementation from ChatGPT
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        String updatedDescription = "";
+        String updatedAmount = "";
+        String givenID = "";
+
+        if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
+
+            if(data != null) {
+               updatedDescription= data.getStringExtra("description");
+               updatedAmount = data.getStringExtra("amount");
+               givenID = data.getStringExtra("id");
+            }
+            int position = id.indexOf(givenID); //database id starts with 1, listID starts with 0
+            if (position != -1) {
+                description.set(position, updatedDescription);
+                amount.set(position, updatedAmount);
+                adapter.notifyItemChanged(position);
+            }
+        }
     }
 
     void storeDataInArrayLists(){
@@ -74,6 +106,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
             }
         }
     }
+
 
 
 }
