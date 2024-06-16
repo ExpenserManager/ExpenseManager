@@ -3,30 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#0096FF"
     android:id="@+id/constraintlayoutExpenseViewActivity"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv"
         android:layout_width="409dp"
         android:layout_height="500dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="225dp"
+        android:layout_marginTop="235dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginBottom="6dp"
-        android:id="@+id/rv"
-        tools:listitem="@layout/list_item"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:listitem="@layout/list_item" />
 
     <Spinner
         android:id="@+id/spinner"
         android:layout_width="148dp"
         android:layout_height="30dp"
         android:layout_marginStart="131dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="132dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,6 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="155dp"
+        android:textColor="@color/white"
         android:layout_marginTop="13dp"
         android:layout_marginEnd="155dp"
         android:text="Current Balance"
@@ -50,9 +52,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="149dp"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="20dp"
+        android:inputType="numberDecimal"
         android:text="300,00"
-        android:textSize="30sp"
+        android:textColor="@color/white"
+        android:textSize="40sp"
         app:layout_constraintEnd_toStartOf="@+id/currencySymbol"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/currentBalanceText" />
@@ -62,9 +66,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:layout_marginEnd="145dp"
+        android:layout_marginEnd="130dp"
         android:text="€"
-        android:textSize="30sp"
+        android:textColor="@color/white"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/currentBalanceText" />
 
@@ -73,9 +78,15 @@
         android:id="@+id/searchView"
         android:layout_width="271dp"
         android:layout_height="36dp"
-        app:queryHint="Search here"
-        tools:layout_editor_absoluteX="70dp"
-        tools:layout_editor_absoluteY="16dp" />
+        android:layout_marginStart="70dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="70dp"
+        android:searchIcon="@android:drawable/ic_menu_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:queryHint="Search here" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
