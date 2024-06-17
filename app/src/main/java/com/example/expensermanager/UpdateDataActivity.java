@@ -21,6 +21,7 @@ public class UpdateDataActivity extends AppCompatActivity {
     String description;
     String amount;
     String id;
+    String date;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +36,7 @@ public class UpdateDataActivity extends AppCompatActivity {
         EditText descriptionField = findViewById(R.id.description);
         EditText amountField = findViewById(R.id.amount);
         Button updateButton = findViewById(R.id.update_button);
+        EditText dateField = findViewById(R.id.date);
 
 
         Intent intent = getIntent();
@@ -42,9 +44,11 @@ public class UpdateDataActivity extends AppCompatActivity {
                 description = intent.getStringExtra("description");
                 amount = intent.getStringExtra("amount");
                 id = intent.getStringExtra("id");
+                date = intent.getStringExtra("date");
 
            descriptionField.setText(description);
            amountField.setText(amount);
+           dateField.setText(date);
         }
 
 
@@ -54,13 +58,15 @@ public class UpdateDataActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String newDescription = descriptionField.getText().toString();
                 String newAmount = amountField.getText().toString();
-                dbHelper.updateData(id, newDescription, newAmount); //update database
+                String newDate = dateField.getText().toString();
+                dbHelper.updateData(id, newDescription, newAmount, newDate); //update database
 
               //give data back to ExpenseViewActivity
                 Intent goBackIntent = new Intent();
                 goBackIntent.putExtra("id", id);
                 goBackIntent.putExtra("description", newDescription);
                 goBackIntent.putExtra("amount", newAmount);
+                goBackIntent.putExtra("date", newDate);
                 setResult(RESULT_OK, goBackIntent);
                 finish();
 

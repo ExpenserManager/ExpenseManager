@@ -21,20 +21,21 @@ import java.util.ArrayList;
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
     Context context;
-    ArrayList<String> id, category, description, amount;
+    ArrayList<String> id, category, description, amount, date;
     DatabaseHelper dbHelper;
 
     CustomAdapter(Context context,
                   ArrayList id,
                   ArrayList category,
                   ArrayList description,
-                  ArrayList amount, DatabaseHelper dbHelper){
+                  ArrayList amount, ArrayList date,  DatabaseHelper dbHelper){
 
         this.context = context;
         this.id = id;
         this.category = category;
         this.description = description;
         this.amount = amount;
+        this.date = date;
         this.dbHelper = dbHelper;
 
     }
@@ -53,7 +54,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         holder.id_holder.setText(String.valueOf(id.get(position)));
         holder.description_holder.setText(String.valueOf(description.get(position)));
         holder.amount_holder.setText(String.valueOf(amount.get(position)));
-
+        holder.date_holder.setText(date.get(position));
 
 
         holder.deleteButton.setOnClickListener(v -> {
@@ -68,6 +69,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
                 intent.putExtra("id", String.valueOf(id.get(position)));
                 intent.putExtra("description", String.valueOf(description.get(position)));
                 intent.putExtra("amount", String.valueOf(amount.get(position)));
+                intent.putExtra("date", String.valueOf(date.get(position)));
 
                 if (context instanceof Activity) {
                     ((Activity) context).startActivityForResult(intent, 1);
@@ -90,6 +92,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         category.remove(position);
         description.remove(position);
         amount.remove(position);
+        date.remove(position);
         notifyItemRemoved(position); //update RecyclerView
         notifyItemRangeChanged(position, getItemCount()); //notify the adapter that the range has changed
     }
@@ -100,7 +103,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-       TextView id_holder, category, description_holder, amount_holder;
+       TextView id_holder, category, description_holder, amount_holder, date_holder;
        RelativeLayout listitem;
        RecyclerView recyclerView;
        ImageButton deleteButton; //accessing the deleteButton was done with help of chatCPT
@@ -109,6 +112,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             id_holder = itemView.findViewById(R.id.ID);
             description_holder = itemView.findViewById(R.id.description);
             amount_holder = itemView.findViewById(R.id.amount);
+            date_holder = itemView.findViewById(R.id.date_textView);
             listitem = itemView.findViewById(R.id.relativeLayout);
             recyclerView = itemView.findViewById(R.id.rv);
             deleteButton = itemView.findViewById(R.id.deleteButton);
@@ -116,10 +120,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         }
     }
 
-    public void setFilteredList(ArrayList<String> filteredListDescription, ArrayList<String> filteredListId, ArrayList<String> filteredListAmount) {
+    public void setFilteredList(ArrayList<String> filteredListDescription, ArrayList<String> filteredListId, ArrayList<String> filteredListAmount, ArrayList<String> filteredListDate) {
         this.description = filteredListDescription;
         this.id = filteredListId;
         this.amount = filteredListAmount;
+        this.date = filteredListDate;
         notifyDataSetChanged();
     }
 }

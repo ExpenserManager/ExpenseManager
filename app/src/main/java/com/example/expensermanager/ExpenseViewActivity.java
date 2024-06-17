@@ -36,7 +36,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
 
     //ArrayLists for displaying the data in the recyclerView
-    ArrayList<String> id, category, description, amount;
+    ArrayList<String> id, category, description, amount, date;
     CustomAdapter adapter;
 
     ActivityMainBinding binding;
@@ -54,15 +54,18 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
-       /* //inserting data to test the recycler view
-        dbHelper.insertData(dbHelper, "categoryexample1", "test1", 40.0);
-        dbHelper.insertData(dbHelper, "categoryexample2", "test2", 40.0);
-        dbHelper.insertData(dbHelper, "categoryexample3", "test3", 40.0);*/
+
+
+       //inserting data to test the recycler view
+        dbHelper.insertData(dbHelper, "categoryexample1", "test1", 40.0, "20/03/24");
+        dbHelper.insertData(dbHelper, "categoryexample2", "test2", 40.0, "20/06/34");
+        dbHelper.insertData(dbHelper, "categoryexample3", "test3", 40.0, "20/06/34");
 
         id = new ArrayList<>();
         category = new ArrayList<>();
         description = new ArrayList<>();
         amount = new ArrayList<>();
+        date = new ArrayList<>();
 
         binding.searchView.clearFocus(); //cursor is in search view - only by clicking on it
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -83,7 +86,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(ExpenseViewActivity.this));
-        adapter = new CustomAdapter(ExpenseViewActivity.this, id, category, description, amount,dbHelper);
+        adapter = new CustomAdapter(ExpenseViewActivity.this, id, category, description, amount,date, dbHelper);
         recyclerView.setAdapter(adapter);
 
         double total = calculateCurrentBalance();
@@ -95,17 +98,19 @@ public class ExpenseViewActivity extends AppCompatActivity {
        ArrayList<String> filteredListDescription = new ArrayList<>();
        ArrayList<String> filteredListId = new ArrayList<>();
        ArrayList<String> filteredListAmount = new ArrayList<>();
+       ArrayList<String> filteredListDate = new ArrayList<>();
         for(int i = 0; i< description.size(); i++){
             if(description.get(i).toLowerCase().contains(newText.toLowerCase())){
                 filteredListDescription.add(description.get(i));
                 filteredListId.add(id.get(i));
                 filteredListAmount.add(amount.get(i));
+                filteredListDate.add(date.get(i));
             }
         }
         if(filteredListDescription.isEmpty()){
             Toast.makeText(this, "No items found!", Toast.LENGTH_LONG).show();
         }else{
-            adapter.setFilteredList(filteredListDescription, filteredListId,filteredListAmount );
+            adapter.setFilteredList(filteredListDescription, filteredListId,filteredListAmount, filteredListDate );
         }
     }
 
@@ -117,6 +122,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
         String updatedDescription = "";
         String updatedAmount = "";
         String givenID = "";
+        String updateDate = "";
 
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
 
@@ -124,11 +130,13 @@ public class ExpenseViewActivity extends AppCompatActivity {
                updatedDescription= data.getStringExtra("description");
                updatedAmount = data.getStringExtra("amount");
                givenID = data.getStringExtra("id");
+               updateDate = data.getStringExtra("date");
             }
             int position = id.indexOf(givenID); //database id starts with 1, listID starts with 0
             if (position != -1) {
                 description.set(position, updatedDescription);
                 amount.set(position, updatedAmount);
+                date.set(position, updateDate);
                 adapter.notifyItemChanged(position);
             }
         }
@@ -144,6 +152,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
                 category.add(cursor.getString(1));
                 description.add(cursor.getString(2));
                 amount.add(cursor.getString(3));
+                date.add(cursor.getString(4));
             }
         }
     }
