@@ -1,9 +1,35 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Base application theme. -->
     <style name="Base.Theme.ExpenserManager" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.ExpenserManager" parent="Base.Theme.ExpenserManager" />
+   <!-- https://developer.android.com/develop/ui/views/theming/themes -->
+    <!-- https://www.geeksforgeeks.org/theming-material-design-buttons-in-android-with-examples/ -->
+
+    <style name="Theme.ExpenserManager" parent="Base.Theme.ExpenserManager">
+        <item name="android:windowBackground">@color/beige</item>
+        <item name="textAppearanceButton">@style/ButtonStyle</item>
+
+    </style>
+
+    <style name="Theme.CustomDarkmode" parent="Base.Theme.ExpenserManager">
+        <item name="android:windowBackground">@color/anthrazit</item>
+        <item name="textAppearanceButton">@style/ButtonStyle</item>
+
+
+    </style>
+
+    <style name="ButtonStyle" parent="Widget.Material3.Button">
+        <item name="android:backgroundTint">@color/blue</item>
+        <item name="android:textColor"> @color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="HeadlineStyle" parent="Base.Theme.ExpenserManager">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">30sp</item>
+    </style>
 </resources>
