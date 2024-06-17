@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +29,7 @@ public class UpdateDataActivity extends AppCompatActivity {
     String date;
     DatePicker datePicker;
     EditText dateFieldText;
+    ImageButton deleteButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -102,6 +104,18 @@ public class UpdateDataActivity extends AppCompatActivity {
 
             }
         });
+
+        deleteButton =  findViewById(R.id.deleteButton);
+        deleteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbHelper.deleteData(dbHelper, id );
+                Intent intent = new Intent();
+                intent.putExtra("deleteID", id);
+            }
+        });
+
+
 
 
     }

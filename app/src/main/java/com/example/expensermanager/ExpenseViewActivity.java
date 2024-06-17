@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.media.RouteListingPreference;
 import android.os.Bundle;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SearchView;
@@ -44,7 +45,6 @@ public class ExpenseViewActivity extends AppCompatActivity {
     RecyclerView recyclerView;
 
 
-
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +56,10 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
 
 
-       //inserting data to test the recycler view
+      /* //inserting data to test the recycler view
         dbHelper.insertData(dbHelper, "categoryexample1", "test1", 40.0, "20/03/24");
         dbHelper.insertData(dbHelper, "categoryexample2", "test2", 40.0, "20/06/34");
-        dbHelper.insertData(dbHelper, "categoryexample3", "test3", 40.0, "20/06/34");
+        dbHelper.insertData(dbHelper, "categoryexample3", "test3", 40.0, "20/06/34");*/
 
         id = new ArrayList<>();
         category = new ArrayList<>();
@@ -110,7 +110,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
         if(filteredListDescription.isEmpty()){
             Toast.makeText(this, "No items found!", Toast.LENGTH_LONG).show();
         }else{
-            adapter.setFilteredList(filteredListDescription, filteredListId,filteredListAmount, filteredListDate );
+            adapter.setFilteredList(filteredListDescription, filteredListId, filteredListAmount, filteredListDate);
         }
     }
 

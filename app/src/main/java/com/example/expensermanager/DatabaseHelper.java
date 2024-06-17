@@ -85,6 +85,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String query = "DELETE FROM " + TABLE_NAME + " WHERE _id=" + id; // SQL Query - deleting row via id
         db.execSQL(query);
+
     }
 
     public void updateData(String id, String description, String amount, String date){

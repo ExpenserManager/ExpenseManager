@@ -3,6 +3,7 @@ package com.example.expensermanager;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,6 +72,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
                 intent.putExtra("amount", String.valueOf(amount.get(position)));
                 intent.putExtra("date", String.valueOf(date.get(position)));
 
+
                 if (context instanceof Activity) {
                     ((Activity) context).startActivityForResult(intent, 1);
                 } else {
@@ -83,7 +85,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     }
 
-    private void removeItem(int position){
+    public void removeItem(int position){
         String deleteItemID = id.get(position);
         dbHelper.deleteData(dbHelper, deleteItemID);
 
@@ -106,7 +108,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
        TextView id_holder, category, description_holder, amount_holder, date_holder;
        RelativeLayout listitem;
        RecyclerView recyclerView;
-       ImageButton deleteButton; //accessing the deleteButton was done with help of chatCPT
+       ImageButton deleteButton; //accessing the deleteButton was done with help of chatGPT
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             id_holder = itemView.findViewById(R.id.ID);
@@ -120,7 +122,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         }
     }
 
-    public void setFilteredList(ArrayList<String> filteredListDescription, ArrayList<String> filteredListId, ArrayList<String> filteredListAmount, ArrayList<String> filteredListDate) {
+    public void setFilteredList(ArrayList<String> filteredListDescription, ArrayList<String> filteredListId,ArrayList<String> filteredListAmount, ArrayList<String> filteredListDate) {
         this.description = filteredListDescription;
         this.id = filteredListId;
         this.amount = filteredListAmount;
