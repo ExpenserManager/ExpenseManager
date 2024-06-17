@@ -23,6 +23,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_AMOUNT = "amount";
 
+    private static final String COLUMN_DATE = "date";
+
     //static queries for deleting database
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -40,7 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
 
         String queryCreate =
-                String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT, %s REAL NOT NULL);", TABLE_NAME, COLUMN_ID, COLUMN_CATEGORY, COLUMN_DESCRIPTION, COLUMN_AMOUNT);
+                String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT, %s REAL NOT NULL, %s TEXT);", TABLE_NAME, COLUMN_ID, COLUMN_CATEGORY, COLUMN_DESCRIPTION, COLUMN_AMOUNT, COLUMN_DATE);
 
         db.execSQL(queryCreate); //executing the query - create database
 
@@ -54,7 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public void insertData(DatabaseHelper dbHelper, String category, String description, double amount){
+    public void insertData(DatabaseHelper dbHelper, String category, String description, double amount, String date){
 
         //data repository gets in write mode
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -64,6 +66,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_CATEGORY, category);
         values.put(COLUMN_DESCRIPTION, description);
         values.put(String.valueOf(COLUMN_AMOUNT), amount);
+        values.put(COLUMN_DATE, date);
 
 
         //null if the ContentnValues map is empty - no insertion
@@ -84,12 +87,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(query);
     }
 
-    public void updateData(String id, String description, String amount){
+    public void updateData(String id, String description, String amount, String date){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
         values.put(COLUMN_DESCRIPTION, description);
         values.put(COLUMN_AMOUNT, amount);
+        values.put(COLUMN_DATE, date);
         db.update(TABLE_NAME, values, "_id=?", new String[]{id});
 
     }
