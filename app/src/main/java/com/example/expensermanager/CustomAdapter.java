@@ -59,7 +59,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
 
         holder.deleteButton.setOnClickListener(v -> {
-            removeItem(position);
+            removeItem(position, "expense_manager");
         });
 
         //enable clicking on the listitems
@@ -85,9 +85,9 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     }
 
-    public void removeItem(int position){
+    public void removeItem(int position, String tableName){
         String deleteItemID = id.get(position);
-        dbHelper.deleteData(dbHelper, deleteItemID);
+        dbHelper.deleteData(dbHelper, deleteItemID, tableName);
 
         //remove data from ArrayLists
         id.remove(position);

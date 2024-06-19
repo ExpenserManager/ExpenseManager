@@ -67,7 +67,7 @@ public class UpdateDataActivity extends AppCompatActivity {
                 String newDescription = descriptionField.getText().toString();
                 String newAmount = amountField.getText().toString();
                 String newDate = dateField.getText().toString();
-                dbHelper.updateData(id, newDescription, newAmount, newDate); //update database
+                dbHelper.updateData(id, newDescription, newAmount, newDate, "expense_manager"); //update database
 
               //give data back to ExpenseViewActivity
                 Intent goBackIntent = new Intent();
@@ -109,7 +109,7 @@ public class UpdateDataActivity extends AppCompatActivity {
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbHelper.deleteData(dbHelper, id );
+                dbHelper.deleteData(dbHelper, id, "expense_manager" );
                 Intent intent = new Intent();
                 intent.putExtra("deleteID", id);
             }

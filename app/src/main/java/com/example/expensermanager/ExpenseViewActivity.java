@@ -56,10 +56,16 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
 
 
-      /* //inserting data to test the recycler view
-        dbHelper.insertData(dbHelper, "categoryexample1", "test1", 40.0, "20/03/24");
-        dbHelper.insertData(dbHelper, "categoryexample2", "test2", 40.0, "20/06/34");
-        dbHelper.insertData(dbHelper, "categoryexample3", "test3", 40.0, "20/06/34");*/
+      //inserting data to test the recycler view
+        dbHelper.insertData(dbHelper, "Lebensmittel", "BillaUU", 100.0, "18/06/24", "expense_manager");
+        dbHelper.insertData(dbHelper, "Gesundheit", "Apotheke", 30.0, "19/06/24", "expense_manager");
+        dbHelper.insertData(dbHelper, "Tierarzt", "Katze", 50.0, "10/04/24", "expense_manager");
+
+        dbHelper.insertCategory(dbHelper, "Lebensmittel", "red", "category_table");
+        dbHelper.insertCategory(dbHelper, "Gesundheit", "blue", "category_table");
+
+
+
 
         id = new ArrayList<>();
         category = new ArrayList<>();
@@ -143,7 +149,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
     }
 
     protected void storeDataInArrayLists(){
-        Cursor cursor = dbHelper.readAllData();
+        Cursor cursor = dbHelper.readAllData("expense_manager");
         if(cursor.getCount() == 0){
             Toast.makeText(this, "No data found!", Toast.LENGTH_SHORT).show();
         }else{
