@@ -97,7 +97,10 @@
         android:layout_marginEnd="180dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_delete" />
+        android:src="@drawable/mist"
+        android:background="#00FFFFFF"
+        android:scaleType="fitCenter"
+        />
 
     <EditText
         android:id="@+id/category"
