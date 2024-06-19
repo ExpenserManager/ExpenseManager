@@ -26,7 +26,7 @@ public class Camera2Activity extends AppCompatActivity {
             return insets;
         });
 
-        loadFragment(new CameraFragment(), false);
+        //loadFragment(new CameraFragment(), false);
 
     }
     public void loadFragment(Fragment fragment, Boolean bool) {
