@@ -1,6 +1,5 @@
 package com.example.expensermanager;
 
-import static java.security.AccessController.getContext;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,9 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-
     private Context context;
-
    private static final String DB_NAME = "expenser_manager.db";
    private static final int DB_VERSION = 1;
    private static final String TABLE_NAME = "expense_manager";
@@ -22,12 +19,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_CATEGORY = "category";
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_AMOUNT = "amount";
-
     private static final String COLUMN_DATE = "date";
+
+    private static final String TABLE2_NAME = "category_table";
+    private static final String COLUMN_ID_CATEGORY_TABLE = "id";
+    private static final String COLUMN_CATEGORY_CATEGORY_TABLE = "category";
+    private static final String COLUMN_COLOR_CATEGORY_TABLE = "color";
 
     //static queries for deleting database
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
+    private static final String SQL_DELETE_ENTRIES_CATEGORY_TABLE =
+            "DROP TABLE IF EXISTS " + TABLE2_NAME;
 
 
 
@@ -41,15 +44,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String queryCreate =
-                String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT, %s REAL NOT NULL, %s TEXT);", TABLE_NAME, COLUMN_ID, COLUMN_CATEGORY, COLUMN_DESCRIPTION, COLUMN_AMOUNT, COLUMN_DATE);
+        String queryCreate = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT, %s REAL NOT NULL, %s TEXT);", TABLE_NAME, COLUMN_ID, COLUMN_CATEGORY, COLUMN_DESCRIPTION, COLUMN_AMOUNT, COLUMN_DATE);
+        //
+        String queryCreateCategoryTable = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT);", TABLE2_NAME, COLUMN_ID_CATEGORY_TABLE, COLUMN_CATEGORY_CATEGORY_TABLE, COLUMN_COLOR_CATEGORY_TABLE);
 
         db.execSQL(queryCreate); //executing the query - create database
+        //
+        db.execSQL(queryCreateCategoryTable);
 
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        //db.execSQL(SQL_DELETE_ENTRIES_CATEGORY_TABLE);
         db.execSQL(SQL_DELETE_ENTRIES);
         //if it is required to upgrade the database --> rebuild the database
         //updating: add column or row
