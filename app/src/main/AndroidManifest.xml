@@ -25,6 +25,14 @@
             android:name=".MainActivity"
             android:exported="true">
         </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+        </activity>
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="true">
+        </activity>
 
 
     </application>
