@@ -17,6 +17,7 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.renderer.BarChartRenderer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +78,9 @@ public class BarchartFragment extends Fragment {
         rightAxis.setEnabled(false);
 
         barChart.setFitBars(true);      // position bars so all fit in
+
+        RoundedBarChartRenderer roundedBarChartRenderer = new RoundedBarChartRenderer(barChart, barChart.getAnimator(), barChart.getViewPortHandler());
+        barChart.setRenderer(roundedBarChartRenderer);
 
         barChart.animateY(1500);
 
