@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,9 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.renderer.BarChartRenderer;
 
 import java.util.ArrayList;
@@ -83,6 +87,23 @@ public class BarchartFragment extends Fragment {
         barChart.setRenderer(roundedBarChartRenderer);
 
         barChart.animateY(1500);
+
+        barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                if (e == null) {
+                    return;
+                }
+
+                BarEntry entry = (BarEntry) e;
+                int index = (int) entry.getX();
+
+            }
+
+            @Override
+            public void onNothingSelected() {
+            }
+        });
 
         return view;
     }
