@@ -33,7 +33,13 @@ public class StartActivity extends AppCompatActivity {
         });
 
         binding.loginButton.setOnClickListener(v -> {
-            new LoginFragment().show(getSupportFragmentManager(), "LOGIN");
+            if (savedInstanceState == null) {
+                LoginFragment loginFragment = new LoginFragment();
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, loginFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
         });
 
     }
