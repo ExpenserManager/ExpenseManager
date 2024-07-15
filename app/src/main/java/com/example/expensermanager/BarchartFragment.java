@@ -51,6 +51,12 @@ public class BarchartFragment extends Fragment {
         BarData data = new BarData(dataSet);
         data.setBarWidth(0.5f);
 
+        barChart.setDrawBarShadow(false);
+        barChart.setDrawValueAboveBar(false);
+        barChart.setPinchZoom(false);
+        barChart.setScaleEnabled(false);
+        barChart.setDrawGridBackground(false);
+
         barChart.setData(data);
 
         barChart.getDescription().setEnabled(false);
