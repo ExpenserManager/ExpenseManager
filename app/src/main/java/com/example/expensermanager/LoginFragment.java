@@ -1,5 +1,6 @@
 package com.example.expensermanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,9 +46,12 @@ public class LoginFragment extends Fragment {
             public void onClick(View v) {
                 String username = binding.usernameEditText.getText().toString();
                 String password = binding.passwordEditText.getText().toString();
+
                 if (validateCredentials(username, password)) {
                     Toast.makeText(getContext(), "Login successful", Toast.LENGTH_SHORT).show();
-                    closeFragment();
+
+                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    startActivity(intent);
 
                 } else {
                     Toast.makeText(getContext(), "Invalid credentials", Toast.LENGTH_SHORT).show();
