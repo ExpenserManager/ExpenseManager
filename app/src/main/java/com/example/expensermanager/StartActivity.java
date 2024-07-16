@@ -13,7 +13,7 @@ import com.example.expensermanager.databinding.ActivityStartBinding;
 
 import jp.wasabeef.blurry.Blurry;
 
-public class StartActivity extends AppCompatActivity {
+public class StartActivity extends AppCompatActivity implements LoginFragment.OnFragmentClosedListener {
     private ActivityStartBinding binding;
 
     @Override
@@ -43,6 +43,7 @@ public class StartActivity extends AppCompatActivity {
                 binding.signupButton.setVisibility(View.INVISIBLE);
 
                 LoginFragment loginFragment = new LoginFragment();
+                loginFragment.setOnFragmentClosedListener(this);        // place the listener on this fragment
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, loginFragment)
                         .addToBackStack(null)
@@ -50,5 +51,15 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    // when the fragment is being closed, the blur should be removed
+    @Override
+    public void onFragmentClosed() {
+        Blurry.delete(binding.start);
+
+        binding.loginButton.setVisibility(View.VISIBLE);
+        binding.titleTextView.setVisibility(View.VISIBLE);
+        binding.signupButton.setVisibility(View.VISIBLE);
     }
 }

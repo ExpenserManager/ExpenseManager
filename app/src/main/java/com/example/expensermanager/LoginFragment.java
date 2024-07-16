@@ -14,7 +14,19 @@ import com.example.expensermanager.databinding.FragmentLoginBinding;
 
 public class LoginFragment extends Fragment {
 
+    // interface to communicate with activity
+    public interface OnFragmentClosedListener{
+        void onFragmentClosed();
+    }
+
     private FragmentLoginBinding binding;
+    private OnFragmentClosedListener fragmentClosedListener;
+
+    // set callback listener
+    public void setOnFragmentClosedListener(OnFragmentClosedListener listener) {
+        this.fragmentClosedListener = listener;
+    }
+
 
     @Nullable
     @Override
@@ -41,6 +53,9 @@ public class LoginFragment extends Fragment {
     }
 
     private void closeFragment() {
+        if (fragmentClosedListener != null) {
+            fragmentClosedListener.onFragmentClosed();
+        }
         if (getActivity() != null) {
             getActivity().getSupportFragmentManager().beginTransaction().remove(this).commit();
         }
