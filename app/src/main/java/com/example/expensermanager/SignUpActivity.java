@@ -55,16 +55,16 @@ public class SignUpActivity extends AppCompatActivity {
                 } else {
                     // TODO: save in db
                     Toast.makeText(SignUpActivity.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
-                    showWelcomeDialog();
+                    showWelcomeDialog(username);
                 }
             }
         });
     }
 
-    private void showWelcomeDialog() {
+    private void showWelcomeDialog(String username) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Welcome");
-        builder.setMessage("Welcome to Expense Manager");
+        builder.setMessage("Welcome to the Expense Manager "+ username + "!");
         builder.setCancelable(false);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
