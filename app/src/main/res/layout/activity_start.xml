@@ -14,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
         android:text="Expense Manager."
-        android:textColor="@color/denim_blue"
+        android:textColor="@color/blue"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,7 +35,7 @@
             android:id="@+id/loginButton"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:backgroundTint="@color/denim_blue"
+            android:backgroundTint="@color/blue"
             android:text="Log In"
             android:textColor="@color/white" />
 
@@ -44,7 +44,7 @@
             android:layout_width="200dp"
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
-            android:backgroundTint="@color/denim_blue"
+            android:backgroundTint="@color/blue"
             android:text="Sign Up"
             android:textColor="@color/white" />
     </LinearLayout>

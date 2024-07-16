@@ -30,7 +30,7 @@
             android:paddingBottom="24dp"
             android:text="@string/login"
             android:textAlignment="center"
-            android:textColor="@color/denim_blue"
+            android:textColor="@color/blue"
             android:textSize="36sp"
             android:textStyle="bold" />
 
@@ -43,9 +43,9 @@
             app:boxCornerRadiusBottomStart="20dp"
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusTopStart="20dp"
-            app:boxStrokeColor="@color/denim_blue"
+            app:boxStrokeColor="@color/blue"
             app:boxStrokeWidth="3dp"
-            app:hintTextColor="@color/denim_blue">
+            app:hintTextColor="@color/blue">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/usernameEditText"
@@ -67,11 +67,11 @@
             app:boxCornerRadiusBottomStart="20dp"
             app:boxCornerRadiusTopEnd="20dp"
             app:boxCornerRadiusTopStart="20dp"
-            app:boxStrokeColor="@color/denim_blue"
+            app:boxStrokeColor="@color/blue"
             app:boxStrokeWidth="3dp"
             app:passwordToggleEnabled="true"
             app:passwordToggleTint="@color/black"
-            app:hintTextColor="@color/denim_blue">
+            app:hintTextColor="@color/blue">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/passwordEditText"
@@ -93,7 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_marginTop="30dp"
-            android:backgroundTint="@color/denim_blue"
+            android:backgroundTint="@color/blue"
             android:text="@string/login"
             android:textColor="@color/white"
             android:textSize="18sp" />

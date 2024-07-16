@@ -102,7 +102,7 @@ public class LoginFragment extends Fragment {
             binding.loginButton.setEnabled(enableButton);
 
             if (enableButton) {
-                binding.loginButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.denim_blue));
+                binding.loginButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.blue));
             } else {
                 binding.loginButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.darker_gray));
             }
