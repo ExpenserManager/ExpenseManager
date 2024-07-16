@@ -50,7 +50,6 @@ public class StartActivity extends AppCompatActivity implements LoginFragment.On
                         .commit();
             }
         });
-
     }
 
     // when the fragment is being closed, the blur should be removed
