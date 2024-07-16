@@ -33,7 +33,25 @@ public class SignUpActivity extends AppCompatActivity {
         binding.signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String username = binding.usernameEditText.getText().toString();
+                String email = binding.emailEditText.getText().toString();
+                String password = binding.passwordEditText.getText().toString();
+                String confirmPassword = binding.passwordConfirmEditText.getText().toString();
 
+                // check if passwords are equal
+                if (!password.equals(confirmPassword)) {
+                    binding.passwordEditText.setText("");
+                    binding.passwordConfirmEditText.setText("");
+
+                    Toast.makeText(SignUpActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    // TODO: save in db
+                    Toast.makeText(SignUpActivity.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
         });
     }
