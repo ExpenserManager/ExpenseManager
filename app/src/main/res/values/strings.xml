@@ -4,4 +4,5 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="back_to_startscreen">Back to Startscreen</string>
+    <string name="sign_up">Sign Up</string>
 </resources>
