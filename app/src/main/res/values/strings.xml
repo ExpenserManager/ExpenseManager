@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ExpenserManager</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="back_to_startscreen">Back to Startscreen</string>
 </resources>
