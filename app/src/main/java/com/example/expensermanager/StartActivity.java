@@ -1,5 +1,6 @@
 package com.example.expensermanager;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -49,6 +50,11 @@ public class StartActivity extends AppCompatActivity implements LoginFragment.On
                         .addToBackStack(null)
                         .commit();
             }
+        });
+
+        binding.signupButton.setOnClickListener(v -> {
+           Intent intent = new Intent(this, SignUpActivity.class);
+           startActivity(intent);
         });
     }
 
