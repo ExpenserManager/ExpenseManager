@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.expensermanager.databinding.FragmentLoginBinding;
@@ -44,7 +45,7 @@ public class LoginFragment extends Fragment {
         });
 
         binding.loginButton.setEnabled(false);
-        binding.loginButton.setBackgroundColor(getResources().getColor(R.color.darker_gray));
+        binding.loginButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.darker_gray));
 
         binding.usernameEditText.addTextChangedListener(textWatcher);
         binding.passwordEditText.addTextChangedListener(textWatcher);
@@ -101,9 +102,9 @@ public class LoginFragment extends Fragment {
             binding.loginButton.setEnabled(enableButton);
 
             if (enableButton) {
-                binding.loginButton.setBackgroundColor(getResources().getColor(R.color.denim_blue));
+                binding.loginButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.denim_blue));
             } else {
-                binding.loginButton.setBackgroundColor(getResources().getColor(R.color.darker_gray));
+                binding.loginButton.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.darker_gray));
             }
         }
     };
