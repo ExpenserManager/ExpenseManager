@@ -44,8 +44,11 @@ public class LoginFragment extends Fragment {
         });
 
         binding.loginButton.setEnabled(false);
+        binding.loginButton.setBackgroundColor(getResources().getColor(R.color.darker_gray));
+
         binding.usernameEditText.addTextChangedListener(textWatcher);
         binding.passwordEditText.addTextChangedListener(textWatcher);
+
 
         binding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +99,12 @@ public class LoginFragment extends Fragment {
             String password = binding.passwordEditText.getText().toString();
             boolean enableButton = !username.isEmpty() && !password.isEmpty();
             binding.loginButton.setEnabled(enableButton);
+
+            if (enableButton) {
+                binding.loginButton.setBackgroundColor(getResources().getColor(R.color.denim_blue));
+            } else {
+                binding.loginButton.setBackgroundColor(getResources().getColor(R.color.darker_gray));
+            }
         }
     };
 }
