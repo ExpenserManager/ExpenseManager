@@ -26,10 +26,6 @@
             android:exported="true">
         </activity>
         <activity
-            android:name=".LoginFragment"
-            android:exported="true">
-        </activity>
-        <activity
             android:name=".SignUpActivity"
             android:exported="true">
         </activity>
