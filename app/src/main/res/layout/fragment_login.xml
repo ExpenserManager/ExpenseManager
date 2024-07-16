@@ -69,6 +69,8 @@
             app:boxCornerRadiusTopStart="20dp"
             app:boxStrokeColor="@color/denim_blue"
             app:boxStrokeWidth="3dp"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/black"
             app:hintTextColor="@color/denim_blue">
 
             <com.google.android.material.textfield.TextInputEditText
