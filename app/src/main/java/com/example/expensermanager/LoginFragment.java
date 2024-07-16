@@ -2,6 +2,8 @@ package com.example.expensermanager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +18,7 @@ import com.example.expensermanager.databinding.FragmentLoginBinding;
 public class LoginFragment extends Fragment {
 
     // interface to communicate with activity
-    public interface OnFragmentClosedListener{
+    public interface OnFragmentClosedListener {
         void onFragmentClosed();
     }
 
@@ -40,6 +42,10 @@ public class LoginFragment extends Fragment {
                 closeFragment();
             }
         });
+
+        binding.loginButton.setEnabled(false);
+        binding.usernameEditText.addTextChangedListener(textWatcher);
+        binding.passwordEditText.addTextChangedListener(textWatcher);
 
         binding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,4 +80,22 @@ public class LoginFragment extends Fragment {
     private boolean validateCredentials(String username, String password) {
         return !username.isEmpty() && !password.isEmpty();
     }
+
+    private TextWatcher textWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String username = binding.usernameEditText.getText().toString();
+            String password = binding.passwordEditText.getText().toString();
+            boolean enableButton = !username.isEmpty() && !password.isEmpty();
+            binding.loginButton.setEnabled(enableButton);
+        }
+    };
 }
