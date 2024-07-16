@@ -75,6 +75,7 @@
             android:layout_height="50dp"
             android:allowUndo="true"
             android:cursorVisible="true"
+            android:drawableStart="@drawable/baseline_email_24"
             android:drawablePadding="8dp"
             android:hint="Email"
             android:inputType="textEmailAddress"
