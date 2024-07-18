@@ -129,4 +129,5 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         this.date = filteredListDate;
         notifyDataSetChanged();
     }
+
 }
