@@ -1,6 +1,5 @@
 package com.example.expensermanager;
 
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -10,11 +9,11 @@ import android.widget.Toast;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private Context context;
-   private static final String DB_NAME = "expenser_manager.db";
-   private static final int DB_VERSION = 1;
-   private static final String TABLE_NAME = "expense_manager";
+    private static final String DB_NAME = "expenser_manager.db";
+    private static final int DB_VERSION = 1;
+    private static final String TABLE_NAME = "expense_manager";
 
-   //columns
+    //columns
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_CATEGORY = "category";
     private static final String COLUMN_DESCRIPTION = "description";
@@ -33,10 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + TABLE2_NAME;
 
 
-
-
-
-    public DatabaseHelper(Context context){
+    public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
         this.context = context;
     }
@@ -63,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public void insertData(DatabaseHelper dbHelper, String category, String description, double amount, String date, String tableName){
+    public void insertData(DatabaseHelper dbHelper, String category, String description, double amount, String date, String tableName) {
 
         //data repository gets in write mode
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -80,15 +76,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long newRowId = db.insert(tableName, null, values);
 
         //db.insert() returns -1 if the insertion has failed
-        if(newRowId == -1){
+        if (newRowId == -1) {
             Toast.makeText(context, "insertion failed", Toast.LENGTH_SHORT);
-        }else{
+        } else {
             Toast.makeText(context, "Successfully Added!", Toast.LENGTH_SHORT);
 
         }
     }
 
-    public void insertCategory(DatabaseHelper dbHelper, String categoryName, String color, String tableName){
+    public void insertCategory(DatabaseHelper dbHelper, String categoryName, String color, String tableName) {
 
         //data repository gets in write mode
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -98,9 +94,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_COLOR_CATEGORY_TABLE, color);
 
         long newRowId = db.insert(tableName, null, values);
-        if(newRowId == -1){
+        if (newRowId == -1) {
             Toast.makeText(context, "insertion failed", Toast.LENGTH_SHORT);
-        }else{
+        } else {
             Toast.makeText(context, "Successfully Added!", Toast.LENGTH_SHORT);
         }
     }
@@ -113,7 +109,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void updateData(String id, String description, String amount, String date, String tableName){
+    public void updateData(String id, String description, String amount, String date, String tableName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -125,22 +121,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    Cursor readAllData(String tableName){
+    Cursor readAllData(String tableName) {
         String query = "SELECT * FROM " + tableName;
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = null;
-        if(db != null){
+        if (db != null) {
             cursor = db.rawQuery(query, null); //execute query
         }
 
         return cursor;
-    //cursor contains all database data
+        //cursor contains all database data
 
     }
-
-
-
 
 
 }

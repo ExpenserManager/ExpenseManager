@@ -10,10 +10,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
-        android:layout_width="409dp"
-        android:layout_height="660dp"
+        android:layout_width="406dp"
+        android:layout_height="629dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="235dp"
+        android:layout_marginTop="280dp"
         android:layout_marginEnd="1dp"
         android:background="@color/offwhite"
         app:layout_constraintBottom_toBottomOf="parent"
