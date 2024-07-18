@@ -112,6 +112,8 @@ public class UpdateDataActivity extends AppCompatActivity {
                 dbHelper.deleteData(dbHelper, id, "expense_manager" );
                 Intent intent = new Intent();
                 intent.putExtra("deleteID", id);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 
