@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.media.RouteListingPreference;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -58,13 +60,13 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
 
 
-      //inserting data to test the recycler view
-        dbHelper.insertData(dbHelper, "Lebensmittel", "Billa", 100.0, "18/06/24", "expense_manager");
-        dbHelper.insertData(dbHelper, "Gesundheit", "Apotheke", 30.0, "19/06/24", "expense_manager");
-        dbHelper.insertData(dbHelper, "Tierarzt", "Katze", 50.0, "10/04/24", "expense_manager");
-
-        dbHelper.insertCategory(dbHelper, "Lebensmittel", "red", "category_table");
-        dbHelper.insertCategory(dbHelper, "Gesundheit", "blue", "category_table");
+//      //inserting data to test the recycler view
+//        dbHelper.insertData(dbHelper, "Lebensmittel", "Billa", 100.0, "18/06/24", "expense_manager");
+//        dbHelper.insertData(dbHelper, "Gesundheit", "Apotheke", 30.0, "19/06/24", "expense_manager");
+//        dbHelper.insertData(dbHelper, "Tierarzt", "Katze", 50.0, "10/04/24", "expense_manager");
+//
+//        dbHelper.insertCategory(dbHelper, "Lebensmittel", "red", "category_table");
+//        dbHelper.insertCategory(dbHelper, "Gesundheit", "blue", "category_table");
 
 
 
@@ -101,7 +103,24 @@ public class ExpenseViewActivity extends AppCompatActivity {
         binding.currentBalanceMoney.setText("" + total);
 
         Spinner spinner = findViewById(R.id.spinner);
-        spinner.setAdapter(new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, category));
+        spinner.setAdapter(new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, category)); //show categories in spinner
+
+        //onItemSelectedListener
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String c = category.get(position);
+                Toast.makeText(ExpenseViewActivity.this, c, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
 
     }
 
