@@ -103,6 +103,8 @@ public class ExpenseViewActivity extends AppCompatActivity {
         binding.currentBalanceMoney.setText("" + total);
 
         Spinner spinner = findViewById(R.id.spinner);
+        ArrayList spinnerList = category;
+        spinnerList.add(0,"nothing selected");
         spinner.setAdapter(new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, category)); //show categories in spinner
 
         //onItemSelectedListener
@@ -140,6 +142,12 @@ public class ExpenseViewActivity extends AppCompatActivity {
        }else if (type.equals("category")){
            Cursor cursor = dbHelper.filterDatabaseCategory(categoryFilter);
 
+           if(categoryFilter.equals("nothing selected")){
+               storeDataInArrayLists();
+               adapter.setFilteredList(description, id, amount, date);
+               return;
+           }
+
            if(cursor != null){
                while(cursor.moveToNext()){
                    String id = cursor.getString(cursor.getColumnIndexOrThrow("_id"));
@@ -156,7 +164,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
                cursor.close();
            }
        }
-        if(filteredListDescription.isEmpty()){
+        if(filteredListDescription.isEmpty() && !categoryFilter.equals("nothing selected")){
             Toast.makeText(this, "No items found!", Toast.LENGTH_LONG).show();
         }else{
             adapter.setFilteredList(filteredListDescription, filteredListId, filteredListAmount, filteredListDate);
