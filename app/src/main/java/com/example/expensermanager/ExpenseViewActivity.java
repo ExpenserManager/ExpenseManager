@@ -71,7 +71,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
 
 //      //inserting data to test the recycler view
-//dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expense_manager");
+dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expense_manager");
 //        dbHelper.insertData(dbHelper, "Gesundheit", "Apotheke", 30.0, "19/06/24", "expense_manager");
 //        dbHelper.insertData(dbHelper, "Tierarzt", "Katze", 50.0, "10/04/24", "expense_manager");
 //
@@ -209,12 +209,11 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
 
-            if(data != null) {
-               updatedDescription= data.getStringExtra("description");
-               updatedAmount = data.getStringExtra("amount");
-               givenID = data.getStringExtra("id");
-               updateDate = data.getStringExtra("date");
-            }
+            updatedDescription= data.getStringExtra("description");
+            updatedAmount = data.getStringExtra("amount");
+            givenID = data.getStringExtra("id");
+            updateDate = data.getStringExtra("date");
+
             int position = id.indexOf(givenID); //database id starts with 1, listID starts with 0
             if (position != -1) {
                 description.set(position, updatedDescription);
@@ -226,6 +225,13 @@ public class ExpenseViewActivity extends AppCompatActivity {
     }
 
     protected void storeDataInArrayLists(){
+
+        id.clear();
+        category.clear();
+        description.clear();
+        amount.clear();
+        date.clear();
+
         Cursor cursor = dbHelper.readAllData("expense_manager");
         if(cursor.getCount() == 0){
             Toast.makeText(this, "No data found!", Toast.LENGTH_SHORT).show();
