@@ -42,7 +42,16 @@ public class ExpenseViewActivity extends AppCompatActivity {
     private DatabaseHelper dbHelper;
 
     //ArrayLists for displaying the data in the recyclerView
-    ArrayList<String> id, category, description, amount, date;
+    ArrayList<String> id;
+
+    public ArrayList<String> getCategory() {
+        return category;
+    }
+
+    ArrayList<String> category;
+    ArrayList<String> description;
+    ArrayList<String> amount;
+    ArrayList<String> date;
     CustomAdapter adapter;
 
     ActivityMainBinding binding;
@@ -62,7 +71,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
 
 //      //inserting data to test the recycler view
-        dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expense_manager");
+        //dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expense_manager");
 //        dbHelper.insertData(dbHelper, "Gesundheit", "Apotheke", 30.0, "19/06/24", "expense_manager");
 //        dbHelper.insertData(dbHelper, "Tierarzt", "Katze", 50.0, "10/04/24", "expense_manager");
 //
@@ -106,7 +115,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
         Spinner spinner = findViewById(R.id.spinner);
         ArrayList spinnerList = category;
         spinnerList.add(0,"nothing selected");
-        spinner.setAdapter(new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, category)); //show categories in spinner
+        spinner.setAdapter(new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,spinnerList)); //show categories in spinner
 
         //onItemSelectedListener
 
@@ -132,6 +141,13 @@ public class ExpenseViewActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() { //update date if user comes back to this activity
+        super.onResume();
+        storeDataInArrayLists();
+        adapter.notifyDataSetChanged();
     }
 
     private void filterList(String newText, String type, String categoryFilter) {
