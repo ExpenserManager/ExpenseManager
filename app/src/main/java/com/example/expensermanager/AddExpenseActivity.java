@@ -1,10 +1,15 @@
 package com.example.expensermanager;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -12,15 +17,18 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.expensermanager.databinding.ActivityAddExpenseBinding;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class AddExpenseActivity extends AppCompatActivity {
 
     ActivityAddExpenseBinding binding;
     private DatabaseHelper dbHelper;
+    final String[] category = new String[1];
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +43,7 @@ public class AddExpenseActivity extends AppCompatActivity {
 
 
         dbHelper = new DatabaseHelper(this);
+
 
         binding.date.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,6 +74,29 @@ public class AddExpenseActivity extends AppCompatActivity {
             }
         });
 
+        Spinner spinner = findViewById(R.id.spinner2);
+
+        ArrayList<String> spinnerList = dbHelper.getAllCategories();
+        spinner.setAdapter(new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, spinnerList)); //show categories in spinner
+
+        //onItemSelectedListener
+
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               category[0] = spinnerList.get(position);
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
+
+
+
 
     }
 
@@ -77,7 +109,13 @@ public class AddExpenseActivity extends AppCompatActivity {
         Log.d("InsertFromInput", "Description: " + description);
         Log.d("InsertFromInput", "Amount: " + value);
         Log.d("InsertFromInput", "Date: " + date);
-        dbHelper.insertData(dbHelper, "Lebensmittel", description, Double.parseDouble(value) ,date, "expense_manager");
+        Log.d("InsertFromInput", "Category: " + category[0]);
+
+        dbHelper.insertData(dbHelper, category[0], description, Double.parseDouble(value) ,date, "expense_manager");
+        Intent intent = new Intent(AddExpenseActivity.this, ExpenseViewActivity.class);
+        startActivity(intent);
+        finish();
+
     }
 
 
