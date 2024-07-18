@@ -62,7 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void insertData(DatabaseHelper dbHelper, String category, String description, double amount, String date, String tableName) {
 
         //data repository gets in write mode
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SQLiteDatabase db = this.getWritableDatabase();
 
         //Create map of values - column names are the keys of the map elements
         ContentValues values = new ContentValues();
@@ -77,9 +77,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         //db.insert() returns -1 if the insertion has failed
         if (newRowId == -1) {
-            Toast.makeText(context, "insertion failed", Toast.LENGTH_SHORT);
+            Toast.makeText(context, "insertion failed", Toast.LENGTH_SHORT).show();
         } else {
-            Toast.makeText(context, "Successfully Added!", Toast.LENGTH_SHORT);
+            Toast.makeText(context, "Successfully Added!", Toast.LENGTH_SHORT).show();
 
         }
     }
