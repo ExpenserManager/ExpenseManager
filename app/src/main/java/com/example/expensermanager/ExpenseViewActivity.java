@@ -111,7 +111,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String c = category.get(position);
-                Toast.makeText(ExpenseViewActivity.this, c, Toast.LENGTH_SHORT).show();
+                filterDatabase(c);
             }
 
             @Override
@@ -120,7 +120,36 @@ public class ExpenseViewActivity extends AppCompatActivity {
             }
         });
 
+    }
 
+    private void filterDatabase(String filter){
+        ArrayList<String> filteredListDescription = new ArrayList<>();
+        ArrayList<String> filteredListId = new ArrayList<>();
+        ArrayList<String> filteredListAmount = new ArrayList<>();
+        ArrayList<String> filteredListDate = new ArrayList<>();
+
+        Cursor cursor = dbHelper.filterDatabaseCategory(filter);
+
+        if(cursor != null){
+            while(cursor.moveToNext()){
+                String id = cursor.getString(cursor.getColumnIndexOrThrow("_id"));
+                String category = cursor.getString(cursor.getColumnIndexOrThrow("category"));
+                String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
+                String amount = cursor.getString(cursor.getColumnIndexOrThrow("amount"));
+                String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+
+                filteredListId.add(id);
+                filteredListDescription.add(description);
+                filteredListAmount.add(amount);
+                filteredListDate.add(date);
+            }
+            cursor.close();
+        }
+        if(filteredListDescription.isEmpty()){
+            Toast.makeText(this, "No items found!", Toast.LENGTH_LONG).show();
+        }else{
+            adapter.setFilteredList(filteredListDescription, filteredListId, filteredListAmount, filteredListDate);
+        }
 
     }
 
@@ -129,14 +158,14 @@ public class ExpenseViewActivity extends AppCompatActivity {
        ArrayList<String> filteredListId = new ArrayList<>();
        ArrayList<String> filteredListAmount = new ArrayList<>();
        ArrayList<String> filteredListDate = new ArrayList<>();
-        for(int i = 0; i< description.size(); i++){
-            if(description.get(i).toLowerCase().contains(newText.toLowerCase())){
-                filteredListDescription.add(description.get(i));
-                filteredListId.add(id.get(i));
-                filteredListAmount.add(amount.get(i));
-                filteredListDate.add(date.get(i));
-            }
-        }
+       for (int i = 0; i < description.size(); i++) {
+           if (description.get(i).toLowerCase().contains(newText.toLowerCase())) {
+                   filteredListDescription.add(description.get(i));
+                   filteredListId.add(id.get(i));
+                   filteredListAmount.add(amount.get(i));
+                   filteredListDate.add(date.get(i));
+           }
+       }
         if(filteredListDescription.isEmpty()){
             Toast.makeText(this, "No items found!", Toast.LENGTH_LONG).show();
         }else{
