@@ -4,10 +4,13 @@ import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,6 +20,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.expensermanager.databinding.ActivityMainBinding;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class UpdateDataActivity extends AppCompatActivity {
@@ -41,10 +45,17 @@ public class UpdateDataActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        dbHelper = new DatabaseHelper(UpdateDataActivity.this);
         EditText descriptionField = findViewById(R.id.description);
         EditText amountField = findViewById(R.id.amount);
         Button updateButton = findViewById(R.id.update_button);
         EditText dateField = findViewById(R.id.date);
+
+        Spinner spinner = findViewById(R.id.spinner2);
+
+        ArrayList<String> spinnerList = dbHelper.getAllCategories();
+        spinner.setAdapter(new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, spinnerList)); //show categories in spinner
+
 
 
         Intent intent = getIntent();
@@ -60,7 +71,7 @@ public class UpdateDataActivity extends AppCompatActivity {
         }
 
 
-        dbHelper = new DatabaseHelper(UpdateDataActivity.this);
+
         updateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
