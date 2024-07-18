@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.example.expensermanager.databinding.ActivityMainBinding;
 
 import java.lang.reflect.Array;
@@ -119,6 +120,15 @@ public class ExpenseViewActivity extends AppCompatActivity {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+
+        //test
+        binding.buttonTest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ExpenseViewActivity.this, AddExpenseActivity.class);
+                startActivity(intent);
             }
         });
 
