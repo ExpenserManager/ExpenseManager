@@ -5,11 +5,13 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.media.RouteListingPreference;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -97,6 +99,9 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
         double total = calculateCurrentBalance();
         binding.currentBalanceMoney.setText("" + total);
+
+        Spinner spinner = findViewById(R.id.spinner);
+        spinner.setAdapter(new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, category));
 
     }
 
