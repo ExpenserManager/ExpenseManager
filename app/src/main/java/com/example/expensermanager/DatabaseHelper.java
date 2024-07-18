@@ -120,6 +120,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
+    public Cursor filterDatabaseCategory(String filter){
+        SQLiteDatabase db =  this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE " + COLUMN_CATEGORY + " = ?";
+        return db.rawQuery(query, new String[]{filter});
+    }
+
 
     Cursor readAllData(String tableName) {
         String query = "SELECT * FROM " + tableName;
