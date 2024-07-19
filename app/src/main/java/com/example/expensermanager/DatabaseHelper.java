@@ -164,4 +164,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return categories;
     }
 
+    public double totalAmountCategory(String category){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT SUM(" + COLUMN_AMOUNT + ") AS total_amount FROM " + TABLE_NAME + " WHERE " + COLUMN_CATEGORY + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{category});
+        double total = 0;
+
+        if(cursor != null){
+            if(cursor.moveToFirst()){
+                total = cursor.getDouble(cursor.getColumnIndexOrThrow("total_amount"));
+            }
+            cursor.close();
+        }
+        return total;
+    }
+
+
 }
