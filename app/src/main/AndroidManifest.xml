@@ -13,7 +13,13 @@
         android:theme="@style/Theme.ExpenserManager"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".AddExpenseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateDataActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ExpenseViewActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
