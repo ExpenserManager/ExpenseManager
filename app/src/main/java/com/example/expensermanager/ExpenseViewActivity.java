@@ -71,7 +71,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
 
 //      //inserting data to test the recycler view
-dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expense_manager");
+//dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expense_manager");
 //        dbHelper.insertData(dbHelper, "Gesundheit", "Apotheke", 30.0, "19/06/24", "expense_manager");
 //        dbHelper.insertData(dbHelper, "Tierarzt", "Katze", 50.0, "10/04/24", "expense_manager");
 //
@@ -101,7 +101,7 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
             }
         });
 
-        storeDataInArrayLists();
+        //storeDataInArrayLists();
 
         recyclerView = findViewById(R.id.rv);
 
@@ -112,17 +112,19 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
         double total = calculateCurrentBalance();
         binding.currentBalanceMoney.setText("" + total);
 
+        //storeDataInArrayLists();
         Spinner spinner = findViewById(R.id.spinner);
-        ArrayList spinnerList = category;
-        spinnerList.add(0,"nothing selected");
-        spinner.setAdapter(new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,spinnerList)); //show categories in spinner
-
+        ArrayList spinnerList = dbHelper.getAllCategories();
+        spinnerList.add(0, "nothing selected");
+        //populateCategoryList();
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, spinnerList);
+        spinner.setAdapter(spinnerAdapter); //show categories in spinner
         //onItemSelectedListener
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String c = category.get(position);
+                String c = (String) spinnerList.get(position);
                 filterList(null, "category", c);
             }
 
@@ -148,9 +150,12 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
         super.onResume();
         storeDataInArrayLists();
         adapter.notifyDataSetChanged();
+        double total = calculateCurrentBalance();
+        binding.currentBalanceMoney.setText("" + total);
     }
 
     private void filterList(String newText, String type, String categoryFilter) {
+
        ArrayList<String> filteredListDescription = new ArrayList<>();
        ArrayList<String> filteredListId = new ArrayList<>();
        ArrayList<String> filteredListAmount = new ArrayList<>();
@@ -166,10 +171,15 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
                }
            }
        }else if (type.equals("category")){
-           Cursor cursor = dbHelper.filterDatabaseCategory(categoryFilter);
+         Cursor cursor = dbHelper.filterDatabaseCategory(categoryFilter);
 
            if(categoryFilter.equals("nothing selected")){
-               storeDataInArrayLists();
+               // Reload all data
+               //storeDataInArrayLists();
+               filteredListDescription.addAll(description);
+               filteredListId.addAll(id);
+               filteredListAmount.addAll(amount);
+               filteredListDate.addAll(date);
                adapter.setFilteredList(description, id, amount, date);
                return;
            }
@@ -196,6 +206,9 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
             adapter.setFilteredList(filteredListDescription, filteredListId, filteredListAmount, filteredListDate);
         }
     }
+
+
+
 
     //onActivityResult -> implementation from ChatGPT
     @Override
