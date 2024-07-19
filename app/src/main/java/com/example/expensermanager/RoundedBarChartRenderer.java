@@ -45,11 +45,12 @@ public class RoundedBarChartRenderer extends BarChartRenderer {
         trans.pointValuesToPixel(buffer.buffer);
 
         for (int j = 0; j < buffer.size(); j += 4) {
-
-            // Set the bar shape
+            // bar shape
             RectF barRect = new RectF(buffer.buffer[j], buffer.buffer[j + 1], buffer.buffer[j + 2], buffer.buffer[j + 3]);
-            mRenderPaint.setColor(dataSet.getColor(j / 4)); // Set color based on entry index
-            c.drawRoundRect(barRect, 25f, 25f, mRenderPaint);
+            mRenderPaint.setColor(dataSet.getColor(j / 4));         // set color based on entry index
+
+            float cornerRadius = 25f;
+            c.drawRoundRect(barRect, cornerRadius, cornerRadius, mRenderPaint);
         }
     }
 }
