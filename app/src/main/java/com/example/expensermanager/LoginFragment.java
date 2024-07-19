@@ -25,6 +25,7 @@ public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
     private OnFragmentClosedListener fragmentClosedListener;
+    private DatabaseHelper dbHelper;
 
     // set callback listener
     public void setOnFragmentClosedListener(OnFragmentClosedListener listener) {
@@ -36,6 +37,8 @@ public class LoginFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentLoginBinding.inflate(inflater, container, false);
         View rootView = binding.getRoot();
+
+        dbHelper = new DatabaseHelper(getContext());
 
         binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,14 +60,15 @@ public class LoginFragment extends Fragment {
                 String username = binding.usernameEditText.getText().toString();
                 String password = binding.passwordEditText.getText().toString();
 
-                if (validateCredentials(username, password)) {
+                if (!validateUsername(username)) {
+                    Toast.makeText(getContext(), "Username not found", Toast.LENGTH_SHORT).show();
+                } else if (!validatePassword(username, password)) {
+                    Toast.makeText(getContext(), "Incorrect password", Toast.LENGTH_SHORT).show();
+                } else {
                     Toast.makeText(getContext(), "Login successful", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(getContext(), ExpenseViewActivity.class);
                     startActivity(intent);
-
-                } else {
-                    Toast.makeText(getContext(), "Invalid credentials", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -81,8 +85,12 @@ public class LoginFragment extends Fragment {
         }
     }
 
-    private boolean validateCredentials(String username, String password) {
-        return !username.isEmpty() && !password.isEmpty();
+    private boolean validateUsername(String username) {
+        return dbHelper.isUsernameExists(username);
+    }
+
+    private boolean validatePassword(String username, String password) {
+        return dbHelper.isPasswordCorrect(username, password);
     }
 
     private final TextWatcher textWatcher = new TextWatcher() {
