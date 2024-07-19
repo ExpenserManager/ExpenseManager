@@ -38,6 +38,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "DROP TABLE IF EXISTS " + TABLE_NAME;
     private static final String SQL_DELETE_ENTRIES_CATEGORY_TABLE =
             "DROP TABLE IF EXISTS " + TABLE2_NAME;
+    private static final String SQL_DELETE_ENTRIES_USER_INFORMATION =
+            "DROP TABLE IF EXISTS " + TABLE3_NAME;
 
 
     public DatabaseHelper(Context context) {
@@ -52,9 +54,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         //
         String queryCreateCategoryTable = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT);", TABLE2_NAME, COLUMN_ID_CATEGORY_TABLE, COLUMN_CATEGORY_CATEGORY_TABLE, COLUMN_COLOR_CATEGORY_TABLE);
 
+        // user information
+        String queryCreateUsernameInformationTable = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT NOT NULL);", TABLE3_NAME, COLUMN_ID_USER, COLUMN_USERNAME, COLUMN_PASSWORD);
+
         db.execSQL(queryCreate); //executing the query - create database
-        //
         db.execSQL(queryCreateCategoryTable);
+        db.execSQL(queryCreateUsernameInformationTable);
 
     }
 
@@ -107,6 +112,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } else {
             Toast.makeText(context, "Successfully Added!", Toast.LENGTH_SHORT);
         }
+    }
+
+    public void insertUserData(DatabaseHelper dbHelper, String username, String password, String tableName) {
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USERNAME, username);
+        values.put(COLUMN_PASSWORD, password);
+
+        db.insert(tableName, null, values);
     }
 
 
