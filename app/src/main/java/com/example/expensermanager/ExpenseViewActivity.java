@@ -200,7 +200,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
                cursor.close();
            }
        }
-        if(filteredListDescription.isEmpty() && !categoryFilter.equals("nothing selected")){
+        if(filteredListDescription.isEmpty()){
             Toast.makeText(this, "No items found!", Toast.LENGTH_LONG).show();
         }else{
             adapter.setFilteredList(filteredListDescription, filteredListId, filteredListAmount, filteredListDate);
