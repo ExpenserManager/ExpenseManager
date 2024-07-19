@@ -51,7 +51,8 @@ public class BarchartFragment extends Fragment {
 
         // set the colors of the bars
         dataSet.setColors(new int[]{Color.rgb(0, 51, 102), Color.rgb(0, 128, 128), Color.rgb(0, 204, 102), Color.rgb(0, 153, 153), Color.rgb(51, 102, 204)});
-        dataSet.setValueTextColor(Color.TRANSPARENT); // Hide value text on bars
+        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setValueTextSize(14f);
 
         BarData data = new BarData(dataSet);
         data.setBarWidth(0.5f);
