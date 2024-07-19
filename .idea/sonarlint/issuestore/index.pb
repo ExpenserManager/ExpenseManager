@@ -1,0 +1,23 @@
+
+9
+	README.md,8\e\8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d
+S
+#.idea/sonarlint/issuestore/index.pb,9\f\9fe84ebb15faf917b7def6236dba604453cc61e0
+]
+-.idea/sonarlint/securityhotspotstore/index.pb,8\8\88a9255124c95bdc913197c120a8d560edc59c8e
+w
+G.idea/sonarlint/issuestore/8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d,b\4\b4a0b63ce8560bbc5de0f9995c20cc861dc2adb3
+Å
+Q.idea/sonarlint/securityhotspotstore/8/e/8ec9a00bfd09b3190ac6b22251dbb1aa95a0579d,1\0\10a03f31c4dce92cb371e761ce9429428bb6c176
+q
+Aapp/src/main/java/com/example/expensermanager/DatabaseHelper.java,a\b\ab6669a0aefbbc90125fce56597f583cb7673f13
+v
+Fapp/src/main/java/com/example/expensermanager/ExpenseViewActivity.java,a\0\a04c668ba7d90f1e2793bb81cbce77dd56798d49
+D
+app/build.gradle.kts,d\2\d2a4383452aad84a18429a5844d31330a012a9e6
+p
+@app/src/main/java/com/example/expensermanager/CustomAdapter.java,5\d\5d418b87c06d5ad0a8a9f2d29754dd52efdb01cf
+P
+ app/src/main/AndroidManifest.xml,8\c\8c55c3ccc257e5907959013f99656e4c8ec3903e
+u
+Eapp/src/main/java/com/example/expensermanager/UpdateDataActivity.java,3\9\39790dea330f5a7435affb175175cb222e833f23

@@ -4,4 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#6464f5</color>
     <color name="darker_gray">#A9A9A9</color>
+    <color name="beige">#FAF9F6</color>
+    <color name="anthrazit">#313639</color>
+    <color name="offwhite">#FAF9F6</color>
 </resources>

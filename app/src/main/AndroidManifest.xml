@@ -22,7 +22,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".AddExpenseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateDataActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ExpenseViewActivity"
             android:exported="true">
         </activity>
         <activity

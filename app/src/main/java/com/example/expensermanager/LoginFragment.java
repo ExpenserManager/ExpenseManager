@@ -60,7 +60,7 @@ public class LoginFragment extends Fragment {
                 if (validateCredentials(username, password)) {
                     Toast.makeText(getContext(), "Login successful", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(getContext(), MainActivity.class);
+                    Intent intent = new Intent(getContext(), ExpenseViewActivity.class);
                     startActivity(intent);
 
                 } else {

@@ -69,7 +69,7 @@ public class SignUpActivity extends AppCompatActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
+                Intent intent = new Intent(SignUpActivity.this, ExpenseViewActivity.class);
                 startActivity(intent);
                 finish();
             }
