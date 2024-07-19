@@ -2,23 +2,20 @@ package com.example.expensermanager;
 
 import android.os.Bundle;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-import com.example.expensermanager.databinding.ActivityMainBinding;
-
-public class MainActivity extends AppCompatActivity {
+import com.example.expensermanager.databinding.ActivityHomeScreenBinding;
 
 
-    private ActivityMainBinding binding;
+public class HomeScreenActivity extends AppCompatActivity {
+
+
+    private ActivityHomeScreenBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        binding = ActivityHomeScreenBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
         if (savedInstanceState == null) {
