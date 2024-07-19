@@ -25,8 +25,6 @@ public class SignUpActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
-
-
         binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
