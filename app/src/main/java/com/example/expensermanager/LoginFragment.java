@@ -69,7 +69,7 @@ public class LoginFragment extends Fragment {
                 } else {
                     Toast.makeText(getContext(), "Login successful", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(getContext(), ExpenseViewActivity.class);
+                    Intent intent = new Intent(getContext(), HomeScreenActivity.class);
                     startActivity(intent);
                 }
             }
