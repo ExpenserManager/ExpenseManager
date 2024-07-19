@@ -53,7 +53,6 @@ public class LoginFragment extends Fragment {
         binding.usernameEditText.addTextChangedListener(textWatcher);
         binding.passwordEditText.addTextChangedListener(textWatcher);
 
-
         binding.loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,8 +61,11 @@ public class LoginFragment extends Fragment {
 
                 if (!validateUsername(username)) {
                     Toast.makeText(getContext(), "Username not found", Toast.LENGTH_SHORT).show();
+                    binding.usernameEditText.setText("");
+                    binding.passwordEditText.setText("");
                 } else if (!validatePassword(username, password)) {
                     Toast.makeText(getContext(), "Incorrect password", Toast.LENGTH_SHORT).show();
+                    binding.passwordEditText.setText("");
                 } else {
                     Toast.makeText(getContext(), "Login successful", Toast.LENGTH_SHORT).show();
 
