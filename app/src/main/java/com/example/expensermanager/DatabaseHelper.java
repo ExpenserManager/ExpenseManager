@@ -27,6 +27,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_CATEGORY_CATEGORY_TABLE = "category";
     private static final String COLUMN_COLOR_CATEGORY_TABLE = "color";
 
+    // Table for user information (username and password) (sign_up and login)
+    private static final String TABLE3_NAME = "user_information_table";
+    private static final String COLUMN_ID_USER = "id";
+    private static final String COLUMN_USERNAME = "username";
+    private static final String COLUMN_PASSWORD = "password";
+
     //static queries for deleting database
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
