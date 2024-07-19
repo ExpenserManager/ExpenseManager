@@ -45,16 +45,18 @@ public class CameraActivity extends AppCompatActivity {
             try {
                 photoFile = createImageFile();
             } catch (IOException ex) {
-                // Error occurred while creating the File
                 ex.printStackTrace();
             }
-            // Continue only if the File was successfully created
             if (photoFile != null) {
+                // Uri -> used to identify resources (such as web pages or
+                // other files, but also e-mail recipients, for example) on the Internet.
+                // this -> activity
+                // com.example.android.fileprovider  must be declared in manifest
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "com.example.android.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(takePictureIntent, CAMERA_PIC_REQUEST);
+                startActivityForResult(takePictureIntent, CAMERA_PIC_REQUEST); // starts the camera activity
             }
         }
     }
