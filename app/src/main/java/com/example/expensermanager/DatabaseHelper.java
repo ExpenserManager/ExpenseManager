@@ -114,15 +114,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void insertUserData(DatabaseHelper dbHelper, String username, String password, String tableName) {
+    public boolean insertUserData(String username, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
 
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        if (isUsernameExists(username)) {
+            return false; // Username already exists
+        } else {
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_USERNAME, username);
+            values.put(COLUMN_PASSWORD, password);
 
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_USERNAME, username);
-        values.put(COLUMN_PASSWORD, password);
-
-        db.insert(tableName, null, values);
+            long newRowId = db.insert(TABLE3_NAME, null, values);
+            return newRowId != -1; // Return true if insertion is successful, false otherwise
+        }
     }
 
 

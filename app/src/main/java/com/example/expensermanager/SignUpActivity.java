@@ -18,7 +18,7 @@ public class SignUpActivity extends AppCompatActivity {
     private ActivitySignupBinding binding;
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState){
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -55,9 +55,14 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(SignUpActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    dbHelper.insertUserData(dbHelper, username, password, "user_information_table");
-                    Toast.makeText(SignUpActivity.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
-                    showWelcomeDialog(username);
+                    boolean isInserted = dbHelper.insertUserData(username, password);
+                    if (isInserted) {
+                        Toast.makeText(SignUpActivity.this, "Sign Up successful", Toast.LENGTH_SHORT).show();
+                        showWelcomeDialog(username);
+                    } else {
+                        Toast.makeText(SignUpActivity.this, "Username is already taken", Toast.LENGTH_SHORT).show();
+                        binding.usernameEditText.setText("");
+                    }
                 }
             }
         });
@@ -66,7 +71,7 @@ public class SignUpActivity extends AppCompatActivity {
     private void showWelcomeDialog(String username) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Welcome");
-        builder.setMessage("Welcome to the Expense Manager "+ username + "!");
+        builder.setMessage("Welcome to the Expense Manager " + username + "!");
         builder.setCancelable(false);
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
