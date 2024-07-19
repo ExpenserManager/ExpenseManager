@@ -14,6 +14,7 @@ import com.example.expensermanager.databinding.ActivitySignupBinding;
 
 public class SignUpActivity extends AppCompatActivity {
 
+    private DatabaseHelper dbHelper;
     private ActivitySignupBinding binding;
 
     @Override
@@ -21,6 +22,9 @@ public class SignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        dbHelper = new DatabaseHelper(this);
+
 
 
         binding.backButton.setOnClickListener(new View.OnClickListener() {
@@ -53,7 +57,7 @@ public class SignUpActivity extends AppCompatActivity {
                     Toast.makeText(SignUpActivity.this, "Passwords do not match", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    // TODO: save in db
+                    dbHelper.insertUserData(dbHelper, username, password, "user_information_table");
                     Toast.makeText(SignUpActivity.this, "Sign Up Successful", Toast.LENGTH_SHORT).show();
                     showWelcomeDialog(username);
                 }
