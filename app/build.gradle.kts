@@ -1,3 +1,5 @@
+import java.util.regex.Pattern.compile
+
 plugins {
     alias(libs.plugins.android.application)
 }
@@ -45,6 +47,8 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+
+    implementation(libs.blurry)
 
     //barchart
     implementation(libs.mpandroidchart)

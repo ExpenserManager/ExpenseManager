@@ -1,0 +1,31 @@
+
+k
+java:S1604B"(Make this anonymous inner class a lambda(Ö¹™º8â¤ª¯‚2J$81816867-db37-46b9-9c41-a600f3ad792c
+¿
+java:S1319}"wThe type of "filteredListDescription" should be an interface such as "List" rather than the implementation "ArrayList".(—ÄÉªúÿÿÿÿ8ã¤ª¯‚2J$847b5fe3-d9bd-4e60-9d11-8ba59b96d717
+¶
+java:S1319}"nThe type of "filteredListId" should be an interface such as "List" rather than the implementation "ArrayList".(—ÄÉªúÿÿÿÿ8ã¤ª¯‚2J$9ac55237-0d4e-4362-b71b-c02e1f879c90
+º
+java:S1319}"rThe type of "filteredListAmount" should be an interface such as "List" rather than the implementation "ArrayList".(—ÄÉªúÿÿÿÿ8ã¤ª¯‚2J$ed1ac2da-a4b7-4013-ac22-435f0e2b724f
+¸
+java:S1319}"pThe type of "filteredListDate" should be an interface such as "List" rather than the implementation "ArrayList".(—ÄÉªúÿÿÿÿ8ã¤ª¯‚2J$0345f65a-e156-4436-a84a-49ded7e71712
+r
+java:S3740"/Provide the parametrized type for this generic.(±¥Œ¤8æ¤ª¯‚2J$3843762d-c768-4cfe-8aad-d20150870be1
+r
+java:S3740"/Provide the parametrized type for this generic.(Æ›ŸÛ8æ¤ª¯‚2J$8fbbeaec-c878-4972-a699-9dca81a98cc4
+r
+java:S3740"/Provide the parametrized type for this generic.(¸Ê¾ğ8æ¤ª¯‚2J$e4a0b851-3c1a-4fe7-ac8a-0db318e1ba24
+w
+java:S3740 "/Provide the parametrized type for this generic.(Ó­õøÿÿÿÿ8æ¤ª¯‚2J$669c1af9-2b0b-424e-b3ce-2aee448fd4b0
+w
+java:S3740 "/Provide the parametrized type for this generic.(Ó­õøÿÿÿÿ8æ¤ª¯‚2J$380002ed-673e-4351-8e9a-fbccdedf2bb9
+
+java:S1659"EDeclare "category" and all following declarations on a separate line.(Æ˜İ‰üÿÿÿÿ8é¤ª¯‚2J$82f1211a-0642-41ee-9123-1fd687969484
+t
+java:S1602=",Remove useless curly braces around statement(ÿšş²üÿÿÿÿ8ö¤ª¯‚2J$34d141d5-8cd1-4291-90ce-9c5fb65eaf6a
+›	java:S116l"TRename this field "id_holder" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ä†—©ıÿÿÿÿ8ƒ¥ª¯‚2J$540fdb1a-df51-4be5-bc86-239c55df25c3
+¤	java:S116l"]Rename this field "description_holder" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ä†—©ıÿÿÿÿ8ƒ¥ª¯‚2J$fcd84bc8-b898-48c6-ac8c-46bc1ca8c31e
+Ÿ	java:S116l"XRename this field "amount_holder" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ä†—©ıÿÿÿÿ8ƒ¥ª¯‚2J$68fe7360-acc8-447e-9bec-7990a3a5e369
+	java:S116l"VRename this field "date_holder" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ä†—©ıÿÿÿÿ8ƒ¥ª¯‚2J$bb918859-0b16-40a9-a519-86fcb9f3f0f4
+
+java:S1659l"EDeclare "category" and all following declarations on a separate line.(ä†—©ıÿÿÿÿ8‡¥ª¯‚2J$ae11e1cd-b4c4-4f8e-9628-91caf4da9c44
