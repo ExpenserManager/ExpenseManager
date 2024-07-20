@@ -7,7 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.data.BarEntry;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private Context context;
@@ -208,5 +211,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         boolean result = cursor.getCount() > 0;
         cursor.close();
         return result;
+    }
+
+    // methode to read barEntries
+    public List<BarEntry> getBarEntries() {
+        List<BarEntry> entries = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT category, SUM(amount) as total_amount FROM " + TABLE_NAME + " GROUP BY category";
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int index = 0;      // x-axis value
+            do {
+                String category = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY));
+                float totalAmount = cursor.getFloat(cursor.getColumnIndexOrThrow("total_amount"));
+                entries.add(new BarEntry(index++, totalAmount));
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+        return entries;
     }
 }
