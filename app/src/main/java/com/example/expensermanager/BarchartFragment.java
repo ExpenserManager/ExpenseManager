@@ -39,6 +39,12 @@ public class BarchartFragment extends Fragment {
         BarChart barChart = binding.barChart;
         dbHelper = new DatabaseHelper(getContext());
 
+        updateChart(barChart);
+        return view;
+    }
+
+    private void updateChart(BarChart barChart){
+
         List<BarEntry> entries = dbHelper.getBarEntries();
         List<String> categories = dbHelper.getAllCategories();
 
@@ -55,14 +61,19 @@ public class BarchartFragment extends Fragment {
         barChart.setDrawBarShadow(false);
         barChart.setDrawValueAboveBar(true);
         barChart.setPinchZoom(false);
-        barChart.setScaleEnabled(false);
-        barChart.setDrawGridBackground(false);
+
+        barChart.setScaleEnabled(true);
+        barChart.setDrawGridBackground(true);
 
         barChart.setData(data);
 
         barChart.getDescription().setEnabled(true);
         barChart.getLegend().setEnabled(false);
         barChart.getDescription().setText("");
+
+        barChart.setVisibleXRangeMaximum(5);
+        barChart.invalidate();
+
 
         // set the custom renderer
         barChart.setRenderer(new RoundedBarChartRenderer(barChart, barChart.getAnimator(), barChart.getViewPortHandler()));
@@ -101,7 +112,6 @@ public class BarchartFragment extends Fragment {
             }
         });
 
-        return view;
     }
 
     @Override
