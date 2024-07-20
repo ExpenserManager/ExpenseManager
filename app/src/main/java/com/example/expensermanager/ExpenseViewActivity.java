@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.media.RouteListingPreference;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -143,6 +144,9 @@ public class ExpenseViewActivity extends AppCompatActivity {
             }
         });
 
+        Double d = dbHelper.totalAmountCategory("Lebensmittel");
+        Log.d("TOTAL", d.toString() );
+
     }
 
     @Override
@@ -261,7 +265,6 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
     public double calculateCurrentBalance(){
         double sum = 0;
-
         if(!amount.isEmpty()){
             for(int i = 0; i < amount.size(); i++){
                 sum+= Integer.parseInt(amount.get(i));
