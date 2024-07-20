@@ -43,7 +43,7 @@ public class BarchartFragment extends Fragment {
         return view;
     }
 
-    private void updateChart(BarChart barChart){
+    private void updateChart(BarChart barChart) {
 
         List<BarEntry> entries = dbHelper.getBarEntries();
         List<String> categories = dbHelper.getAllCategories();
@@ -51,7 +51,12 @@ public class BarchartFragment extends Fragment {
         BarDataSet dataSet = new BarDataSet(entries, "Category Expenses");
 
         // set color of the bars
-        dataSet.setColors(new int[]{Color.rgb(0, 51, 102), Color.rgb(0, 128, 128), Color.rgb(0, 204, 102), Color.rgb(0, 153, 153), Color.rgb(51, 102, 204)});
+        dataSet.setColors(new int[]{Color.rgb(0, 51, 102),
+                Color.rgb(0, 128, 128),
+                Color.rgb(0, 204, 102),
+                Color.rgb(0, 153, 153),
+                Color.rgb(51, 102, 204)});
+
         dataSet.setValueTextColor(Color.BLACK);
         dataSet.setValueTextSize(14f);
 
@@ -83,7 +88,7 @@ public class BarchartFragment extends Fragment {
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(categories)); //    use the category names as description beneath the bars
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(categories));       // use the category names as description beneath the bars
 
         // Y-Axis
         YAxis leftAxis = barChart.getAxisLeft();
@@ -114,7 +119,6 @@ public class BarchartFragment extends Fragment {
             public void onNothingSelected() {
             }
         });
-
     }
 
     @Override
