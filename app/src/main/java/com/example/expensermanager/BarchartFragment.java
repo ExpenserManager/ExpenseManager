@@ -19,16 +19,16 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.renderer.BarChartRenderer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class BarchartFragment extends Fragment {
 
     private FragmentBarchartBinding binding;
+    private DatabaseHelper dbHelper;
 
     @Nullable
     @Override
@@ -38,18 +38,14 @@ public class BarchartFragment extends Fragment {
         View view = binding.getRoot();
 
         BarChart barChart = binding.barChart;
+        dbHelper = new DatabaseHelper(getContext());
 
-        // Example data
-        List<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(1, 200));
-        entries.add(new BarEntry(2, 300));
-        entries.add(new BarEntry(3, 250));
-        entries.add(new BarEntry(4, 350));
-        entries.add(new BarEntry(5, 180));
+        List<BarEntry> entries = dbHelper.getBarEntries();
+        List<String> categories = dbHelper.getAllCategories();
 
-        BarDataSet dataSet = new BarDataSet(entries, "Sample Data");
+        BarDataSet dataSet = new BarDataSet(entries, "Category Expenses");
 
-        // set the colors of the bars
+        // set color of the bars
         dataSet.setColors(new int[]{Color.rgb(0, 51, 102), Color.rgb(0, 128, 128), Color.rgb(0, 204, 102), Color.rgb(0, 153, 153), Color.rgb(51, 102, 204)});
         dataSet.setValueTextColor(Color.BLACK);
         dataSet.setValueTextSize(14f);
@@ -58,21 +54,26 @@ public class BarchartFragment extends Fragment {
         data.setBarWidth(0.5f);
 
         barChart.setDrawBarShadow(false);
-        barChart.setDrawValueAboveBar(false);
+        barChart.setDrawValueAboveBar(true);
         barChart.setPinchZoom(false);
         barChart.setScaleEnabled(false);
         barChart.setDrawGridBackground(false);
 
         barChart.setData(data);
 
-        barChart.getDescription().setEnabled(false);
+        barChart.getDescription().setEnabled(true);
         barChart.getLegend().setEnabled(false);
+        barChart.getDescription().setText("");
+
+        // set the custom renderer
+        barChart.setRenderer(new RoundedBarChartRenderer(barChart, barChart.getAnimator(), barChart.getViewPortHandler()));
 
         // X-Axis
         XAxis xAxis = barChart.getXAxis();
         xAxis.setDrawGridLines(false);
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawLabels(false);
+        xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(categories)); //    use the category names as description beneath the bars
 
         // Y-Axis
         YAxis leftAxis = barChart.getAxisLeft();
@@ -84,10 +85,7 @@ public class BarchartFragment extends Fragment {
 
         barChart.setFitBars(true);      // position bars so all fit in
 
-        RoundedBarChartRenderer roundedBarChartRenderer = new RoundedBarChartRenderer(barChart, barChart.getAnimator(), barChart.getViewPortHandler());
-        barChart.setRenderer(roundedBarChartRenderer);
-
-        barChart.animateY(1500);
+        barChart.animateY(1500);    // start animation (bars go up slowly)
 
         barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
@@ -95,10 +93,8 @@ public class BarchartFragment extends Fragment {
                 if (e == null) {
                     return;
                 }
-
                 BarEntry entry = (BarEntry) e;
                 int index = (int) entry.getX();
-
             }
 
             @Override
