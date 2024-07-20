@@ -87,11 +87,14 @@ public class BarchartFragment extends Fragment {
 
         // Y-Axis
         YAxis leftAxis = barChart.getAxisLeft();
-        leftAxis.setDrawGridLines(true);        // show grid lines
+        leftAxis.setDrawGridLines(true);
         leftAxis.setDrawLabels(true);
         leftAxis.setAxisMinimum(0f);            // start y from 0
         YAxis rightAxis = barChart.getAxisRight();
         rightAxis.setEnabled(false);
+
+        // to make sure that bars do not reach the very top
+        leftAxis.setAxisMaximum(getMaxValue(entries) * 1.2f);
 
         barChart.setFitBars(true);      // position bars so all fit in
 
@@ -118,5 +121,16 @@ public class BarchartFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
+    }
+
+    // calculate maximum to measure where to stop the bar
+    private float getMaxValue(List<BarEntry> entries) {
+        float max = 0f;
+        for (BarEntry entry : entries) {
+            if (entry.getY() > max) {
+                max = entry.getY();
+            }
+        }
+        return max;
     }
 }
