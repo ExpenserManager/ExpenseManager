@@ -34,6 +34,7 @@ public class UpdateDataActivity extends AppCompatActivity {
     DatePicker datePicker;
     EditText dateFieldText;
     ImageButton deleteButton;
+    ImageButton backButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +49,7 @@ public class UpdateDataActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(UpdateDataActivity.this);
         EditText descriptionField = findViewById(R.id.description);
         EditText amountField = findViewById(R.id.amount);
-        Button updateButton = findViewById(R.id.update_button);
+        Button updateButton = findViewById(R.id.updateButton);
         EditText dateField = findViewById(R.id.date);
 
         Spinner spinner = findViewById(R.id.spinner2);
@@ -124,6 +125,15 @@ public class UpdateDataActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.putExtra("deleteID", id);
                 setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 finish();
             }
         });

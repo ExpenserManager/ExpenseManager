@@ -15,6 +15,7 @@
         android:layout_marginStart="1dp"
         android:layout_marginTop="280dp"
         android:layout_marginEnd="1dp"
+        android:layout_marginBottom="40dp"
         android:background="@color/offwhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,8 +25,8 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:layout_width="148dp"
-        android:layout_height="30dp"
+        android:layout_width="207dp"
+        android:layout_height="31dp"
         android:layout_marginStart="131dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="132dp"

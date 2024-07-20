@@ -94,6 +94,12 @@ public class AddExpenseActivity extends AppCompatActivity {
         });
 
 
+        binding.cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
 
