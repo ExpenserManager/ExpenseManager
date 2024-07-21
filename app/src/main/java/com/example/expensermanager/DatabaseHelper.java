@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Pair;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.data.BarEntry;
@@ -232,23 +233,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    // methode to read barEntries
-    public List<BarEntry> getBarEntries() {
-        List<BarEntry> entries = new ArrayList<>();
+    // methode to get sum of bar entries as well as the category
+    public Pair<List<BarEntry>, List<String>> getBarEntries() {
+        List<BarEntry> barEntries = new ArrayList<>();
+        List<String> categories = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT category, SUM(amount) as total_amount FROM " + TABLE_NAME + " GROUP BY category";
 
         Cursor cursor = db.rawQuery(query, null);
         if (cursor != null && cursor.moveToFirst()) {
-            int index = 0;      // x-axis value
+            int index = 0;  // x-Achsenwert
             do {
                 String category = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY));
                 float totalAmount = cursor.getFloat(cursor.getColumnIndexOrThrow("total_amount"));
-                entries.add(new BarEntry(index++, totalAmount));
+                barEntries.add(new BarEntry(index++, totalAmount));
+                categories.add(category);
             } while (cursor.moveToNext());
 
             cursor.close();
         }
-        return entries;
+        return new Pair<>(barEntries, categories);
     }
 }
