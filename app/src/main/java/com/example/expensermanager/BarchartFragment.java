@@ -2,6 +2,8 @@ package com.example.expensermanager;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +47,10 @@ public class BarchartFragment extends Fragment {
 
     private void updateChart(BarChart barChart) {
 
-        List<BarEntry> entries = dbHelper.getBarEntries();
-        List<String> categories = dbHelper.getAllCategories();
+        Pair<List<BarEntry>, List<String>> result = dbHelper.getBarEntries();
+        List<BarEntry> entries = result.first;
+        List<String> categories = result.second;
+
 
         BarDataSet dataSet = new BarDataSet(entries, "Category Expenses");
 
