@@ -1,5 +1,6 @@
 package com.example.expensermanager;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -117,6 +118,14 @@ public class BarchartFragment extends Fragment {
                 }
                 BarEntry entry = (BarEntry) e;
                 int index = (int) entry.getX();
+
+                // get selected category
+                String selectedCategory = categories.get(index);
+
+                // make intent and put selected category as extra
+                Intent intent = new Intent(getActivity(), ExpenseViewActivity.class);
+                intent.putExtra("selectedCategory", selectedCategory);
+                startActivity(intent);
             }
 
             @Override
