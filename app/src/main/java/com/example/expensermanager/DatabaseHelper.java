@@ -5,9 +5,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Pair;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.data.BarEntry;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private Context context;
@@ -29,11 +33,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_CATEGORY_CATEGORY_TABLE = "category";
     private static final String COLUMN_COLOR_CATEGORY_TABLE = "color";
 
+    // Table for user information (username and password) (sign_up and login)
+    private static final String TABLE3_NAME = "user_information_table";
+    private static final String COLUMN_ID_USER = "id";
+    private static final String COLUMN_USERNAME = "username";
+    private static final String COLUMN_PASSWORD = "password";
+
     //static queries for deleting database
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
     private static final String SQL_DELETE_ENTRIES_CATEGORY_TABLE =
             "DROP TABLE IF EXISTS " + TABLE2_NAME;
+    private static final String SQL_DELETE_ENTRIES_USER_INFORMATION =
+            "DROP TABLE IF EXISTS " + TABLE3_NAME;
 
 
     public DatabaseHelper(Context context) {
@@ -48,9 +60,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 TABLE_NAME, COLUMN_ID, COLUMN_CATEGORY, COLUMN_DESCRIPTION, COLUMN_AMOUNT, COLUMN_DATE, COLUMN_IMAGE_PATH);        //
         String queryCreateCategoryTable = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT);", TABLE2_NAME, COLUMN_ID_CATEGORY_TABLE, COLUMN_CATEGORY_CATEGORY_TABLE, COLUMN_COLOR_CATEGORY_TABLE);
 
+        // user information
+        String queryCreateUsernameInformationTable = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT NOT NULL);", TABLE3_NAME, COLUMN_ID_USER, COLUMN_USERNAME, COLUMN_PASSWORD);
+
         db.execSQL(queryCreate); //executing the query - create database
-        //
         db.execSQL(queryCreateCategoryTable);
+        db.execSQL(queryCreateUsernameInformationTable);
 
     }
 
@@ -104,6 +119,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             Toast.makeText(context, "insertion failed", Toast.LENGTH_SHORT);
         } else {
             Toast.makeText(context, "Successfully Added!", Toast.LENGTH_SHORT);
+        }
+    }
+
+    public boolean insertUserData(String username, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        if (isUsernameExists(username)) {
+            return false; // Username already exists
+        } else {
+            ContentValues values = new ContentValues();
+            values.put(COLUMN_USERNAME, username);
+            values.put(COLUMN_PASSWORD, password);
+
+            long newRowId = db.insert(TABLE3_NAME, null, values);
+            return newRowId != -1; // Return true if insertion is successful, false otherwise
         }
     }
 
@@ -168,4 +198,64 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return categories;
     }
 
+
+    public double totalAmountCategory(String category){
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT SUM(" + COLUMN_AMOUNT + ") AS total_amount FROM " + TABLE_NAME + " WHERE " + COLUMN_CATEGORY + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{category});
+        double total = 0;
+
+        if(cursor != null){
+            if(cursor.moveToFirst()){
+                total = cursor.getDouble(cursor.getColumnIndexOrThrow("total_amount"));
+            }
+            cursor.close();
+        }
+        return total;
+    }
+
+
+    // methode to validate user
+    public boolean isUsernameExists(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE3_NAME + " WHERE " + COLUMN_USERNAME + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{username});
+        boolean result = cursor.getCount() > 0;
+        cursor.close();
+        return result;
+    }
+
+    // methode to validate if password is correct
+    public boolean isPasswordCorrect(String username, String password) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT * FROM " + TABLE3_NAME + " WHERE " + COLUMN_USERNAME + " = ? AND " + COLUMN_PASSWORD + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{username, password});
+        boolean result = cursor.getCount() > 0;
+        cursor.close();
+        return result;
+    }
+
+
+    // methode to get sum of bar entries as well as the category
+    public Pair<List<BarEntry>, List<String>> getBarEntries() {
+        List<BarEntry> barEntries = new ArrayList<>();
+        List<String> categories = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT category, SUM(amount) as total_amount FROM " + TABLE_NAME + " GROUP BY category";
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            int index = 0;  // x-Achsenwert
+            do {
+                String category = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CATEGORY));
+                float totalAmount = cursor.getFloat(cursor.getColumnIndexOrThrow("total_amount"));
+                barEntries.add(new BarEntry(index++, totalAmount));
+                categories.add(category);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+        return new Pair<>(barEntries, categories);
+    }
 }

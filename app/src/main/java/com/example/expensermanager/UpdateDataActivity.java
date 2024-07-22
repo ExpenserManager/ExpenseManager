@@ -43,14 +43,14 @@ public class UpdateDataActivity extends AppCompatActivity {
     private String currentPhotoPath; // Variablen für den Pfad des Bildes
     private ImageView photoImageView;
     private DatabaseHelper dbHelper;
-    private String description;
-    private String amount;
-    private String id;
-    private String date;
-
+    String description;
+    String amount;
+    String id;
+    String date;
     DatePicker datePicker;
     EditText dateFieldText;
     ImageButton deleteButton;
+    ImageButton backButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,8 +65,9 @@ public class UpdateDataActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(UpdateDataActivity.this);
         EditText descriptionField = findViewById(R.id.description);
         EditText amountField = findViewById(R.id.amount);
-        Button updateButton = findViewById(R.id.update_button);
+        Button updateButton = findViewById(R.id.updateButton);
         EditText dateField = findViewById(R.id.date);
+
         Spinner spinner = findViewById(R.id.spinner2);
 
         ArrayList<String> spinnerList = dbHelper.getAllCategories();
@@ -98,6 +99,7 @@ public class UpdateDataActivity extends AppCompatActivity {
             String newDate = dateField.getText().toString();
             dbHelper.updateData(id, newDescription, newAmount, newDate, "expense_manager");
 
+            //give data back to ExpenseViewActivity
             Intent goBackIntent = new Intent();
             goBackIntent.putExtra("id", id);
             goBackIntent.putExtra("description", newDescription);
@@ -140,6 +142,15 @@ public class UpdateDataActivity extends AppCompatActivity {
                 Intent intent = new Intent();
                 intent.putExtra("deleteID", id);
                 setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+
+        backButton = findViewById(R.id.backButton);
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 finish();
             }
         });

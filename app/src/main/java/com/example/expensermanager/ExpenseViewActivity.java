@@ -3,8 +3,10 @@ package com.example.expensermanager;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.RouteListingPreference;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -69,19 +71,6 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
-
-
-//      //inserting data to test the recycler view
-        dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expense_manager","image_path");
-//        dbHelper.insertData(dbHelper, "Gesundheit", "Apotheke", 30.0, "19/06/24", "expense_manager");
-//        dbHelper.insertData(dbHelper, "Tierarzt", "Katze", 50.0, "10/04/24", "expense_manager");
-//
-        dbHelper.insertCategory(dbHelper, "Lebensmittel", "red", "category_table");
-        dbHelper.insertCategory(dbHelper, "Gesundheit", "blue", "category_table");
-
-
-
-
         id = new ArrayList<>();
         category = new ArrayList<>();
         description = new ArrayList<>();
@@ -93,17 +82,32 @@ public class ExpenseViewActivity extends AppCompatActivity {
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                binding.cardView.setVisibility(View.GONE);
+                binding.spinner.setVisibility(View.GONE);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                binding.cardView.setVisibility(View.GONE);
+                binding.spinner.setVisibility(View.GONE);
                 filterList(newText, "description", null);
                 return true;
             }
         });
+        binding.searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                binding.cardView.setVisibility(View.GONE);
+                binding.spinner.setVisibility(View.GONE);
+            } else {
+                if (binding.searchView.getQuery().toString().isEmpty()) {
+                    binding.cardView.setVisibility(View.VISIBLE);
+                    binding.spinner.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
-        storeDataInArrayLists();
+        //storeDataInArrayLists();
 
         recyclerView = findViewById(R.id.rv);
 
@@ -114,17 +118,27 @@ public class ExpenseViewActivity extends AppCompatActivity {
         double total = calculateCurrentBalance();
         binding.currentBalanceMoney.setText("" + total);
 
+        //storeDataInArrayLists();
         Spinner spinner = findViewById(R.id.spinner);
-        ArrayList spinnerList = category;
-        spinnerList.add(0,"nothing selected");
-        spinner.setAdapter(new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,spinnerList)); //show categories in spinner
-
+        ArrayList spinnerList = storeCategories();
+        spinnerList.add(0, "nothing selected");
+        //populateCategoryList();
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, spinnerList);
+        spinner.setAdapter(spinnerAdapter); //show categories in spinner
         //onItemSelectedListener
+
+        Intent intent = getIntent();
+        String selectedCategory = intent.getStringExtra("selectedCategory");
+        if (selectedCategory != null) {
+            // Setze den Spinner auf die übergebene Kategorie
+            int position = spinnerAdapter.getPosition(selectedCategory);
+            spinner.setSelection(position);
+        }
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String c = category.get(position);
+                String c = (String) spinnerList.get(position);
                 filterList(null, "category", c);
             }
 
@@ -134,12 +148,13 @@ public class ExpenseViewActivity extends AppCompatActivity {
             }
         });
 
-        //test
-        binding.buttonTest.setOnClickListener(new View.OnClickListener() {
+        Double d = dbHelper.totalAmountCategory("Lebensmittel");
+        Log.d("TOTAL", d.toString() );
+
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ExpenseViewActivity.this, AddExpenseActivity.class);
-                startActivity(intent);
+                finish();
             }
         });
 
@@ -150,9 +165,12 @@ public class ExpenseViewActivity extends AppCompatActivity {
         super.onResume();
         storeDataInArrayLists();
         adapter.notifyDataSetChanged();
+        double total = calculateCurrentBalance();
+        binding.currentBalanceMoney.setText("" + total);
     }
 
     private void filterList(String newText, String type, String categoryFilter) {
+
        ArrayList<String> filteredListDescription = new ArrayList<>();
        ArrayList<String> filteredListId = new ArrayList<>();
        ArrayList<String> filteredListAmount = new ArrayList<>();
@@ -168,11 +186,20 @@ public class ExpenseViewActivity extends AppCompatActivity {
                }
            }
        }else if (type.equals("category")){
-           Cursor cursor = dbHelper.filterDatabaseCategory(categoryFilter);
+         Cursor cursor = dbHelper.filterDatabaseCategory(categoryFilter);
+         Double categorySum = dbHelper.totalAmountCategory(categoryFilter);
+         binding.currentBalanceMoney.setText(categorySum.toString());
 
            if(categoryFilter.equals("nothing selected")){
-               storeDataInArrayLists();
+               // Reload all data
+               //storeDataInArrayLists();
+               filteredListDescription.addAll(description);
+               filteredListId.addAll(id);
+               filteredListAmount.addAll(amount);
+               filteredListDate.addAll(date);
                adapter.setFilteredList(description, id, amount, date);
+               Double total = calculateCurrentBalance();
+               binding.currentBalanceMoney.setText(total.toString());
                return;
            }
 
@@ -192,7 +219,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
                cursor.close();
            }
        }
-        if(filteredListDescription.isEmpty() && !categoryFilter.equals("nothing selected")){
+        if(filteredListDescription.isEmpty()){
             Toast.makeText(this, "No items found!", Toast.LENGTH_LONG).show();
         }else{
             adapter.setFilteredList(filteredListDescription, filteredListId, filteredListAmount, filteredListDate);
@@ -226,6 +253,9 @@ public class ExpenseViewActivity extends AppCompatActivity {
                 imagePath.set(position,currentImagePath);
                 adapter.notifyItemChanged(position);
             }
+            // Reload data after update
+            storeDataInArrayLists();
+            filterList(null, "category", (String) binding.spinner.getSelectedItem());
         }
     }
 
@@ -255,7 +285,6 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
     public double calculateCurrentBalance(){
         double sum = 0;
-
         if(!amount.isEmpty()){
             for(int i = 0; i < amount.size(); i++){
                 sum+= Integer.parseInt(amount.get(i));
@@ -264,8 +293,17 @@ public class ExpenseViewActivity extends AppCompatActivity {
         return sum;
     }
 
+    public ArrayList<String> storeCategories(){
+        ArrayList<String> allCategories = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query("category_table", new String[]{"category"}, null, null, null, null, null);
 
-
-
-
+        if(cursor != null){
+            while(cursor.moveToNext()){
+                allCategories.add(cursor.getString(0));
+            }
+            cursor.close();
+        }
+        return allCategories;
+    }
 }

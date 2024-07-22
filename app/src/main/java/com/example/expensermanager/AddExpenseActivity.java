@@ -100,7 +100,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                category[0] = spinnerList.get(position);
+               category[0] = spinnerList.get(position);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -112,7 +112,14 @@ public class AddExpenseActivity extends AppCompatActivity {
 
         binding.receiptButton.setOnClickListener(v -> dispatchTakePictureIntent());
 
+        binding.cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
+
     private String currentPhotoPath;
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -191,7 +198,6 @@ public class AddExpenseActivity extends AppCompatActivity {
 
         dbHelper.insertData(dbHelper, category[0], description, Double.parseDouble(value) ,date, "expense_manager",imagePath);
         Intent intent = new Intent(AddExpenseActivity.this, ExpenseViewActivity.class);
-        //intent.putExtra("Image_path", currentPhotoPath);
         startActivity(intent);
         finish();
 

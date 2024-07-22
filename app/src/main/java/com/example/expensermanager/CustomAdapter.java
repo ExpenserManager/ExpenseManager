@@ -59,9 +59,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.id_holder.setText(String.valueOf(id.get(position)));
+        //holder.id_holder.setText(String.valueOf(id.get(position)));
         holder.description_holder.setText(String.valueOf(description.get(position)));
-        holder.amount_holder.setText(String.valueOf(amount.get(position)));
+
+
+        String amountText = "- €" + String.valueOf(amount.get(position));
+
+        holder.amount_holder.setText(amountText);
         holder.date_holder.setText(date.get(position));
 
         String imagePath = (String) imagePaths.get(position);
