@@ -54,6 +54,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
     ArrayList<String> description;
     ArrayList<String> amount;
     ArrayList<String> date;
+    ArrayList<String> imagePath;
     CustomAdapter adapter;
 
     ActivityMainBinding binding;
@@ -75,9 +76,9 @@ public class ExpenseViewActivity extends AppCompatActivity {
         description = new ArrayList<>();
         amount = new ArrayList<>();
         date = new ArrayList<>();
+        imagePath = new ArrayList<>();
 
         binding.searchView.clearFocus(); //cursor is in search view - only by clicking on it
-
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -111,7 +112,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(ExpenseViewActivity.this));
-        adapter = new CustomAdapter(ExpenseViewActivity.this, id, category, description, amount,date, dbHelper);
+        adapter = new CustomAdapter(ExpenseViewActivity.this, id, category, description, amount,date,imagePath,dbHelper);
         recyclerView.setAdapter(adapter);
 
         double total = calculateCurrentBalance();
@@ -176,6 +177,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
        ArrayList<String> filteredListId = new ArrayList<>();
        ArrayList<String> filteredListAmount = new ArrayList<>();
        ArrayList<String> filteredListDate = new ArrayList<>();
+       ArrayList<String> filteredListImagePath = new ArrayList<>(); // adding the image path to guarantee that the same photo is shown either when "nothing selected" or specific category
 
        if(type.equals("description")) {
            for (int i = 0; i < description.size(); i++) {
@@ -184,6 +186,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
                    filteredListId.add(id.get(i));
                    filteredListAmount.add(amount.get(i));
                    filteredListDate.add(date.get(i));
+                   filteredListImagePath.add(imagePath.get(i));
                }
            }
        }else if (type.equals("category")){
@@ -198,7 +201,9 @@ public class ExpenseViewActivity extends AppCompatActivity {
                filteredListId.addAll(id);
                filteredListAmount.addAll(amount);
                filteredListDate.addAll(date);
-               adapter.setFilteredList(description, id, amount, date);
+               filteredListImagePath.addAll(imagePath);
+
+               adapter.setFilteredList(description, id, amount, date, imagePath);
                Double total = calculateCurrentBalance();
                binding.currentBalanceMoney.setText(total.toString());
                return;
@@ -211,11 +216,13 @@ public class ExpenseViewActivity extends AppCompatActivity {
                    String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
                    String amount = cursor.getString(cursor.getColumnIndexOrThrow("amount"));
                    String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+                   String imagePath = cursor.getString(cursor.getColumnIndexOrThrow("image_path"));
 
                    filteredListId.add(id);
                    filteredListDescription.add(description);
                    filteredListAmount.add(amount);
                    filteredListDate.add(date);
+                   filteredListImagePath.add(imagePath);
                }
                cursor.close();
            }
@@ -223,12 +230,9 @@ public class ExpenseViewActivity extends AppCompatActivity {
         if(filteredListDescription.isEmpty()){
             Toast.makeText(this, "No items found!", Toast.LENGTH_LONG).show();
         }else{
-            adapter.setFilteredList(filteredListDescription, filteredListId, filteredListAmount, filteredListDate);
+            adapter.setFilteredList(filteredListDescription, filteredListId, filteredListAmount, filteredListDate, filteredListImagePath);
         }
     }
-
-
-
 
     //onActivityResult -> implementation from ChatGPT
     @Override
@@ -239,6 +243,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
         String updatedAmount = "";
         String givenID = "";
         String updateDate = "";
+        String currentImagePath = "";
 
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
 
@@ -246,12 +251,14 @@ public class ExpenseViewActivity extends AppCompatActivity {
             updatedAmount = data.getStringExtra("amount");
             givenID = data.getStringExtra("id");
             updateDate = data.getStringExtra("date");
+            currentImagePath = data.getStringExtra("image_path");
 
             int position = id.indexOf(givenID); //database id starts with 1, listID starts with 0
             if (position != -1) {
                 description.set(position, updatedDescription);
                 amount.set(position, updatedAmount);
                 date.set(position, updateDate);
+                imagePath.set(position,currentImagePath);
                 adapter.notifyItemChanged(position);
             }
             // Reload data after update
@@ -267,6 +274,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
         description.clear();
         amount.clear();
         date.clear();
+        imagePath.clear();
 
         Cursor cursor = dbHelper.readAllData("expense_manager");
         if(cursor.getCount() == 0){
@@ -278,6 +286,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
                 description.add(cursor.getString(2));
                 amount.add(cursor.getString(3));
                 date.add(cursor.getString(4));
+                imagePath.add(cursor.getString(5));
             }
         }
     }

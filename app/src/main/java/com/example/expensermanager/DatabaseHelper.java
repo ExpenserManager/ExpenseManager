@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
 
@@ -25,6 +26,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_AMOUNT = "amount";
     private static final String COLUMN_DATE = "date";
+    private static final String COLUMN_IMAGE_PATH = "image_path";
+
 
     private static final String TABLE2_NAME = "category_table";
     private static final String COLUMN_ID_CATEGORY_TABLE = "id";
@@ -54,8 +57,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
 
-        String queryCreate = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT, %s REAL NOT NULL, %s TEXT);", TABLE_NAME, COLUMN_ID, COLUMN_CATEGORY, COLUMN_DESCRIPTION, COLUMN_AMOUNT, COLUMN_DATE);
-        //
+        String queryCreate = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT, %s REAL NOT NULL, %s TEXT, %s TEXT);",
+                TABLE_NAME, COLUMN_ID, COLUMN_CATEGORY, COLUMN_DESCRIPTION, COLUMN_AMOUNT, COLUMN_DATE, COLUMN_IMAGE_PATH);        //
         String queryCreateCategoryTable = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT);", TABLE2_NAME, COLUMN_ID_CATEGORY_TABLE, COLUMN_CATEGORY_CATEGORY_TABLE, COLUMN_COLOR_CATEGORY_TABLE);
 
         // user information
@@ -73,10 +76,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_ENTRIES);
         //if it is required to upgrade the database --> rebuild the database
         //updating: add column or row
+        onCreate(db);
     }
 
 
-    public void insertData(DatabaseHelper dbHelper, String category, String description, double amount, String date, String tableName) {
+    public void insertData(DatabaseHelper dbHelper, String category, String description, double amount, String date, String tableName, String imagePath) {
 
         //data repository gets in write mode
         SQLiteDatabase db = this.getWritableDatabase();
@@ -87,6 +91,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_DESCRIPTION, description);
         values.put(String.valueOf(COLUMN_AMOUNT), amount);
         values.put(COLUMN_DATE, date);
+        values.put(COLUMN_IMAGE_PATH, imagePath);
 
 
         //null if the ContentnValues map is empty - no insertion
@@ -141,16 +146,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void updateData(String id, String description, String amount, String date, String tableName) {
+
+    public void updateData(String id, String description, String amount, String date, String imagePath, String tableName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-
         values.put(COLUMN_DESCRIPTION, description);
         values.put(COLUMN_AMOUNT, amount);
         values.put(COLUMN_DATE, date);
-        db.update(tableName, values, "_id=?", new String[]{id});
+        values.put(COLUMN_IMAGE_PATH, imagePath);
 
+        Log.d("Path", " updated " + imagePath + " id " + id);
+        db.update(tableName, values, "_id = ?", new String[]{id});
     }
+
+
 
     public Cursor filterDatabaseCategory(String filter){
         SQLiteDatabase db =  this.getReadableDatabase();

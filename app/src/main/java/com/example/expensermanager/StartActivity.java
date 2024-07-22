@@ -25,6 +25,7 @@ public class StartActivity extends AppCompatActivity implements LoginFragment.On
     ArrayList<String> amount;
     ArrayList<String> date;
     ArrayList<String> id;
+    ArrayList<String> image_path;
     DatabaseHelper dbHelper;
 
 
@@ -88,7 +89,7 @@ public class StartActivity extends AppCompatActivity implements LoginFragment.On
         description = new ArrayList<>();
         amount = new ArrayList<>();
         date = new ArrayList<>();
-
+        image_path = new ArrayList<>();
     }
 
     // when the fragment is being closed, the blur should be removed

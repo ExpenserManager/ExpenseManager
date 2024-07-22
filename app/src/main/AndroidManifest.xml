@@ -41,7 +41,17 @@
             android:name=".SignUpActivity"
             android:exported="true">
         </activity>
+        <activity android:name=".CameraActivity" />
 
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.expensermanager.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 
 </manifest>
