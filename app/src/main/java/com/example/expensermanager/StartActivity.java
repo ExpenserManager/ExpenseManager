@@ -1,6 +1,8 @@
 package com.example.expensermanager;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 
@@ -23,6 +25,7 @@ public class StartActivity extends AppCompatActivity implements LoginFragment.On
     ArrayList<String> amount;
     ArrayList<String> date;
     ArrayList<String> id;
+    DatabaseHelper dbHelper;
 
 
     @Override
@@ -65,12 +68,15 @@ public class StartActivity extends AppCompatActivity implements LoginFragment.On
            startActivity(intent);
         });
 
-        DatabaseHelper dbHelper = new DatabaseHelper(this);
+      dbHelper = new DatabaseHelper(this);
 
-     //inserting default categories
-
-        dbHelper.insertCategory(dbHelper, "Gesundheit", "green", "category_table");
-        dbHelper.insertCategory(dbHelper, "Lebensmitel", "red", "category_table");
+     //inserting default categories if table is empty
+        if(isCategoryTableEmpty()) {
+            dbHelper.insertCategory(dbHelper, "Gesundheit", "green", "category_table");
+            dbHelper.insertCategory(dbHelper, "Lebensmitel", "red", "category_table");
+            dbHelper.insertCategory(dbHelper, "Bildung", "blue", "category_table");
+            dbHelper.insertCategory(dbHelper, "Freizeit", "yellow", "category_table");
+        }
 
         id = new ArrayList<>();
         category = new ArrayList<>();
@@ -88,5 +94,27 @@ public class StartActivity extends AppCompatActivity implements LoginFragment.On
         binding.loginButton.setVisibility(View.VISIBLE);
         binding.titleTextView.setVisibility(View.VISIBLE);
         binding.signupButton.setVisibility(View.VISIBLE);
+    }
+
+    public boolean isCategoryTableEmpty(){ //check if the database already has categories
+   //implementation of this method from ChatGPT
+    SQLiteDatabase db = dbHelper.getReadableDatabase();
+    Cursor cursor = null;
+    boolean isEmpty = true;
+
+    try {
+        // get number of datasets
+        cursor = db.rawQuery("SELECT COUNT(*) FROM category_table", null);
+
+        if (cursor.moveToFirst()) {
+            int count = cursor.getInt(0);
+            isEmpty = (count == 0);
+        }
+    } finally { //d
+        if (cursor != null) {
+            cursor.close();
+        }
+    }
+    return isEmpty;
     }
 }
