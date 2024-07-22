@@ -54,7 +54,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
     ArrayList<String> description;
     ArrayList<String> amount;
     ArrayList<String> date;
-    ArrayList imagePath;
+    ArrayList<String> imagePath;
     CustomAdapter adapter;
 
     ActivityMainBinding binding;
@@ -175,6 +175,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
        ArrayList<String> filteredListId = new ArrayList<>();
        ArrayList<String> filteredListAmount = new ArrayList<>();
        ArrayList<String> filteredListDate = new ArrayList<>();
+       ArrayList<String> filteredListImagePath = new ArrayList<>(); // adding the image path to guarantee that the same photo is shown either when "nothing selected" or specific category
 
        if(type.equals("description")) {
            for (int i = 0; i < description.size(); i++) {
@@ -183,6 +184,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
                    filteredListId.add(id.get(i));
                    filteredListAmount.add(amount.get(i));
                    filteredListDate.add(date.get(i));
+                   filteredListImagePath.add(imagePath.get(i));
                }
            }
        }else if (type.equals("category")){
@@ -197,7 +199,9 @@ public class ExpenseViewActivity extends AppCompatActivity {
                filteredListId.addAll(id);
                filteredListAmount.addAll(amount);
                filteredListDate.addAll(date);
-               adapter.setFilteredList(description, id, amount, date);
+               filteredListImagePath.addAll(imagePath);
+
+               adapter.setFilteredList(description, id, amount, date, imagePath);
                Double total = calculateCurrentBalance();
                binding.currentBalanceMoney.setText(total.toString());
                return;
@@ -210,11 +214,13 @@ public class ExpenseViewActivity extends AppCompatActivity {
                    String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
                    String amount = cursor.getString(cursor.getColumnIndexOrThrow("amount"));
                    String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+                   String imagePath = cursor.getString(cursor.getColumnIndexOrThrow("image_path"));
 
                    filteredListId.add(id);
                    filteredListDescription.add(description);
                    filteredListAmount.add(amount);
                    filteredListDate.add(date);
+                   filteredListImagePath.add(imagePath);
                }
                cursor.close();
            }
@@ -222,7 +228,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
         if(filteredListDescription.isEmpty()){
             Toast.makeText(this, "No items found!", Toast.LENGTH_LONG).show();
         }else{
-            adapter.setFilteredList(filteredListDescription, filteredListId, filteredListAmount, filteredListDate);
+            adapter.setFilteredList(filteredListDescription, filteredListId, filteredListAmount, filteredListDate, filteredListImagePath);
         }
     }
 
