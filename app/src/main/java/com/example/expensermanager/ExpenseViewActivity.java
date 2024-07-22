@@ -3,6 +3,7 @@ package com.example.expensermanager;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.RouteListingPreference;
 import android.os.Bundle;
 import android.util.Log;
@@ -118,7 +119,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
         //storeDataInArrayLists();
         Spinner spinner = findViewById(R.id.spinner);
-        ArrayList spinnerList = dbHelper.getAllCategories();
+        ArrayList spinnerList = storeCategories();
         spinnerList.add(0, "nothing selected");
         //populateCategoryList();
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, spinnerList);
@@ -287,5 +288,19 @@ public class ExpenseViewActivity extends AppCompatActivity {
             }
         }
         return sum;
+    }
+
+    public ArrayList<String> storeCategories(){
+        ArrayList<String> allCategories = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query("category_table", new String[]{"category"}, null, null, null, null, null);
+
+        if(cursor != null){
+            while(cursor.moveToNext()){
+                allCategories.add(cursor.getString(0));
+            }
+            cursor.close();
+        }
+        return allCategories;
     }
 }
