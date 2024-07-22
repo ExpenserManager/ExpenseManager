@@ -26,7 +26,7 @@ import java.util.ArrayList;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
-    private final ArrayList imagePaths;
+    private ArrayList imagePaths;
     Context context;
     ArrayList<String> id, category, description, amount, date;
     DatabaseHelper dbHelper;
@@ -142,11 +142,12 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         }
     }
 
-    public void setFilteredList(ArrayList<String> filteredListDescription, ArrayList<String> filteredListId,ArrayList<String> filteredListAmount, ArrayList<String> filteredListDate) {
+    public void setFilteredList(ArrayList<String> filteredListDescription, ArrayList<String> filteredListId,ArrayList<String> filteredListAmount, ArrayList<String> filteredListDate, ArrayList<String> filteredListImagePath) {
         this.description = filteredListDescription;
         this.id = filteredListId;
         this.amount = filteredListAmount;
         this.date = filteredListDate;
+        this.imagePaths = filteredListImagePath;
         notifyDataSetChanged();
     }
     private void showImageDialog(String imagePath) {
