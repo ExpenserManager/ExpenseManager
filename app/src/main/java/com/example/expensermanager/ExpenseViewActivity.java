@@ -178,6 +178,8 @@ public class ExpenseViewActivity extends AppCompatActivity {
            }
        }else if (type.equals("category")){
          Cursor cursor = dbHelper.filterDatabaseCategory(categoryFilter);
+         Double categorySum = dbHelper.totalAmountCategory(categoryFilter);
+         binding.currentBalanceMoney.setText(categorySum.toString());
 
            if(categoryFilter.equals("nothing selected")){
                // Reload all data
@@ -187,6 +189,8 @@ public class ExpenseViewActivity extends AppCompatActivity {
                filteredListAmount.addAll(amount);
                filteredListDate.addAll(date);
                adapter.setFilteredList(description, id, amount, date);
+               Double total = calculateCurrentBalance();
+               binding.currentBalanceMoney.setText(total.toString());
                return;
            }
 
