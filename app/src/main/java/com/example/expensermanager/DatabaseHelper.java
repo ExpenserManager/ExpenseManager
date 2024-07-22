@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 import android.util.Pair;
 import android.widget.Toast;
 
@@ -145,16 +146,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void updateData(String id, String description, String amount, String date, String tableName) {
+
+    public void updateData(String id, String description, String amount, String date, String imagePath, String tableName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-
         values.put(COLUMN_DESCRIPTION, description);
         values.put(COLUMN_AMOUNT, amount);
         values.put(COLUMN_DATE, date);
-        db.update(tableName, values, "_id=?", new String[]{id});
+        values.put(COLUMN_IMAGE_PATH, imagePath);
 
+        Log.d("Path", " updated " + imagePath + " id " + id);
+        db.update(tableName, values, "_id = ?", new String[]{id});
     }
+
+
 
     public Cursor filterDatabaseCategory(String filter){
         SQLiteDatabase db =  this.getReadableDatabase();
