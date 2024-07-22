@@ -1,13 +1,18 @@
 package com.example.expensermanager;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,6 +26,7 @@ import java.util.ArrayList;
 
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHolder> {
 
+    private final ArrayList imagePaths;
     Context context;
     ArrayList<String> id, category, description, amount, date;
     DatabaseHelper dbHelper;
@@ -29,7 +35,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
                   ArrayList id,
                   ArrayList category,
                   ArrayList description,
-                  ArrayList amount, ArrayList date,  DatabaseHelper dbHelper){
+                  ArrayList amount, ArrayList date, ArrayList imagePaths, DatabaseHelper dbHelper){
 
         this.context = context;
         this.id = id;
@@ -38,6 +44,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         this.amount = amount;
         this.date = date;
         this.dbHelper = dbHelper;
+        this.imagePaths = imagePaths;
 
     }
 
@@ -57,11 +64,16 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         holder.amount_holder.setText(String.valueOf(amount.get(position)));
         holder.date_holder.setText(date.get(position));
 
+        String imagePath = (String) imagePaths.get(position);
+
 
         holder.deleteButton.setOnClickListener(v -> {
             removeItem(position, "expense_manager");
         });
 
+        holder.receiptButton.setOnClickListener(v -> {
+            showImageDialog((String) imagePaths.get(position));
+        });
         //enable clicking on the listitems
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +83,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
                 intent.putExtra("description", String.valueOf(description.get(position)));
                 intent.putExtra("amount", String.valueOf(amount.get(position)));
                 intent.putExtra("date", String.valueOf(date.get(position)));
+                intent.putExtra("image_path", imagePath);
+                Log.d("Path", "imagepaths adapter"+ imagePath);
 
 
                 if (context instanceof Activity) {
@@ -95,6 +109,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         description.remove(position);
         amount.remove(position);
         date.remove(position);
+        imagePaths.remove(position);
         notifyItemRemoved(position); //update RecyclerView
         notifyItemRangeChanged(position, getItemCount()); //notify the adapter that the range has changed
     }
@@ -105,10 +120,11 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-       TextView id_holder, category, description_holder, amount_holder, date_holder;
-       RelativeLayout listitem;
-       RecyclerView recyclerView;
-       ImageButton deleteButton; //accessing the deleteButton was done with help of chatGPT
+        TextView id_holder, category, description_holder, amount_holder, date_holder;
+        RelativeLayout listitem;
+        RecyclerView recyclerView;
+        ImageButton deleteButton; //accessing the deleteButton was done with help of chatGPT
+        ImageButton receiptButton;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             id_holder = itemView.findViewById(R.id.ID);
@@ -118,7 +134,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             listitem = itemView.findViewById(R.id.relativeLayout);
             recyclerView = itemView.findViewById(R.id.rv);
             deleteButton = itemView.findViewById(R.id.deleteButton);
-
+            receiptButton = itemView.findViewById(R.id.receiptButton);
         }
     }
 
@@ -129,5 +145,25 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
         this.date = filteredListDate;
         notifyDataSetChanged();
     }
+    private void showImageDialog(String imagePath) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View dialogView = inflater.inflate(R.layout.dialog_image, null);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"})
+        ImageView imageView = dialogView.findViewById(R.id.dialog_image_view);
 
+        // Load and display the image
+        if (imagePath != null && !imagePath.isEmpty()) {
+            Bitmap bitmap = BitmapFactory.decodeFile(imagePath);
+            Log.d("Path", "imagepath 2"+imagePath);
+
+            imageView.setImageBitmap(bitmap);
+        } else {
+            imageView.setImageResource(R.drawable.placeholderreceipt); // Placeholder image
+        }
+
+        builder.setView(dialogView)
+                .setPositiveButton("OK", (dialog, which) -> dialog.dismiss())
+                .show();
+    }
 }
