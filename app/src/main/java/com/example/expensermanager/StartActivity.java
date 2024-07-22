@@ -12,10 +12,18 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.expensermanager.databinding.ActivityStartBinding;
 
+import java.util.ArrayList;
+
 import jp.wasabeef.blurry.Blurry;
 
 public class StartActivity extends AppCompatActivity implements LoginFragment.OnFragmentClosedListener {
     private ActivityStartBinding binding;
+    ArrayList<String> category;
+    ArrayList<String> description;
+    ArrayList<String> amount;
+    ArrayList<String> date;
+    ArrayList<String> id;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +64,20 @@ public class StartActivity extends AppCompatActivity implements LoginFragment.On
            Intent intent = new Intent(this, SignUpActivity.class);
            startActivity(intent);
         });
+
+        DatabaseHelper dbHelper = new DatabaseHelper(this);
+
+     //inserting default categories
+
+        dbHelper.insertCategory(dbHelper, "Gesundheit", "green", "category_table");
+        dbHelper.insertCategory(dbHelper, "Lebensmitel", "red", "category_table");
+
+        id = new ArrayList<>();
+        category = new ArrayList<>();
+        description = new ArrayList<>();
+        amount = new ArrayList<>();
+        date = new ArrayList<>();
+
     }
 
     // when the fragment is being closed, the blur should be removed
