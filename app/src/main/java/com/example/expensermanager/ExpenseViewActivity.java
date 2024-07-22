@@ -52,6 +52,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
     ArrayList<String> description;
     ArrayList<String> amount;
     ArrayList<String> date;
+    ArrayList imagePath;
     CustomAdapter adapter;
 
     ActivityMainBinding binding;
@@ -71,12 +72,12 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
 
 //      //inserting data to test the recycler view
-dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expense_manager");
+        dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expense_manager","image_path");
 //        dbHelper.insertData(dbHelper, "Gesundheit", "Apotheke", 30.0, "19/06/24", "expense_manager");
 //        dbHelper.insertData(dbHelper, "Tierarzt", "Katze", 50.0, "10/04/24", "expense_manager");
 //
-//        dbHelper.insertCategory(dbHelper, "Lebensmittel", "red", "category_table");
-//        dbHelper.insertCategory(dbHelper, "Gesundheit", "blue", "category_table");
+        dbHelper.insertCategory(dbHelper, "Lebensmittel", "red", "category_table");
+        dbHelper.insertCategory(dbHelper, "Gesundheit", "blue", "category_table");
 
 
 
@@ -86,6 +87,7 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
         description = new ArrayList<>();
         amount = new ArrayList<>();
         date = new ArrayList<>();
+        imagePath = new ArrayList<>();
 
         binding.searchView.clearFocus(); //cursor is in search view - only by clicking on it
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -106,7 +108,7 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
         recyclerView = findViewById(R.id.rv);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(ExpenseViewActivity.this));
-        adapter = new CustomAdapter(ExpenseViewActivity.this, id, category, description, amount,date, dbHelper);
+        adapter = new CustomAdapter(ExpenseViewActivity.this, id, category, description, amount,date,imagePath,dbHelper);
         recyclerView.setAdapter(adapter);
 
         double total = calculateCurrentBalance();
@@ -206,6 +208,7 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
         String updatedAmount = "";
         String givenID = "";
         String updateDate = "";
+        String currentImagePath = "";
 
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
 
@@ -213,12 +216,14 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
             updatedAmount = data.getStringExtra("amount");
             givenID = data.getStringExtra("id");
             updateDate = data.getStringExtra("date");
+            currentImagePath = data.getStringExtra("image_path");
 
             int position = id.indexOf(givenID); //database id starts with 1, listID starts with 0
             if (position != -1) {
                 description.set(position, updatedDescription);
                 amount.set(position, updatedAmount);
                 date.set(position, updateDate);
+                imagePath.set(position,currentImagePath);
                 adapter.notifyItemChanged(position);
             }
         }
@@ -231,6 +236,7 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
         description.clear();
         amount.clear();
         date.clear();
+        imagePath.clear();
 
         Cursor cursor = dbHelper.readAllData("expense_manager");
         if(cursor.getCount() == 0){
@@ -242,6 +248,7 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
                 description.add(cursor.getString(2));
                 amount.add(cursor.getString(3));
                 date.add(cursor.getString(4));
+                imagePath.add(cursor.getString(5));
             }
         }
     }
