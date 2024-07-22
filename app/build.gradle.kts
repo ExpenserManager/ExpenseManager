@@ -27,16 +27,13 @@ android {
             )
         }
     }
-
-    buildFeatures{
-        viewBinding = true
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    viewBinding{
+
+    // allow viewBinding
+    viewBinding {
         enable = true
     }
 }
@@ -52,4 +49,7 @@ dependencies {
     androidTestImplementation(libs.espresso.core)
 
     implementation(libs.blurry)
+
+    //barchart
+    implementation(libs.mpandroidchart)
 }
