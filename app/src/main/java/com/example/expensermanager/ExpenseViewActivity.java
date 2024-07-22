@@ -153,6 +153,8 @@ public class ExpenseViewActivity extends AppCompatActivity {
         binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(ExpenseViewActivity.this, HomeScreenActivity.class);
+                startActivity(intent);
                 finish();
             }
         });
