@@ -85,16 +85,32 @@ public class ExpenseViewActivity extends AppCompatActivity {
         date = new ArrayList<>();
 
         binding.searchView.clearFocus(); //cursor is in search view - only by clicking on it
+
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                binding.cardView.setVisibility(View.GONE);
+                binding.spinner.setVisibility(View.GONE);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                binding.cardView.setVisibility(View.GONE);
+                binding.spinner.setVisibility(View.GONE);
                 filterList(newText, "description", null);
                 return true;
+            }
+        });
+        binding.searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                binding.cardView.setVisibility(View.GONE);
+                binding.spinner.setVisibility(View.GONE);
+            } else {
+                if (binding.searchView.getQuery().toString().isEmpty()) {
+                    binding.cardView.setVisibility(View.VISIBLE);
+                    binding.spinner.setVisibility(View.VISIBLE);
+                }
             }
         });
 
