@@ -52,9 +52,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.id_holder.setText(String.valueOf(id.get(position)));
+        //holder.id_holder.setText(String.valueOf(id.get(position)));
         holder.description_holder.setText(String.valueOf(description.get(position)));
-        holder.amount_holder.setText(String.valueOf(amount.get(position)));
+
+
+        String amountText = "- €" + String.valueOf(amount.get(position));
+
+        holder.amount_holder.setText(amountText);
         holder.date_holder.setText(date.get(position));
 
 
@@ -67,7 +71,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, UpdateDataActivity.class);
-                intent.putExtra("id", String.valueOf(id.get(position)));
+                //intent.putExtra("id", String.valueOf(id.get(position)));
                 intent.putExtra("description", String.valueOf(description.get(position)));
                 intent.putExtra("amount", String.valueOf(amount.get(position)));
                 intent.putExtra("date", String.valueOf(date.get(position)));
@@ -111,7 +115,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
        ImageButton deleteButton; //accessing the deleteButton was done with help of chatGPT
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            id_holder = itemView.findViewById(R.id.ID);
+            //id_holder = itemView.findViewById(R.id.ID);
             description_holder = itemView.findViewById(R.id.description);
             amount_holder = itemView.findViewById(R.id.amount);
             date_holder = itemView.findViewById(R.id.date_textView);
