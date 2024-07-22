@@ -76,6 +76,11 @@ public class StartActivity extends AppCompatActivity implements LoginFragment.On
             dbHelper.insertCategory(dbHelper, "Lebensmitel", "red", "category_table");
             dbHelper.insertCategory(dbHelper, "Bildung", "blue", "category_table");
             dbHelper.insertCategory(dbHelper, "Freizeit", "yellow", "category_table");
+            dbHelper.insertCategory(dbHelper, "Haustier", "black", "category_table");
+            dbHelper.insertCategory(dbHelper, "Wohnen", "white", "category_table");
+            dbHelper.insertCategory(dbHelper, "Transport", "lightgreen", "category_table");
+            dbHelper.insertCategory(dbHelper, "Kleidung", "pink", "category_table");
+            dbHelper.insertCategory(dbHelper, "Kosmetik", "pink", "category_table");
         }
 
         id = new ArrayList<>();
