@@ -142,6 +142,13 @@ public class ExpenseViewActivity extends AppCompatActivity {
         Double d = dbHelper.totalAmountCategory("Lebensmittel");
         Log.d("TOTAL", d.toString() );
 
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+
     }
 
     @Override

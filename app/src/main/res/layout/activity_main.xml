@@ -28,11 +28,11 @@
         android:layout_width="207dp"
         android:layout_height="31dp"
         android:layout_marginStart="131dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="132dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/searchView" />
 
     <TextView
         android:id="@+id/currentBalanceText"
@@ -42,7 +42,7 @@
         android:textColor="@color/white"
         android:layout_marginTop="13dp"
         android:layout_marginEnd="155dp"
-        android:text="Current Balance"
+        android:text="total expenses"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner" />
@@ -80,7 +80,7 @@
         android:layout_width="271dp"
         android:layout_height="36dp"
         android:layout_marginStart="70dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="70dp"
         android:searchIcon="@android:drawable/ic_menu_search"
         app:layout_constraintEnd_toEndOf="parent"
@@ -88,6 +88,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:queryHint="Search here" />
+
+    <ImageButton
+        android:id="@+id/backButton"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="10dp"
+        android:background="#00000000"
+        android:src="@drawable/baseline_arrow_back_24"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
