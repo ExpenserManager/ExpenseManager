@@ -1,8 +1,6 @@
 package com.example.expensermanager;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -25,6 +23,7 @@ public class CameraActivity extends AppCompatActivity {
     private String currentPhotoPath;
     Button camera_open_id;
     ImageView click_image_id;
+    Uri photoURI;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +51,7 @@ public class CameraActivity extends AppCompatActivity {
                 // other files, but also e-mail recipients, for example) on the Internet.
                 // this -> activity
                 // com.example.android.fileprovider  must be declared in manifest
-                Uri photoURI = FileProvider.getUriForFile(this,
+                photoURI = FileProvider.getUriForFile(this,
                         "com.example.android.fileprovider",
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
@@ -82,12 +81,10 @@ public class CameraActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == CAMERA_PIC_REQUEST && resultCode == RESULT_OK) {
-            // Load the image from the path into ImageView
-            File imgFile = new File(currentPhotoPath);
-            if (imgFile.exists()) {
-                Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                click_image_id.setImageBitmap(myBitmap);
-            }
+            Intent resultIntent = new Intent();
+            resultIntent.setData(photoURI);
+            setResult(RESULT_OK, resultIntent);
+            finish();
         }
     }
 }
