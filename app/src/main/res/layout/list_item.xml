@@ -59,19 +59,8 @@
             android:layout_marginEnd="20dp"
             android:text="- €0.00"
             android:textColor="@color/blue"
-            android:textSize="14sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/tax"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/deleteButton"
-            android:layout_marginStart="16dp"
-            android:layout_below="@id/description"
-            android:text="Tax: $0.00"
-            android:textSize="12sp"
-            android:textColor="#888" />
 
         <ImageButton
             android:id="@+id/receiptButton"
