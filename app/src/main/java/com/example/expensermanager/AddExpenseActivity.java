@@ -102,8 +102,6 @@ public class AddExpenseActivity extends AppCompatActivity {
         });
 
 
-
-
     }
 
     private void insertFromInput(){

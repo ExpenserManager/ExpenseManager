@@ -1,6 +1,8 @@
 package com.example.expensermanager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -24,5 +26,16 @@ public class HomeScreenActivity extends AppCompatActivity {
                     .add(binding.fragmentContainerViewBarchart.getId(), BarchartFragment.class, null)
                     .commit();
         }
+
+        binding.addButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeScreenActivity.this, AddExpenseActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
     }
 }

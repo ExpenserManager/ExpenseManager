@@ -139,15 +139,6 @@ public class ExpenseViewActivity extends AppCompatActivity {
             }
         });
 
-        //test
-        binding.buttonTest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ExpenseViewActivity.this, AddExpenseActivity.class);
-                startActivity(intent);
-            }
-        });
-
         Double d = dbHelper.totalAmountCategory("Lebensmittel");
         Log.d("TOTAL", d.toString() );
 
