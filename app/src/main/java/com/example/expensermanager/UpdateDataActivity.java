@@ -97,7 +97,9 @@ public class UpdateDataActivity extends AppCompatActivity {
             String newDescription = descriptionField.getText().toString();
             String newAmount = amountField.getText().toString();
             String newDate = dateField.getText().toString();
-            dbHelper.updateData(id, newDescription, newAmount, newDate, "expense_manager");
+            String newPath = currentPhotoPath;
+            Log.d("Path", "" + id);
+            dbHelper.updateData(id, newDescription, newAmount, newDate, newPath, "expense_manager");
 
             //give data back to ExpenseViewActivity
             Intent goBackIntent = new Intent();
@@ -105,7 +107,7 @@ public class UpdateDataActivity extends AppCompatActivity {
             goBackIntent.putExtra("description", newDescription);
             goBackIntent.putExtra("amount", newAmount);
             goBackIntent.putExtra("date", newDate);
-            goBackIntent.putExtra("image_path", currentPhotoPath);
+            //goBackIntent.putExtra("image_path", currentPhotoPath);
             setResult(RESULT_OK, goBackIntent);
             finish();
         });
