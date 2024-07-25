@@ -1,8 +1,18 @@
 package com.example.expensermanager;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +30,8 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.expensermanager.databinding.ActivityQrReaderBinding;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.concurrent.ExecutionException;
@@ -42,10 +54,14 @@ import java.util.concurrent.Executors;
 
 public class QR_Reader extends AppCompatActivity {
     TextView qrTextView;
+    TextView infoText;
     private PreviewView previewView;
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
-
-    @SuppressLint("MissingInflatedId")
+    ImageButton backButtonQR;
+    FloatingActionButton infoButton;
+    private Animation scaleAnimation;
+    private Animation bounceAnimation;
+    @SuppressLint({"MissingInflatedId", "ResourceType"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +72,24 @@ public class QR_Reader extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        // values in the xmls from ChatGPT
+        scaleAnimation = AnimationUtils.loadAnimation(this, R.transition.scale);
+        bounceAnimation = AnimationUtils.loadAnimation(this, R.transition.bounce);
+        backButtonQR = findViewById(R.id.backButtonQR);
+        doAnimation(backButtonQR);
+        backButtonQR.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("QR_Reader", "Back button clicked");
+
+                Intent intent = new Intent(QR_Reader.this, HomeScreenActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        infoButton = findViewById(R.id.infoButton);
+        doAnimation(infoButton);
+        infoButton.setOnClickListener(v -> openInfoDialog());
 
         qrTextView = findViewById(R.id.qrText);
 
@@ -66,7 +100,45 @@ public class QR_Reader extends AppCompatActivity {
         } else {
             requestCameraPermission();
         }
+
+
     }
+    private void doAnimation(View button){
+        button.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        v.startAnimation(scaleAnimation);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        v.startAnimation(bounceAnimation);
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+    private void openInfoDialog() {
+        Log.d("QR_Reader", "Opening info dialog");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View dialogView = inflater.inflate(R.layout.dialog_info, null);
+        infoText = dialogView.findViewById(R.id.infotext);
+
+        infoText.setText("What can the QR-Code tell? " + "\n" + "\n" +
+                "- Date in format YYYY-MM-DD" + "\n" +
+                "- Time in format HH:MM:SS" + "\n" +
+                "- Amount f.e. 20,99" + "\n" + "\n" +
+                "The rest is usually important for the stores, and are just identificators."+ "\n" +
+                "It can also happen that it gives a link.");
+        infoText.setTextSize(22);
+        builder.setView(dialogView);
+        builder.setPositiveButton("OK", (dialog, which) -> dialog.dismiss());
+        builder.show();
+    }
+
     private boolean hasCameraPermission() {
         return ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
