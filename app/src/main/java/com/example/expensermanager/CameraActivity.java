@@ -17,6 +17,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+// https://developer.android.com/media/camera/camera-deprecated/camera-api
+// https://developer.android.com/media/camera/camera-deprecated/photobasics
+
 public class CameraActivity extends AppCompatActivity {
 
     private static final int CAMERA_PIC_REQUEST = 2500;
