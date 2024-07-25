@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -44,9 +47,10 @@ public class AddExpenseActivity extends AppCompatActivity {
     ActivityAddExpenseBinding binding;
     private DatabaseHelper dbHelper;
     private ImageView expenseImageView;
-
     Uri photoURI;
     final String[] category = new String[1];
+    private Animation scaleAnimation;
+    private Animation bounceAnimation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +62,8 @@ public class AddExpenseActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        scaleAnimation = AnimationUtils.loadAnimation(this, R.transition.scale);
+        bounceAnimation = AnimationUtils.loadAnimation(this, R.transition.bounce);
 
         dbHelper = new DatabaseHelper(this);
 
@@ -84,13 +89,14 @@ public class AddExpenseActivity extends AppCompatActivity {
 
             }
         });
-
+        doAnimation(binding.saveButton); // Apply animation to saveButton
         binding.saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 insertFromInput();
             }
         });
+
 
         Spinner spinner = findViewById(R.id.spinner2);
 
@@ -113,12 +119,30 @@ public class AddExpenseActivity extends AppCompatActivity {
 
         expenseImageView = findViewById(R.id.expense_image_view);
 
+        doAnimation(binding.receiptButton);
         binding.receiptButton.setOnClickListener(v -> checkCameraPermission());
 
+        doAnimation(binding.cancelButton);
         binding.cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+    }
+    private void doAnimation(View button){
+        button.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        v.startAnimation(scaleAnimation);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        v.startAnimation(bounceAnimation);
+                        break;
+                }
+                return false;
             }
         });
     }

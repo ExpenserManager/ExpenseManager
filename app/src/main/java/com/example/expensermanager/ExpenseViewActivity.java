@@ -7,7 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.media.RouteListingPreference;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -60,7 +63,8 @@ public class ExpenseViewActivity extends AppCompatActivity {
     ActivityMainBinding binding;
 
     RecyclerView recyclerView;
-
+    private Animation scaleAnimation;
+    private Animation bounceAnimation;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -68,6 +72,9 @@ public class ExpenseViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        scaleAnimation = AnimationUtils.loadAnimation(this, R.transition.scale);
+        bounceAnimation = AnimationUtils.loadAnimation(this, R.transition.bounce);
 
         dbHelper = new DatabaseHelper(this);
 
@@ -150,17 +157,30 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
         Double d = dbHelper.totalAmountCategory("Lebensmittel");
         Log.d("TOTAL", d.toString() );
+        doAnimation(binding.backButton);
 
-        binding.backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ExpenseViewActivity.this, HomeScreenActivity.class);
-                startActivity(intent);
-                finish();
-            }
+        binding.backButton.setOnClickListener(v -> {
+            Intent intent2 = new Intent(ExpenseViewActivity.this, HomeScreenActivity.class);
+            startActivity(intent2);
+            finish();
         });
 
+
     }
+    private void doAnimation(View button) {
+        button.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    v.startAnimation(scaleAnimation);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    v.startAnimation(bounceAnimation);
+                    break;
+            }
+            return false;
+        });
+    }
+
 
     @Override
     protected void onResume() { //update date if user comes back to this activity

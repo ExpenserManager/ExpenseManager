@@ -36,6 +36,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         scaleAnimation = AnimationUtils.loadAnimation(this, R.transition.scale);
         bounceAnimation = AnimationUtils.loadAnimation(this, R.transition.bounce);
 
+        doAnimation(binding.addButton);
         binding.addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -44,20 +45,7 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
         });
 
-        binding.qrButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        v.startAnimation(scaleAnimation);
-                        break;
-                    case MotionEvent.ACTION_UP:
-                        v.startAnimation(bounceAnimation);
-                        break;
-                }
-                return false;
-            }
-        });
+        doAnimation(binding.qrButton);
 
         binding.qrButton.setOnClickListener(new View.OnClickListener() {
 
@@ -70,5 +58,18 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
         });
 
+    }
+    private void doAnimation(View button) {
+        button.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    v.startAnimation(scaleAnimation);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    v.startAnimation(bounceAnimation);
+                    break;
+            }
+            return false;
+        });
     }
 }
