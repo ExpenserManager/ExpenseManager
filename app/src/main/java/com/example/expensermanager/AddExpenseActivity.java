@@ -2,6 +2,7 @@ package com.example.expensermanager;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +21,8 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -110,7 +113,7 @@ public class AddExpenseActivity extends AppCompatActivity {
 
         expenseImageView = findViewById(R.id.expense_image_view);
 
-        binding.receiptButton.setOnClickListener(v -> dispatchTakePictureIntent());
+        binding.receiptButton.setOnClickListener(v -> checkCameraPermission());
 
         binding.cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,6 +164,8 @@ public class AddExpenseActivity extends AppCompatActivity {
         return image;
     }
     private static final int CAMERA_PIC_REQUEST = 2500;
+    private static final int REQUEST_CAMERA_PERMISSION = 200;
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -202,7 +207,24 @@ public class AddExpenseActivity extends AppCompatActivity {
         finish();
 
     }
-
+    private void checkCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
+        } else {
+            dispatchTakePictureIntent();
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == REQUEST_CAMERA_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                dispatchTakePictureIntent();
+            } else {
+                Toast.makeText(this, "Camera permission is required to take pictures.", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
 
 }
