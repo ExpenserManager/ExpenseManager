@@ -72,10 +72,25 @@ public class HomeScreenActivity extends AppCompatActivity {
             }
         });
 
+        binding.calendarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent to calendarView
+            }
+        });
+
         dbHelper = new DatabaseHelper(this);
         Double total = dbHelper.calculateTotal();
         String totalText = "-" + total.toString();
         binding.currentBalanceMoney.setText(totalText);
+
+        binding.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeScreenActivity.this, ExpenseViewActivity.class);
+                startActivity(intent);
+            }
+        });
 
     }
 }
