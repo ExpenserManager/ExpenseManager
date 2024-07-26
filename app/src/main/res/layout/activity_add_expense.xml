@@ -309,7 +309,7 @@
             android:drawablePadding="8dp"
             android:drawableStart="@drawable/baseline_euro_symbol_24"
             android:hint="amount"
-            android:inputType="textEmailAddress"
+            android:inputType="number"
             android:padding="8dp"
             android:singleLine="false"
             android:textColor="@color/black" />
