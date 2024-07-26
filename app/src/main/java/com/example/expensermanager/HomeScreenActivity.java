@@ -19,6 +19,8 @@ public class HomeScreenActivity extends AppCompatActivity {
     private Animation scaleAnimation;
     private Animation bounceAnimation;
 
+    DatabaseHelper dbHelper;
+
     @SuppressLint({"ResourceType", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,11 @@ public class HomeScreenActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        dbHelper = new DatabaseHelper(this);
+        Double total = dbHelper.calculateTotal();
+        String totalText = "-" + total.toString();
+        binding.currentBalanceMoney.setText(totalText);
 
     }
 }
