@@ -3,8 +3,10 @@ package com.example.expensermanager;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.media.RouteListingPreference;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -52,6 +54,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
     ArrayList<String> description;
     ArrayList<String> amount;
     ArrayList<String> date;
+    ArrayList<String> imagePath;
     CustomAdapter adapter;
 
     ActivityMainBinding binding;
@@ -68,61 +71,74 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
         dbHelper = new DatabaseHelper(this);
 
-
-
-//      //inserting data to test the recycler view
-dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expense_manager");
-//        dbHelper.insertData(dbHelper, "Gesundheit", "Apotheke", 30.0, "19/06/24", "expense_manager");
-//        dbHelper.insertData(dbHelper, "Tierarzt", "Katze", 50.0, "10/04/24", "expense_manager");
-//
-//        dbHelper.insertCategory(dbHelper, "Lebensmittel", "red", "category_table");
-//        dbHelper.insertCategory(dbHelper, "Gesundheit", "blue", "category_table");
-
-
-
-
         id = new ArrayList<>();
         category = new ArrayList<>();
         description = new ArrayList<>();
         amount = new ArrayList<>();
         date = new ArrayList<>();
+        imagePath = new ArrayList<>();
 
         binding.searchView.clearFocus(); //cursor is in search view - only by clicking on it
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                binding.cardView.setVisibility(View.GONE);
+                binding.spinner.setVisibility(View.GONE);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                binding.cardView.setVisibility(View.GONE);
+                binding.spinner.setVisibility(View.GONE);
                 filterList(newText, "description", null);
                 return true;
             }
         });
+        binding.searchView.setOnQueryTextFocusChangeListener((v, hasFocus) -> {
+            if (hasFocus) {
+                binding.cardView.setVisibility(View.GONE);
+                binding.spinner.setVisibility(View.GONE);
+            } else {
+                if (binding.searchView.getQuery().toString().isEmpty()) {
+                    binding.cardView.setVisibility(View.VISIBLE);
+                    binding.spinner.setVisibility(View.VISIBLE);
+                }
+            }
+        });
 
-        storeDataInArrayLists();
+        //storeDataInArrayLists();
 
         recyclerView = findViewById(R.id.rv);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(ExpenseViewActivity.this));
-        adapter = new CustomAdapter(ExpenseViewActivity.this, id, category, description, amount,date, dbHelper);
+        adapter = new CustomAdapter(ExpenseViewActivity.this, id, category, description, amount,date,imagePath,dbHelper);
         recyclerView.setAdapter(adapter);
 
         double total = calculateCurrentBalance();
         binding.currentBalanceMoney.setText("" + total);
 
+        //storeDataInArrayLists();
         Spinner spinner = findViewById(R.id.spinner);
-        ArrayList spinnerList = category;
-        spinnerList.add(0,"nothing selected");
-        spinner.setAdapter(new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item,spinnerList)); //show categories in spinner
-
+        ArrayList spinnerList = storeCategories();
+        spinnerList.add(0, "nothing selected");
+        //populateCategoryList();
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, spinnerList);
+        spinner.setAdapter(spinnerAdapter); //show categories in spinner
         //onItemSelectedListener
+
+        Intent intent = getIntent();
+        String selectedCategory = intent.getStringExtra("selectedCategory");
+        if (selectedCategory != null) {
+            // Setze den Spinner auf die übergebene Kategorie
+            int position = spinnerAdapter.getPosition(selectedCategory);
+            spinner.setSelection(position);
+        }
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                String c = category.get(position);
+                String c = (String) spinnerList.get(position);
                 filterList(null, "category", c);
             }
 
@@ -132,12 +148,15 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
             }
         });
 
-        //test
-        binding.buttonTest.setOnClickListener(new View.OnClickListener() {
+        Double d = dbHelper.totalAmountCategory("Lebensmittel");
+        Log.d("TOTAL", d.toString() );
+
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ExpenseViewActivity.this, AddExpenseActivity.class);
+                Intent intent = new Intent(ExpenseViewActivity.this, HomeScreenActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -148,13 +167,17 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
         super.onResume();
         storeDataInArrayLists();
         adapter.notifyDataSetChanged();
+        double total = calculateCurrentBalance();
+        binding.currentBalanceMoney.setText("" + total);
     }
 
     private void filterList(String newText, String type, String categoryFilter) {
+
        ArrayList<String> filteredListDescription = new ArrayList<>();
        ArrayList<String> filteredListId = new ArrayList<>();
        ArrayList<String> filteredListAmount = new ArrayList<>();
        ArrayList<String> filteredListDate = new ArrayList<>();
+       ArrayList<String> filteredListImagePath = new ArrayList<>(); // adding the image path to guarantee that the same photo is shown either when "nothing selected" or specific category
 
        if(type.equals("description")) {
            for (int i = 0; i < description.size(); i++) {
@@ -163,14 +186,26 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
                    filteredListId.add(id.get(i));
                    filteredListAmount.add(amount.get(i));
                    filteredListDate.add(date.get(i));
+                   filteredListImagePath.add(imagePath.get(i));
                }
            }
        }else if (type.equals("category")){
-           Cursor cursor = dbHelper.filterDatabaseCategory(categoryFilter);
+         Cursor cursor = dbHelper.filterDatabaseCategory(categoryFilter);
+         Double categorySum = dbHelper.totalAmountCategory(categoryFilter);
+         binding.currentBalanceMoney.setText(categorySum.toString());
 
            if(categoryFilter.equals("nothing selected")){
-               storeDataInArrayLists();
-               adapter.setFilteredList(description, id, amount, date);
+               // Reload all data
+               //storeDataInArrayLists();
+               filteredListDescription.addAll(description);
+               filteredListId.addAll(id);
+               filteredListAmount.addAll(amount);
+               filteredListDate.addAll(date);
+               filteredListImagePath.addAll(imagePath);
+
+               adapter.setFilteredList(description, id, amount, date, imagePath);
+               Double total = calculateCurrentBalance();
+               binding.currentBalanceMoney.setText(total.toString());
                return;
            }
 
@@ -181,19 +216,21 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
                    String description = cursor.getString(cursor.getColumnIndexOrThrow("description"));
                    String amount = cursor.getString(cursor.getColumnIndexOrThrow("amount"));
                    String date = cursor.getString(cursor.getColumnIndexOrThrow("date"));
+                   String imagePath = cursor.getString(cursor.getColumnIndexOrThrow("image_path"));
 
                    filteredListId.add(id);
                    filteredListDescription.add(description);
                    filteredListAmount.add(amount);
                    filteredListDate.add(date);
+                   filteredListImagePath.add(imagePath);
                }
                cursor.close();
            }
        }
-        if(filteredListDescription.isEmpty() && !categoryFilter.equals("nothing selected")){
+        if(filteredListDescription.isEmpty()){
             Toast.makeText(this, "No items found!", Toast.LENGTH_LONG).show();
         }else{
-            adapter.setFilteredList(filteredListDescription, filteredListId, filteredListAmount, filteredListDate);
+            adapter.setFilteredList(filteredListDescription, filteredListId, filteredListAmount, filteredListDate, filteredListImagePath);
         }
     }
 
@@ -206,6 +243,7 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
         String updatedAmount = "";
         String givenID = "";
         String updateDate = "";
+        String currentImagePath = "";
 
         if (requestCode == 1 && resultCode == RESULT_OK && data != null) {
 
@@ -213,14 +251,19 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
             updatedAmount = data.getStringExtra("amount");
             givenID = data.getStringExtra("id");
             updateDate = data.getStringExtra("date");
+            currentImagePath = data.getStringExtra("image_path");
 
             int position = id.indexOf(givenID); //database id starts with 1, listID starts with 0
             if (position != -1) {
                 description.set(position, updatedDescription);
                 amount.set(position, updatedAmount);
                 date.set(position, updateDate);
+                imagePath.set(position,currentImagePath);
                 adapter.notifyItemChanged(position);
             }
+            // Reload data after update
+            storeDataInArrayLists();
+            filterList(null, "category", (String) binding.spinner.getSelectedItem());
         }
     }
 
@@ -231,6 +274,7 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
         description.clear();
         amount.clear();
         date.clear();
+        imagePath.clear();
 
         Cursor cursor = dbHelper.readAllData("expense_manager");
         if(cursor.getCount() == 0){
@@ -242,13 +286,13 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
                 description.add(cursor.getString(2));
                 amount.add(cursor.getString(3));
                 date.add(cursor.getString(4));
+                imagePath.add(cursor.getString(5));
             }
         }
     }
 
     public double calculateCurrentBalance(){
         double sum = 0;
-
         if(!amount.isEmpty()){
             for(int i = 0; i < amount.size(); i++){
                 sum+= Integer.parseInt(amount.get(i));
@@ -257,8 +301,17 @@ dbHelper.insertData(dbHelper, "Lebensmittel", "TEst", 100.0, "18/06/24", "expens
         return sum;
     }
 
+    public ArrayList<String> storeCategories(){
+        ArrayList<String> allCategories = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.query("category_table", new String[]{"category"}, null, null, null, null, null);
 
-
-
-
+        if(cursor != null){
+            while(cursor.moveToNext()){
+                allCategories.add(cursor.getString(0));
+            }
+            cursor.close();
+        }
+        return allCategories;
+    }
 }

@@ -1,4 +1,9 @@
 <resources>
-    <string name="app_name">ExpenseManager</string>
+    <string name="app_name">ExpenserManager</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="back_to_startscreen">Back to Startscreen</string>
+    <string name="sign_up">Sign Up</string>
     <string name="euro">€</string>
 </resources>
