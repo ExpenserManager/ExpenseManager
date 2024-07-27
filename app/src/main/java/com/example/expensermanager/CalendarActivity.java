@@ -111,18 +111,42 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     private void addEvents() {
-        // Populate events with dummy data for testing
-        // Structure: events.put(year, monthEvents); monthEvents.put(month, daysWithEvents);
         Map<Integer, Set<Integer>> year2024 = new HashMap<>();
-        Set<Integer> januaryEvents = new HashSet<>();
-        januaryEvents.add(5);
-        januaryEvents.add(12);
+        Set<Integer> januaryEvents = checkMonth(1);
         year2024.put(Calendar.JANUARY, januaryEvents);
 
-        Set<Integer> februaryEvents = new HashSet<>();
-        februaryEvents.add(14);
-        februaryEvents.add(28);
+        Set<Integer> februaryEvents = checkMonth(2);
         year2024.put(Calendar.FEBRUARY, februaryEvents);
+
+        Set<Integer> marchEvents = checkMonth(3);
+        year2024.put(Calendar.MARCH, marchEvents);
+
+        Set<Integer> aprilEvents = checkMonth(4);
+        year2024.put(Calendar.APRIL, aprilEvents);
+
+        Set<Integer> mayEvents = checkMonth(5);
+        year2024.put(Calendar.MAY, mayEvents);
+
+        Set<Integer> juneEvents = checkMonth(6);
+        year2024.put(Calendar.JUNE, juneEvents);
+
+        Set<Integer> julyEvents = checkMonth(7);
+        year2024.put(Calendar.JULY, julyEvents);
+
+        Set<Integer> augustEvents = checkMonth(8);
+        year2024.put(Calendar.AUGUST, augustEvents);
+
+        Set<Integer> septemberEvents = checkMonth(9);
+        year2024.put(Calendar.SEPTEMBER, septemberEvents);
+
+        Set<Integer> octoberEvents = checkMonth(10);
+        year2024.put(Calendar.OCTOBER, octoberEvents);
+
+        Set<Integer> novemberEvents = checkMonth(11);
+        year2024.put(Calendar.NOVEMBER, novemberEvents);
+
+        Set<Integer> decemberEvents = checkMonth(12);
+        year2024.put(Calendar.DECEMBER, decemberEvents);
 
         events.put(2024, year2024);
     }
@@ -134,8 +158,8 @@ public class CalendarActivity extends AppCompatActivity {
 
         for (int i=0; i<dates.size(); i++){
             if (dates.get(i).contains(val)){
-                String tmp = Arrays.toString(dates.get(i).split("-"));
-                eventDays.add(Integer.parseInt(tmp));
+                String[] tmp = dates.get(i).split("-");
+                eventDays.add(Integer.parseInt(tmp[0]));
             }
         }
 
