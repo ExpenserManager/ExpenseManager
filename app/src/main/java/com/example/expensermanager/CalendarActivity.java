@@ -1,8 +1,6 @@
 package com.example.expensermanager;
 
 import android.annotation.SuppressLint;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -31,6 +30,7 @@ public class CalendarActivity extends AppCompatActivity {
     private TextView monthTextView;
     private Calendar calendar;
     private Map<Integer, Map<Integer, Set<Integer>>> events;
+    private DatabaseHelper dbHelper;
 
     @SuppressLint("MissingInflatedId")
     @Override
@@ -43,6 +43,8 @@ public class CalendarActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        dbHelper = new DatabaseHelper(this);
         recyclerView = findViewById(R.id.recyclerView);
         monthTextView = findViewById(R.id.monthTextView);
         Button prevMonthButton = findViewById(R.id.prevMonthButton);
@@ -50,7 +52,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         calendar = Calendar.getInstance();
         events = new HashMap<>();
-        populateEvents(); // Populate events for testing
+        addEvents(); // Populate events for testing
 
         updateCalendar();
 
@@ -108,7 +110,7 @@ public class CalendarActivity extends AppCompatActivity {
         return new HashSet<>(); // Return an empty set if no events found
     }
 
-    private void populateEvents() {
+    private void addEvents() {
         // Populate events with dummy data for testing
         // Structure: events.put(year, monthEvents); monthEvents.put(month, daysWithEvents);
         Map<Integer, Set<Integer>> year2024 = new HashMap<>();
@@ -123,5 +125,20 @@ public class CalendarActivity extends AppCompatActivity {
         year2024.put(Calendar.FEBRUARY, februaryEvents);
 
         events.put(2024, year2024);
+    }
+
+    private Set<Integer> checkMonth(int month){
+        ArrayList<String> dates = dbHelper.getDates();
+        Set<Integer> eventDays = new HashSet<>();
+        String val = "-"+month+"-";
+
+        for (int i=0; i<dates.size(); i++){
+            if (dates.get(i).contains(val)){
+                String tmp = Arrays.toString(dates.get(i).split("-"));
+                eventDays.add(Integer.parseInt(tmp));
+            }
+        }
+
+        return eventDays;
     }
 }
