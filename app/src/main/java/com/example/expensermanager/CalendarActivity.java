@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.core.processing.SurfaceProcessorNode;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -111,47 +112,51 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     private void addEvents() {
-        Map<Integer, Set<Integer>> year2024 = new HashMap<>();
-        Set<Integer> januaryEvents = checkMonth(1);
-        year2024.put(Calendar.JANUARY, januaryEvents);
+        Set<Integer> allYears = getYear();
 
-        Set<Integer> februaryEvents = checkMonth(2);
-        year2024.put(Calendar.FEBRUARY, februaryEvents);
+        for (Integer years: allYears){
+            Map<Integer, Set<Integer>> year = new HashMap<>();
+            Set<Integer> januaryEvents = checkMonth(1, years);
+            year.put(Calendar.JANUARY, januaryEvents);
 
-        Set<Integer> marchEvents = checkMonth(3);
-        year2024.put(Calendar.MARCH, marchEvents);
+            Set<Integer> februaryEvents = checkMonth(2, years);
+            year.put(Calendar.FEBRUARY, februaryEvents);
 
-        Set<Integer> aprilEvents = checkMonth(4);
-        year2024.put(Calendar.APRIL, aprilEvents);
+            Set<Integer> marchEvents = checkMonth(3, years);
+            year.put(Calendar.MARCH, marchEvents);
 
-        Set<Integer> mayEvents = checkMonth(5);
-        year2024.put(Calendar.MAY, mayEvents);
+            Set<Integer> aprilEvents = checkMonth(4, years);
+            year.put(Calendar.APRIL, aprilEvents);
 
-        Set<Integer> juneEvents = checkMonth(6);
-        year2024.put(Calendar.JUNE, juneEvents);
+            Set<Integer> mayEvents = checkMonth(5, years);
+            year.put(Calendar.MAY, mayEvents);
 
-        Set<Integer> julyEvents = checkMonth(7);
-        year2024.put(Calendar.JULY, julyEvents);
+            Set<Integer> juneEvents = checkMonth(6, years);
+            year.put(Calendar.JUNE, juneEvents);
 
-        Set<Integer> augustEvents = checkMonth(8);
-        year2024.put(Calendar.AUGUST, augustEvents);
+            Set<Integer> julyEvents = checkMonth(7, years);
+            year.put(Calendar.JULY, julyEvents);
 
-        Set<Integer> septemberEvents = checkMonth(9);
-        year2024.put(Calendar.SEPTEMBER, septemberEvents);
+            Set<Integer> augustEvents = checkMonth(8, years);
+            year.put(Calendar.AUGUST, augustEvents);
 
-        Set<Integer> octoberEvents = checkMonth(10);
-        year2024.put(Calendar.OCTOBER, octoberEvents);
+            Set<Integer> septemberEvents = checkMonth(9, years);
+            year.put(Calendar.SEPTEMBER, septemberEvents);
 
-        Set<Integer> novemberEvents = checkMonth(11);
-        year2024.put(Calendar.NOVEMBER, novemberEvents);
+            Set<Integer> octoberEvents = checkMonth(10, years);
+            year.put(Calendar.OCTOBER, octoberEvents);
 
-        Set<Integer> decemberEvents = checkMonth(12);
-        year2024.put(Calendar.DECEMBER, decemberEvents);
+            Set<Integer> novemberEvents = checkMonth(11, years);
+            year.put(Calendar.NOVEMBER, novemberEvents);
 
-        events.put(2024, year2024);
+            Set<Integer> decemberEvents = checkMonth(12, years);
+            year.put(Calendar.DECEMBER, decemberEvents);
+
+            events.put(years, year);
+        }
     }
 
-    private Set<Integer> checkMonth(int month){
+    private Set<Integer> checkMonth(int month, int year){
         ArrayList<String> dates = dbHelper.getDates();
         Set<Integer> eventDays = new HashSet<>();
         String val = "-"+month+"-";
@@ -159,10 +164,27 @@ public class CalendarActivity extends AppCompatActivity {
         for (int i=0; i<dates.size(); i++){
             if (dates.get(i).contains(val)){
                 String[] tmp = dates.get(i).split("-");
-                eventDays.add(Integer.parseInt(tmp[0]));
+                if (Integer.parseInt(tmp[2])==year){
+                    eventDays.add(Integer.parseInt(tmp[0]));
+                }
             }
         }
 
         return eventDays;
+    }
+
+    private Set<Integer> getYear(){
+        ArrayList<String> dates = dbHelper.getDates();
+        Set<Integer> years = new HashSet<>();
+
+        for (int i=0; i<dates.size(); i++){
+            String[] tmp = dates.get(i).split("-");
+            int check = Integer.parseInt(tmp[2]);
+
+            if (!years.contains(check)){
+                years.add(check);
+            }
+        }
+        return years;
     }
 }
