@@ -281,4 +281,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return new Pair<>(barEntries, categories);
     }
+
+    public ArrayList<String> getDates() {
+        ArrayList<String> dates = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String query = "SELECT " + COLUMN_DATE + " FROM " + TABLE_NAME;
+
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor != null && cursor.moveToFirst()) {
+            do {
+                String date = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DATE));
+                dates.add(date);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        return dates;
+    }
 }
