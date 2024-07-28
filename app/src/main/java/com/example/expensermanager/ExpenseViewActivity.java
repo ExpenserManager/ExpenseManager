@@ -158,13 +158,14 @@ public class ExpenseViewActivity extends AppCompatActivity {
         Double d = dbHelper.totalAmountCategory("Lebensmittel");
         Log.d("TOTAL", d.toString() );
         doAnimation(binding.backButton);
-
-        binding.backButton.setOnClickListener(v -> {
-            Intent intent2 = new Intent(ExpenseViewActivity.this, HomeScreenActivity.class);
-            startActivity(intent2);
-            finish();
+        binding.backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ExpenseViewActivity.this, HomeScreenActivity.class);
+                startActivity(intent);
+                finish();
+            }
         });
-
 
     }
     private void doAnimation(View button) {
@@ -180,7 +181,6 @@ public class ExpenseViewActivity extends AppCompatActivity {
             return false;
         });
     }
-
 
     @Override
     protected void onResume() { //update date if user comes back to this activity
