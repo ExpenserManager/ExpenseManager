@@ -1,6 +1,7 @@
 package com.example.expensermanager;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -70,6 +71,14 @@ public class CalendarActivity extends AppCompatActivity {
             public void onClick(View v) {
                 calendar.add(Calendar.MONTH, 1);
                 updateCalendar();
+            }
+        });
+
+        binding.buttonBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CalendarActivity.this, HomeScreenActivity.class);
+                startActivity(intent);
             }
         });
     }
