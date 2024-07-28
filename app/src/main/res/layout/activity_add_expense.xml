@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
@@ -28,7 +27,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_weight="1"
             app:boxCornerRadiusBottomEnd="20dp"
             app:boxCornerRadiusBottomStart="20dp"
@@ -41,18 +40,15 @@
             <Spinner
                 android:id="@+id/spinner2"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
-                app:boxCornerRadiusBottomEnd="20dp"
-                app:boxCornerRadiusBottomStart="20dp"
-                app:boxCornerRadiusTopEnd="20dp"
-                app:boxCornerRadiusTopStart="20dp"
-                android:backgroundTint="@color/blue"/>
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:padding="8dp"
+                app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginStart="10dp"
             android:layout_weight="1"
             app:boxCornerRadiusBottomEnd="20dp"
@@ -66,14 +62,14 @@
             <EditText
                 android:id="@+id/date"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
                 android:clickable="true"
                 android:focusable="false"
                 android:hint="Select Date"
                 android:textColor="@color/black" />
         </com.google.android.material.textfield.TextInputLayout>
     </LinearLayout>
-
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -146,7 +142,7 @@
             android:id="@+id/save_button"
             android:layout_width="149dp"
             android:layout_height="50dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="8dp"
             android:backgroundTint="@color/blue"
             android:text="Save"
             android:textAllCaps="false"
@@ -174,14 +170,11 @@
            android:backgroundTint="@color/blue"
            android:layout_marginBottom="15dp"
            android:text="Capture Image" />
+
        <ImageView
            android:id="@+id/expense_image_view"
            android:layout_width="wrap_content"
            android:layout_height="match_parent"
            app:srcCompat="@drawable/placeholderreceipt" />
-
-
    </LinearLayout>
-
-
 </LinearLayout>

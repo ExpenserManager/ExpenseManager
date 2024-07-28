@@ -73,15 +73,15 @@ public class StartActivity extends AppCompatActivity implements LoginFragment.On
 
      //inserting default categories if table is empty
         if(isCategoryTableEmpty()) {
-            dbHelper.insertCategory(dbHelper, "Gesundheit", "green", "category_table");
-            dbHelper.insertCategory(dbHelper, "Lebensmitel", "red", "category_table");
-            dbHelper.insertCategory(dbHelper, "Bildung", "blue", "category_table");
-            dbHelper.insertCategory(dbHelper, "Freizeit", "yellow", "category_table");
-            dbHelper.insertCategory(dbHelper, "Haustier", "black", "category_table");
-            dbHelper.insertCategory(dbHelper, "Wohnen", "white", "category_table");
+            dbHelper.insertCategory(dbHelper, "Health", "green", "category_table");
+            dbHelper.insertCategory(dbHelper, "Food", "red", "category_table");
+            dbHelper.insertCategory(dbHelper, "Education", "blue", "category_table");
+            dbHelper.insertCategory(dbHelper, "Hobby", "yellow", "category_table");
+            dbHelper.insertCategory(dbHelper, "Pet", "black", "category_table");
+            dbHelper.insertCategory(dbHelper, "Living", "white", "category_table");
             dbHelper.insertCategory(dbHelper, "Transport", "lightgreen", "category_table");
-            dbHelper.insertCategory(dbHelper, "Kleidung", "pink", "category_table");
-            dbHelper.insertCategory(dbHelper, "Kosmetik", "pink", "category_table");
+            dbHelper.insertCategory(dbHelper, "Clothing", "pink", "category_table");
+            dbHelper.insertCategory(dbHelper, "Cosmetics", "pink", "category_table");
         }
 
         id = new ArrayList<>();

@@ -19,6 +19,8 @@ public class HomeScreenActivity extends AppCompatActivity {
     private Animation scaleAnimation;
     private Animation bounceAnimation;
 
+    DatabaseHelper dbHelper;
+
     @SuppressLint({"ResourceType", "ClickableViewAccessibility"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,6 @@ public class HomeScreenActivity extends AppCompatActivity {
         });
 
         doAnimation(binding.qrButton);
-
         binding.qrButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -54,6 +55,26 @@ public class HomeScreenActivity extends AppCompatActivity {
                 Toast.makeText(HomeScreenActivity.this, "QR Button Clicked", Toast.LENGTH_SHORT).show();
                 Log.d("HomeScreenActivity", "QR Button Clicked");
                 Intent intent = new Intent(HomeScreenActivity.this, QR_Reader.class);
+                startActivity(intent);
+            }
+        });
+        doAnimation(binding.calendarButton);
+        binding.calendarButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Intent to calendarView
+            }
+        });
+
+        dbHelper = new DatabaseHelper(this);
+        Double total = dbHelper.calculateTotal();
+        String totalText = "-" + total.toString();
+        binding.currentBalanceMoney.setText(totalText);
+
+        binding.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeScreenActivity.this, ExpenseViewActivity.class);
                 startActivity(intent);
             }
         });

@@ -47,8 +47,10 @@ public class AddExpenseActivity extends AppCompatActivity {
     ActivityAddExpenseBinding binding;
     private DatabaseHelper dbHelper;
     private ImageView expenseImageView;
+
     Uri photoURI;
     final String[] category = new String[1];
+
     private Animation scaleAnimation;
     private Animation bounceAnimation;
     @Override
@@ -62,6 +64,7 @@ public class AddExpenseActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
         scaleAnimation = AnimationUtils.loadAnimation(this, R.transition.scale);
         bounceAnimation = AnimationUtils.loadAnimation(this, R.transition.bounce);
 
@@ -89,14 +92,13 @@ public class AddExpenseActivity extends AppCompatActivity {
 
             }
         });
-        doAnimation(binding.saveButton); // Apply animation to saveButton
+        doAnimation(binding.saveButton);
         binding.saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 insertFromInput();
             }
         });
-
 
         Spinner spinner = findViewById(R.id.spinner2);
 
@@ -109,7 +111,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               category[0] = spinnerList.get(position);
+                category[0] = spinnerList.get(position);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
