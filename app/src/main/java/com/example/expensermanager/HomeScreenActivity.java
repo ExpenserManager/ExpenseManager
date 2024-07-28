@@ -71,6 +71,7 @@ public class HomeScreenActivity extends AppCompatActivity {
         String totalText = "-" + total.toString();
         binding.currentBalanceMoney.setText(totalText);
 
+        doAnimation(binding.cardView);
         binding.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
