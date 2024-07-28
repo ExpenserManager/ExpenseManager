@@ -2,9 +2,7 @@ package com.example.expensermanager;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -78,7 +76,7 @@ public class BarchartFragment extends Fragment {
         barChart.setScaleEnabled(true);
         barChart.setDrawGridBackground(true);
         barChart.setGridBackgroundColor(Color.LTGRAY);
-        barChart.setBackgroundColor(Color.LTGRAY);
+        barChart.setBackgroundColor(Color.parseColor("#FAF9F6")); // Set Off-White background
 
         barChart.setData(data);
 
@@ -137,7 +135,7 @@ public class BarchartFragment extends Fragment {
 
             @Override
             public void onNothingSelected() {
-                // nothing happens when noting is selected
+                // nothing happens when nothing is selected
             }
         });
     }
