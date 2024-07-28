@@ -122,7 +122,7 @@
             android:drawablePadding="8dp"
             android:drawableStart="@drawable/baseline_euro_symbol_24"
             android:hint="amount"
-            android:inputType="textEmailAddress"
+            android:inputType="number"
             android:padding="8dp"
             android:singleLine="false"
             android:textColor="@color/black" />
@@ -157,24 +157,24 @@
             android:textAllCaps="false"
             android:textColor="@color/white" />
     </LinearLayout>
-   <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:gravity="center_horizontal"
-       android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-       <Button
-           android:id="@+id/receiptButton"
-           android:layout_width="149dp"
-           android:layout_height="50dp"
-           android:backgroundTint="@color/blue"
-           android:layout_marginBottom="15dp"
-           android:text="Capture Image" />
+        <Button
+            android:id="@+id/receiptButton"
+            android:layout_width="149dp"
+            android:layout_height="50dp"
+            android:backgroundTint="@color/blue"
+            android:layout_marginBottom="15dp"
+            android:text="Capture Image" />
 
-       <ImageView
-           android:id="@+id/expense_image_view"
-           android:layout_width="wrap_content"
-           android:layout_height="match_parent"
-           app:srcCompat="@drawable/placeholderreceipt" />
-   </LinearLayout>
+        <ImageView
+            android:id="@+id/expense_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/placeholderreceipt" />
+    </LinearLayout>
 </LinearLayout>
