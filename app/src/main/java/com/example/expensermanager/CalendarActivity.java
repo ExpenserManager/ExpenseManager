@@ -8,37 +8,40 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.core.processing.SurfaceProcessorNode;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.expensermanager.databinding.ActivityCalendarBinding;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.zip.Inflater;
 
 public class CalendarActivity extends AppCompatActivity {
+    private ActivityCalendarBinding binding;
     private RecyclerView recyclerView;
     private DayAdapter adapter;
     private TextView monthTextView;
     private Calendar calendar;
-    private Map<Integer, Map<Integer, Set<Integer>>> events;
+    private Map<Integer, Map<Integer, Set<Integer>>> events; //ChatGBT
     private DatabaseHelper dbHelper;
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        binding = ActivityCalendarBinding.inflate(getLayoutInflater());
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_calendar);
+        setContentView(binding.getRoot());
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -46,18 +49,17 @@ public class CalendarActivity extends AppCompatActivity {
         });
 
         dbHelper = new DatabaseHelper(this);
-        recyclerView = findViewById(R.id.recyclerView);
-        monthTextView = findViewById(R.id.monthTextView);
-        Button prevMonthButton = findViewById(R.id.prevMonthButton);
-        Button nextMonthButton = findViewById(R.id.nextMonthButton);
+
+        recyclerView = binding.recyclerView;
+        monthTextView = binding.monthTextView;
 
         calendar = Calendar.getInstance();
         events = new HashMap<>();
-        addEvents(); // Populate events for testing
 
+        addEvents();
         updateCalendar();
 
-        prevMonthButton.setOnClickListener(new View.OnClickListener() {
+        binding.previousMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 calendar.add(Calendar.MONTH, -1);
@@ -65,7 +67,7 @@ public class CalendarActivity extends AppCompatActivity {
             }
         });
 
-        nextMonthButton.setOnClickListener(new View.OnClickListener() {
+        binding.nextMonthButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 calendar.add(Calendar.MONTH, 1);
@@ -185,6 +187,7 @@ public class CalendarActivity extends AppCompatActivity {
                 years.add(check);
             }
         }
+
         return years;
     }
 }

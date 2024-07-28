@@ -14,7 +14,7 @@
         android:text="July 2024" />
 
     <Button
-        android:id="@+id/prevMonthButton"
+        android:id="@+id/previousMonthButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Previous"
