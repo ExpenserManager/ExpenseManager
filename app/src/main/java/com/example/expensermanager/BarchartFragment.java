@@ -2,6 +2,7 @@ package com.example.expensermanager;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
@@ -48,6 +49,7 @@ public class BarchartFragment extends Fragment {
 
     private void updateChart(BarChart barChart) {
 
+        // set bar entries
         Pair<List<BarEntry>, List<String>> result = dbHelper.getBarEntries();
         List<BarEntry> entries = result.first;
         List<String> categories = result.second;
@@ -72,15 +74,20 @@ public class BarchartFragment extends Fragment {
         barChart.setDrawValueAboveBar(true);
         barChart.setPinchZoom(false);
 
+        // set background
         barChart.setScaleEnabled(true);
         barChart.setDrawGridBackground(true);
+        barChart.setGridBackgroundColor(Color.LTGRAY);
+        barChart.setBackgroundColor(Color.LTGRAY);
 
         barChart.setData(data);
 
+        // set labelling
         barChart.getDescription().setEnabled(true);
         barChart.getLegend().setEnabled(false);
         barChart.getDescription().setText("");
 
+        // define how many bars at once should be shown
         barChart.setVisibleXRangeMaximum(5);
         barChart.invalidate();
 
@@ -130,6 +137,7 @@ public class BarchartFragment extends Fragment {
 
             @Override
             public void onNothingSelected() {
+                // nothing happens when noting is selected
             }
         });
     }
@@ -140,7 +148,7 @@ public class BarchartFragment extends Fragment {
         binding = null;
     }
 
-    // calculate maximum to measure where to stop the bar
+    // calculate maximum to measure where to stop the bar for better layout
     private float getMaxValue(List<BarEntry> entries) {
         float max = 0f;
         for (BarEntry entry : entries) {
