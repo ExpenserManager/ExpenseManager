@@ -49,10 +49,8 @@ public class CalendarActivity extends AppCompatActivity {
         });
 
         dbHelper = new DatabaseHelper(this);
-
         recyclerView = binding.recyclerView;
         monthTextView = binding.monthTextView;
-
         calendar = Calendar.getInstance();
         events = new HashMap<>();
 
@@ -76,15 +74,14 @@ public class CalendarActivity extends AppCompatActivity {
         });
     }
 
+    //Method from ChatGBT
     private void updateCalendar() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
         monthTextView.setText(sdf.format(calendar.getTime()));
 
-        // Get current month and year
         int currentMonth = calendar.get(Calendar.MONTH);
         int currentYear = calendar.get(Calendar.YEAR);
 
-        // Generate days of the current month
         calendar.set(currentYear, currentMonth, 1);
         int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         int[] days = new int[daysInMonth];
@@ -93,15 +90,14 @@ public class CalendarActivity extends AppCompatActivity {
             days[i] = i + 1;
         }
 
-        // Get events for the current month and year
         Set<Integer> eventDays = getEventsForMonth(currentYear, currentMonth);
 
-        // Set up the RecyclerView
         adapter = new DayAdapter(this, days, eventDays);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 7)); // 7 columns for days of the week
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 7));
         recyclerView.setAdapter(adapter);
     }
 
+    //Method from ChatGBT
     private Set<Integer> getEventsForMonth(int year, int month) {
         Map<Integer, Set<Integer>> yearEvents = events.get(year);
         if (yearEvents != null) {
@@ -110,7 +106,8 @@ public class CalendarActivity extends AppCompatActivity {
                 return monthEvents;
             }
         }
-        return new HashSet<>(); // Return an empty set if no events found
+
+        return new HashSet<>();
     }
 
     private void addEvents() {
