@@ -59,9 +59,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
     ArrayList<String> date;
     ArrayList<String> imagePath;
     CustomAdapter adapter;
-
     ActivityMainBinding binding;
-
     RecyclerView recyclerView;
     private Animation scaleAnimation;
     private Animation bounceAnimation;
@@ -114,8 +112,6 @@ public class ExpenseViewActivity extends AppCompatActivity {
             }
         });
 
-        //storeDataInArrayLists();
-
         recyclerView = findViewById(R.id.rv);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(ExpenseViewActivity.this));
@@ -125,19 +121,17 @@ public class ExpenseViewActivity extends AppCompatActivity {
         double total = calculateCurrentBalance();
         binding.currentBalanceMoney.setText("" + total);
 
-        //storeDataInArrayLists();
         Spinner spinner = findViewById(R.id.spinner);
         ArrayList spinnerList = storeCategories();
         spinnerList.add(0, "nothing selected");
-        //populateCategoryList();
+
         ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, spinnerList);
         spinner.setAdapter(spinnerAdapter); //show categories in spinner
-        //onItemSelectedListener
 
         Intent intent = getIntent();
         String selectedCategory = intent.getStringExtra("selectedCategory");
         if (selectedCategory != null) {
-            // Setze den Spinner auf die übergebene Kategorie
+            //spinner gets selectedCategory
             int position = spinnerAdapter.getPosition(selectedCategory);
             spinner.setSelection(position);
         }
@@ -156,7 +150,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
         });
 
         Double d = dbHelper.totalAmountCategory("Lebensmittel");
-        Log.d("TOTAL", d.toString() );
+
         doAnimation(binding.backButton);
         binding.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -191,6 +185,8 @@ public class ExpenseViewActivity extends AppCompatActivity {
         binding.currentBalanceMoney.setText("" + total);
     }
 
+
+    //method to filter the data with the spinner
     private void filterList(String newText, String type, String categoryFilter) {
 
        ArrayList<String> filteredListDescription = new ArrayList<>();
@@ -216,7 +212,6 @@ public class ExpenseViewActivity extends AppCompatActivity {
 
            if(categoryFilter.equals("nothing selected")){
                // Reload all data
-               //storeDataInArrayLists();
                filteredListDescription.addAll(description);
                filteredListId.addAll(id);
                filteredListAmount.addAll(amount);
@@ -288,7 +283,6 @@ public class ExpenseViewActivity extends AppCompatActivity {
     }
 
     protected void storeDataInArrayLists(){
-
         id.clear();
         category.clear();
         description.clear();
@@ -311,6 +305,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
         }
     }
 
+    //method to get the currentBalance which is shown in the "total" field
     public double calculateCurrentBalance(){
         double sum = 0;
         if(!amount.isEmpty()){
@@ -321,6 +316,7 @@ public class ExpenseViewActivity extends AppCompatActivity {
         return sum;
     }
 
+    //store all existing categories in an ArrayList
     public ArrayList<String> storeCategories(){
         ArrayList<String> allCategories = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
