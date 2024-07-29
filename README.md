@@ -1,7 +1,7 @@
 # ExpenseManager
 
-Der Expense Manager bietet dem Nutzer die Möglichkeit sein Einnahmen und Ausgaben im Überblick zu behalten.
-Die App bietet Datensicherung, außergewöhnliches und benutzerfreundliches Design und Sensorfunktionen. (z.B. Schütteln um einen Eintrag zu löschen, DarkMode entsprechend der Tageszeit)
+Der Expense Manager bietet dem Nutzer die Möglichkeit seine Ausgaben im Überblick zu behalten.
+Die App bietet Datensicherung, außergewöhnliches und benutzerfreundliches Design und Sensorfunktionen.
 
 # Funktionen:
 - Einnahmen und Ausgaben aufzeichnen, speichern, anzeigen, bearbeiten, filtern
