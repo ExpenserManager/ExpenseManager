@@ -47,7 +47,7 @@ public class CalendarActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         recyclerView = binding.recyclerView;
         monthTextView = binding.monthTextView;
-        calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance(); //Get the current date
         events = new HashMap<>();
 
         addEvents();
@@ -79,6 +79,7 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     //Method from ChatGBT
+    //Calendar gets updated to display the current month and year
     private void updateCalendar() {
         SimpleDateFormat sdf = new SimpleDateFormat("MMMM yyyy", Locale.getDefault());
         monthTextView.setText(sdf.format(calendar.getTime()));
@@ -86,14 +87,17 @@ public class CalendarActivity extends AppCompatActivity {
         int currentMonth = calendar.get(Calendar.MONTH);
         int currentYear = calendar.get(Calendar.YEAR);
 
+        //Sets the calendar to the 1st day of the month
         calendar.set(currentYear, currentMonth, 1);
         int daysInMonth = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         int[] days = new int[daysInMonth];
 
+        //Fills the calendar
         for (int i = 0; i < daysInMonth; i++) {
             days[i] = i + 1;
         }
 
+        //Get the event days for that month
         Set<Integer> eventDays = getEventsForMonth(currentYear, currentMonth);
 
         adapter = new DayAdapter(this, days, eventDays);
@@ -102,6 +106,7 @@ public class CalendarActivity extends AppCompatActivity {
     }
 
     //Method from ChatGBT
+    //Gives the event days for that month and year
     private Set<Integer> getEventsForMonth(int year, int month) {
         Map<Integer, Set<Integer>> yearEvents = events.get(year);
         if (yearEvents != null) {
@@ -114,6 +119,7 @@ public class CalendarActivity extends AppCompatActivity {
         return new HashSet<>();
     }
 
+    //Adds the event days in the calendar
     private void addEvents() {
         Set<Integer> allYears = getYear();
 
@@ -159,6 +165,7 @@ public class CalendarActivity extends AppCompatActivity {
         }
     }
 
+    //Checks if there are event days in that month and saves them in a Hash Set
     private Set<Integer> checkMonth(int month, int year){
         ArrayList<String> dates = dbHelper.getDates();
         Set<Integer> eventDays = new HashSet<>();
@@ -176,6 +183,7 @@ public class CalendarActivity extends AppCompatActivity {
         return eventDays;
     }
 
+    //Checks if there is an event in that year and saves it in a Hash set
     private Set<Integer> getYear(){
         ArrayList<String> dates = dbHelper.getDates();
         Set<Integer> years = new HashSet<>();
