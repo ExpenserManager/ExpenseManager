@@ -11,7 +11,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
@@ -47,6 +50,9 @@ public class AddExpenseActivity extends AppCompatActivity {
 
     Uri photoURI;
     final String[] category = new String[1];
+
+    private Animation scaleAnimation;
+    private Animation bounceAnimation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +65,8 @@ public class AddExpenseActivity extends AppCompatActivity {
             return insets;
         });
 
+        scaleAnimation = AnimationUtils.loadAnimation(this, R.transition.scale);
+        bounceAnimation = AnimationUtils.loadAnimation(this, R.transition.bounce);
 
         dbHelper = new DatabaseHelper(this);
 
@@ -84,7 +92,7 @@ public class AddExpenseActivity extends AppCompatActivity {
 
             }
         });
-
+        doAnimation(binding.saveButton);
         binding.saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,7 +108,7 @@ public class AddExpenseActivity extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               category[0] = spinnerList.get(position);
+                category[0] = spinnerList.get(position);
             }
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
@@ -110,12 +118,30 @@ public class AddExpenseActivity extends AppCompatActivity {
 
         expenseImageView = findViewById(R.id.expense_image_view);
 
+        doAnimation(binding.receiptButton);
         binding.receiptButton.setOnClickListener(v -> checkCameraPermission());
 
+        doAnimation(binding.cancelButton);
         binding.cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+    }
+    private void doAnimation(View button){
+        button.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        v.startAnimation(scaleAnimation);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        v.startAnimation(bounceAnimation);
+                        break;
+                }
+                return false;
             }
         });
     }
