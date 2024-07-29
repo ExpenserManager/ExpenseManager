@@ -59,18 +59,13 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        //holder.id_holder.setText(String.valueOf(id.get(position)));
         holder.description_holder.setText(String.valueOf(description.get(position)));
-
-
         String amountText = "- €" + String.valueOf(amount.get(position));
 
         holder.amount_holder.setText(amountText);
         holder.date_holder.setText(date.get(position));
 
         String imagePath = (String) imagePaths.get(position);
-
-
         holder.deleteButton.setOnClickListener(v -> {
             removeItem(position, "expense_manager");
         });
@@ -88,9 +83,6 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.MyViewHold
                 intent.putExtra("amount", String.valueOf(amount.get(position)));
                 intent.putExtra("date", String.valueOf(date.get(position)));
                 intent.putExtra("image_path", imagePath);
-                Log.d("Path", "imagepaths adapter"+ imagePath);
-
-
                 if (context instanceof Activity) {
                     ((Activity) context).startActivityForResult(intent, 1);
                 } else {

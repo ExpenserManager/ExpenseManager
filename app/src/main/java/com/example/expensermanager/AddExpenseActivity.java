@@ -97,9 +97,6 @@ public class AddExpenseActivity extends AppCompatActivity {
         ArrayList<String> spinnerList = dbHelper.getAllCategories();
         spinner.setAdapter(new ArrayAdapter<>(this, androidx.appcompat.R.layout.support_simple_spinner_dropdown_item, spinnerList)); //show categories in spinner
 
-        //onItemSelectedListener
-
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -188,19 +185,9 @@ public class AddExpenseActivity extends AppCompatActivity {
         String description = binding.description.getText().toString();
         String value = binding.amount.getText().toString();
         String date = binding.date.getText().toString();
-//        String imagePath = binding.expenseImageView.toString();
         String imagePath = currentPhotoPath;
-        Log.d("Path", "3 "+currentPhotoPath);
 
         Toast.makeText(this, description, Toast.LENGTH_SHORT).show();
-
-        Log.d("InsertFromInput", "Description: " + description);
-        Log.d("InsertFromInput", "Amount: " + value);
-        Log.d("InsertFromInput", "Date: " + date);
-        Log.d("InsertFromInput", "Category: " + category[0]);
-        Log.d("InsertFromInput", "ImagePath: " + imagePath);
-
-
         dbHelper.insertData(dbHelper, category[0], description, Double.parseDouble(value) ,date, "expense_manager",imagePath);
         Intent intent = new Intent(AddExpenseActivity.this, ExpenseViewActivity.class);
         startActivity(intent);
