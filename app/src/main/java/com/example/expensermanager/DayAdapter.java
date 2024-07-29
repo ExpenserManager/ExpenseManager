@@ -20,6 +20,8 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.DayViewHolder> {
         this.eventDays = eventDays;
     }
 
+    //From Android Developers: https://developer.android.com/topic/libraries/data-binding/expressions?hl=de
+    //Used when a new ViewHolder of the viewType is needed
     @NonNull
     @Override
     public DayViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -30,11 +32,13 @@ public class DayAdapter extends RecyclerView.Adapter<DayAdapter.DayViewHolder> {
     }
 
     //Method from ChatGBT
+    //Displays the eventMarker on the calendar
     @Override
     public void onBindViewHolder(@NonNull DayViewHolder holder, int position) {
         int day = days[position];
         holder.dayItemBinding.dayTextView.setText(String.valueOf(day));
 
+        //Visibility of eventMarker -> checks if there is an event on that day
         if (eventDays.contains(day)) {
             holder.dayItemBinding.eventMarker.setVisibility(View.VISIBLE);
         } else {
