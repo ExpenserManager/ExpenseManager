@@ -6,11 +6,10 @@ Die App bietet Datensicherung, außergewöhnliches und benutzerfreundliches Desi
 # Funktionen:
 - Einnahmen und Ausgaben aufzeichnen, speichern, anzeigen, bearbeiten, filtern
 - Datum, Betrag, andere Details speichern
-- Zwischen verschiedenen Währungen wählen
+- Bilder von Rechnungen speichern
+- Mit QR-Code Scanner Ausgaben speichern
+- Kalender zur besseren Übersicht, mit Anzeige aller Ausgaben und Einnahmen
 
 
-# Optionale Funktionen:
- - Mit QR-Code Scanner Ausgaben speichern
- - Bilder von Rechnungen speichern
- - Kalender zur besseren Übersicht, mit Anzeige aller Ausgaben und Einnahmen
+
 
