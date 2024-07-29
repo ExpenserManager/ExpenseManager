@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.os.Debug;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -51,6 +54,9 @@ public class UpdateDataActivity extends AppCompatActivity {
     EditText dateFieldText;
     ImageButton deleteButton;
     ImageButton backButton;
+
+    private Animation scaleAnimation;
+    private Animation bounceAnimation;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +68,10 @@ public class UpdateDataActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+
+        scaleAnimation = AnimationUtils.loadAnimation(this, R.transition.scale);
+        bounceAnimation = AnimationUtils.loadAnimation(this, R.transition.bounce);
+
         dbHelper = new DatabaseHelper(UpdateDataActivity.this);
         EditText descriptionField = findViewById(R.id.description);
         EditText amountField = findViewById(R.id.amount);
@@ -92,7 +102,7 @@ public class UpdateDataActivity extends AppCompatActivity {
                 displayImageFromPath(currentPhotoPath);
             }
         }
-
+        doAnimation(updateButton);
         updateButton.setOnClickListener(v -> {
             String newDescription = descriptionField.getText().toString();
             String newAmount = amountField.getText().toString();
@@ -137,6 +147,7 @@ public class UpdateDataActivity extends AppCompatActivity {
         });
 
         deleteButton =  findViewById(R.id.deleteButton);
+        doAnimation(deleteButton);
         deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -149,7 +160,7 @@ public class UpdateDataActivity extends AppCompatActivity {
         });
 
         backButton = findViewById(R.id.backButton);
-
+        doAnimation(backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -158,6 +169,7 @@ public class UpdateDataActivity extends AppCompatActivity {
         });
 
         Button takePictureButton = findViewById(R.id.receiptButton);
+        doAnimation(takePictureButton);
         takePictureButton.setOnClickListener(v -> dispatchTakePictureIntent());
     }
 
@@ -211,5 +223,18 @@ public class UpdateDataActivity extends AppCompatActivity {
             Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
             photoImageView.setImageBitmap(myBitmap);
         }
+    }
+    private void doAnimation(View button) {
+        button.setOnTouchListener((v, event) -> {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    v.startAnimation(scaleAnimation);
+                    break;
+                case MotionEvent.ACTION_UP:
+                    v.startAnimation(bounceAnimation);
+                    break;
+            }
+            return false;
+        });
     }
 }
