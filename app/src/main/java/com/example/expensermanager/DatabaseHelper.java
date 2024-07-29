@@ -16,11 +16,10 @@ import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private Context context;
+    //table expense_manager
     private static final String DB_NAME = "expenser_manager.db";
     private static final int DB_VERSION = 1;
     private static final String TABLE_NAME = "expense_manager";
-
-    //columns
     private static final String COLUMN_ID = "_id";
     private static final String COLUMN_CATEGORY = "category";
     private static final String COLUMN_DESCRIPTION = "description";
@@ -28,7 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DATE = "date";
     private static final String COLUMN_IMAGE_PATH = "image_path";
 
-
+    //table categories
     private static final String TABLE2_NAME = "category_table";
     private static final String COLUMN_ID_CATEGORY_TABLE = "id";
     private static final String COLUMN_CATEGORY_CATEGORY_TABLE = "category";
@@ -55,7 +54,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     @Override
-    public void onCreate(SQLiteDatabase db) {
+    public void onCreate(SQLiteDatabase db) { // creates the tables
 
         String queryCreate = String.format("CREATE TABLE %s (%s INTEGER PRIMARY KEY AUTOINCREMENT, %s TEXT NOT NULL, %s TEXT, %s REAL NOT NULL, %s TEXT, %s TEXT);",
                 TABLE_NAME, COLUMN_ID, COLUMN_CATEGORY, COLUMN_DESCRIPTION, COLUMN_AMOUNT, COLUMN_DATE, COLUMN_IMAGE_PATH);        //
@@ -72,7 +71,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //db.execSQL(SQL_DELETE_ENTRIES_CATEGORY_TABLE);
         db.execSQL(SQL_DELETE_ENTRIES);
         //if it is required to upgrade the database --> rebuild the database
         //updating: add column or row
@@ -143,7 +141,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         String query = "DELETE FROM " + tableName + " WHERE _id=" + id; // SQL Query - deleting row via id
         db.execSQL(query);
-
     }
 
 
@@ -154,8 +151,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_AMOUNT, amount);
         values.put(COLUMN_DATE, date);
         values.put(COLUMN_IMAGE_PATH, imagePath);
-
-        Log.d("Path", " updated " + imagePath + " id " + id);
         db.update(tableName, values, "_id = ?", new String[]{id});
     }
 
@@ -176,10 +171,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if (db != null) {
             cursor = db.rawQuery(query, null); //execute query
         }
-
-        return cursor;
-        //cursor contains all database data
-
+        return cursor; //cursor contains all database data
     }
 
 
@@ -199,7 +191,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             cursor.close();
         }
-
         return categories;
     }
 
