@@ -62,7 +62,8 @@ public class HomeScreenActivity extends AppCompatActivity {
         binding.calendarButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Intent to calendarView
+                Intent intent = new Intent(HomeScreenActivity.this, CalendarActivity.class);
+                startActivity(intent);
             }
         });
 

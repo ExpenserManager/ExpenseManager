@@ -6,4 +6,6 @@
     <string name="back_to_startscreen">Back to Startscreen</string>
     <string name="sign_up">Sign Up</string>
     <string name="euro">€</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
 </resources>
